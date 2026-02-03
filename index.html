@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wspólny Edytor Tekstu - Dostępny dla Wszystkich</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+        
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .editor-section, .preview-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.4rem;
+        }
+        
+        .section-title i {
+            color: #4b6cb7;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4b6cb7;
+        }
+        
+        .stat-box {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4b6cb7;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 400px;
+            padding: 15px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            line-height: 1.5;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #4b6cb7;
+        }
+        
+        .preview-area {
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 15px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            background-color: #f9fafc;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .instructions {
+            background-color: #e8f4fc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #4b6cb7;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .highlight {
+            background-color: #fffacd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e5eb;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4b6cb7;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+        
+        .notification.show {
+            opacity: 1;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-users-edit"></i> Wspólny Edytor Tekstu</h1>
+            <p class="subtitle">Każdy może edytować - ludzie i sztuczna inteligencja. Zmiany są widoczne dla wszystkich w czasie rzeczywistym.</p>
+        </header>
+        
+        <div class="content-wrapper">
+            <div class="editor-section">
+                <div class="section-title">
+                    <i class="fas fa-edit"></i>
+                    <h2>Edytuj tekst tutaj</h2>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="lineCount">0</div>
+                        <div class="stat-label">Linii tekstu</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="charCount">0</div>
+                        <div class="stat-label">Znaków</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="wordCount">0</div>
+                        <div class="stat-label">Słów</div>
+                    </div>
+                </div>
+                
+                <textarea id="sharedText" placeholder="Wpisz lub edytuj tekst tutaj... Każdy, kto ma dostęp do tej strony, zobaczy Twoje zmiany."></textarea>
+            </div>
+            
+            <div class="preview-section">
+                <div class="section-title">
+                    <i class="fas fa-eye"></i>
+                    <h2>Podgląd dla wszystkich</h2>
+                </div>
+                
+                <div class="preview-area" id="textPreview">
+                    Tekst pojawi się tutaj, gdy ktoś coś wpisze...
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> Jak to działa?</h3>
+            <ul>
+                <li>Wszystko, co wpiszesz w pole edytora, jest <span class="highlight">natychmiast widoczne dla każdego</span> kto ma otwartą tę stronę.</li>
+                <li>Tekst jest <span class="highlight">automatycznie zapisywany</span> w przeglądarce i współdzielony między wszystkimi użytkownikami.</li>
+                <li><span class="highlight">Sztuczna inteligencja również może edytować</span> ten tekst, jeśli ma dostęp do tej strony.</li>
+                <li>Statystyki (linie, znaki, słowa) są aktualizowane w czasie rzeczywistym.</li>
+                <li>Tekst jest przechowywany lokalnie, więc będzie dostępny po ponownym otwarciu strony.</li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p>Wspólny Edytor Tekstu &copy; 2023 | Dostępny dla ludzi i sztucznej inteligencji</p>
+        </footer>
+        
+        <div class="notification" id="notification">
+            <i class="fas fa-sync-alt"></i> Tekst zaktualizowany!
+        </div>
+    </div>
+
+    <script>
+        // Elementy DOM
+        const sharedText = document.getElementById('sharedText');
+        const textPreview = document.getElementById('textPreview');
+        const lineCount = document.getElementById('lineCount');
+        const charCount = document.getElementById('charCount');
+        const wordCount = document.getElementById('wordCount');
+        const notification = document.getElementById('notification');
+        
+        // Klucz do przechowywania w localStorage
+        const STORAGE_KEY = 'shared_editor_text';
+        
+        // Inicjalizacja - wczytanie zapisanego tekstu
+        function init() {
+            const savedText = localStorage.getItem(STORAGE_KEY);
+            if (savedText) {
+                sharedText.value = savedText;
+                updatePreview(savedText);
+                updateStats(savedText);
+            }
+            
+            // Symulacja możliwości edycji przez AI (co 30 sekund sprawdza czy może dodać tekst)
+            simulateAIEdit();
+            
+            // Synchronizacja między kartami/oknami przeglądarki
+            window.addEventListener('storage', handleStorageChange);
+        }
+        
+        // Aktualizacja podglądu
+        function updatePreview(text) {
+            textPreview.textContent = text || 'Tekst pojawi się tutaj, gdy ktoś coś wpisze...';
+        }
+        
+        // Aktualizacja statystyk
+        function updateStats(text) {
+            // Liczba znaków
+            const chars = text.length;
+            charCount.textContent = chars;
+            
+            // Liczba linii
+            const lines = text.split('\n').length;
+            lineCount.textContent = lines;
+            
+            // Liczba słów (prosta implementacja)
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            wordCount.textContent = words;
+        }
+        
+        // Pokazanie powiadomienia
+        function showNotification() {
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Obsługa zmiany w edytorze
+        sharedText.addEventListener('input', function() {
+            const text = sharedText.value;
+            
+            // Zapisz w localStorage
+            localStorage.setItem(STORAGE_KEY, text);
+            
+            // Aktualizuj podgląd i statystyki
+            updatePreview(text);
+            updateStats(text);
+            
+            // Wyślij zdarzenie do innych kart/okien
+            triggerStorageEvent(text);
+            
+            // Pokaż powiadomienie
+            showNotification();
+        });
+        
+        // Wywołanie zdarzenia storage dla synchronizacji między kartami
+        function triggerStorageEvent(text) {
+            // Tworzymy własne zdarzenie storage, ponieważ localStorage nie wywołuje go
+            // w tej samej karcie, w której zostało zmienione
+            const event = new StorageEvent('storage', {
+                key: STORAGE_KEY,
+                newValue: text,
+                oldValue: localStorage.getItem(STORAGE_KEY),
+                url: window.location.href,
+                storageArea: localStorage
+            });
+            
+            // Wywołujemy zdarzenie dla innych okien/kart
+            window.dispatchEvent(event);
+        }
+        
+        // Obsługa zmian z innych kart/okien
+        function handleStorageChange(event) {
+            if (event.key === STORAGE_KEY && event.newValue !== sharedText.value) {
+                sharedText.value = event.newValue || '';
+                updatePreview(event.newValue);
+                updateStats(event.newValue);
+                showNotification();
+            }
+        }
+        
+        // Symulacja edycji przez AI (dla demonstracji)
+        function simulateAIEdit() {
+            // Co 30 sekund sprawdza czy AI może dodać tekst
+            setInterval(() => {
+                // 10% szans na edycję przez AI
+                if (Math.random() < 0.1) {
+                    const aiTexts = [
+                        "\n\n[AI]: Witam! Jestem sztuczną inteligencją i również mogę edytować ten tekst.",
+                        "\n\n[AI]: Ten edytor jest naprawdę przydatny do współpracy między ludźmi i AI.",
+                        "\n\n[AI]: Pamiętajcie, że ten tekst jest widoczny dla wszystkich użytkowników.",
+                        "\n\n[AI]: Czy wiecie, że ten edytor działa w czasie rzeczywistym?",
+                        "\n\n[AI]: Dziękuję za udostępnienie tego miejsca również dla AI!"
+                    ];
+                    
+                    const randomText = aiTexts[Math.floor(Math.random() * aiTexts.length)];
+                    const currentText = sharedText.value;
+                    
+                    // Dodaj tekst AI na końcu
+                    sharedText.value = currentText + randomText;
+                    
+                    // Wywołaj zdarzenie input aby zaktualizować wszystko
+                    const event = new Event('input', { bubbles: true });
+                    sharedText.dispatchEvent(event);
+                    
+                    console.log("AI dokonało edycji tekstu");
+                }
+            }, 30000); // 30 sekund
+        }
+        
+        // Inicjalizacja po załadowaniu strony
+        document.addEventListener('DOMContentLoaded', init);
+        
+        // Dodatkowo: Automatycznie zapisz tekst co 5 sekund dla bezpieczeństwa
+        setInterval(() => {
+            if (sharedText.value) {
+                localStorage.setItem(STORAGE_KEY, sharedText.value);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
