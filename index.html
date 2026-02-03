@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Globalny Edytor Tekstu - Współdzielona Przestrzeń</title>
+    <title>Globalny Edytor - Tekst Widoczny dla Wszystkich</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,8 +13,8 @@
         }
         
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
             --secondary: #10b981;
             --accent: #f59e0b;
             --danger: #ef4444;
@@ -24,6 +24,8 @@
             --text: #e2e8f0;
             --text-secondary: #94a3b8;
             --border: #334155;
+            --online: #22c55e;
+            --offline: #ef4444;
         }
         
         body {
@@ -49,20 +51,37 @@
         .particle {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.2), transparent);
-            animation: float 15s infinite linear;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.1), transparent);
+            animation: float 20s infinite linear;
         }
         
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(20px, 20px) rotate(90deg); }
-            50% { transform: translate(0, 40px) rotate(180deg); }
-            75% { transform: translate(-20px, 20px) rotate(270deg); }
+            0% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, 30px) rotate(120deg); }
+            66% { transform: translate(-20px, 40px) rotate(240deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        .glow-effect {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
+            z-index: -1;
+            animation: pulse 4s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
         }
         
         /* Kontener główny */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
@@ -70,13 +89,13 @@
         
         /* Nagłówek */
         header {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 20px 30px;
             margin-bottom: 25px;
             border: 1px solid var(--border);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -98,29 +117,37 @@
         }
         
         .logo-icon {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 12px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 26px;
             color: white;
-            animation: pulse 2s infinite;
+            animation: glow 2s infinite alternate;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @keyframes glow {
+            0% { box-shadow: 0 0 20px rgba(37, 99, 235, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(37, 99, 235, 0.8); }
         }
         
         .logo h1 {
-            font-size: 28px;
+            font-size: 30px;
             background: linear-gradient(90deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 5px;
         }
         
         /* Panel użytkownika */
@@ -134,31 +161,44 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(15, 23, 42, 0.8);
             padding: 12px 20px;
             border-radius: 15px;
             border: 2px solid var(--border);
             transition: all 0.3s ease;
             cursor: pointer;
+            position: relative;
         }
         
         .user-card:hover {
             border-color: var(--primary);
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
         }
         
         .user-avatar {
-            width: 45px;
-            height: 45px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 20px;
+            font-size: 22px;
             color: white;
+            position: relative;
+        }
+        
+        .online-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            background-color: var(--online);
+            border-radius: 50%;
+            border: 2px solid var(--card-bg);
         }
         
         .user-info {
@@ -170,17 +210,65 @@
             font-weight: bold;
             font-size: 18px;
             color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .user-stats {
+        .user-status {
             font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--online);
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Licznik online - REALNY */
+        .online-counter {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            padding: 10px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: pulseOnline 3s infinite;
+        }
+        
+        @keyframes pulseOnline {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+        }
+        
+        .online-count {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--online);
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+        
+        .online-label {
+            font-size: 14px;
             color: var(--text-secondary);
         }
         
         /* Główna zawartość */
         .main-content {
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 350px 1fr;
             gap: 25px;
             animation: fadeIn 1s ease;
         }
@@ -190,7 +278,7 @@
             to { opacity: 1; }
         }
         
-        @media (max-width: 900px) {
+        @media (max-width: 1024px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
@@ -200,21 +288,22 @@
         .sidebar {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
         }
         
         .panel {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 25px;
             border: 1px solid var(--border);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease;
         }
         
         .panel:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
         }
         
         .panel h2 {
@@ -224,63 +313,36 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
         }
         
         .panel h2 i {
             color: var(--primary);
         }
         
-        /* Statystyki na żywo */
-        .live-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .stat-item {
-            background: var(--darker-bg);
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid var(--border);
-        }
-        
-        .stat-value {
-            font-size: 28px;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        /* Lista użytkowników */
-        .user-list {
-            max-height: 300px;
+        /* Użytkownicy online - PRAWDZIWI */
+        .users-online-list {
+            max-height: 400px;
             overflow-y: auto;
             padding-right: 10px;
         }
         
-        .user-list::-webkit-scrollbar {
+        .users-online-list::-webkit-scrollbar {
             width: 6px;
         }
         
-        .user-list::-webkit-scrollbar-track {
+        .users-online-list::-webkit-scrollbar-track {
             background: var(--darker-bg);
             border-radius: 3px;
         }
         
-        .user-list::-webkit-scrollbar-thumb {
+        .users-online-list::-webkit-scrollbar-thumb {
             background: var(--primary);
             border-radius: 3px;
         }
         
-        .user-list-item {
+        .online-user-item {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -288,29 +350,82 @@
             margin-bottom: 10px;
             background: var(--darker-bg);
             border-radius: 12px;
-            border: 1px solid transparent;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .online-user-item:hover {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .online-user-item.active {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.2);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
+        }
+        
+        .user-activity {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+        
+        .user-activity.editing {
+            color: var(--accent);
+        }
+        
+        /* Statystyki globalne */
+        .global-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .global-stat-item {
+            background: var(--darker-bg);
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
             transition: all 0.3s ease;
         }
         
-        .user-list-item:hover {
+        .global-stat-item:hover {
             border-color: var(--primary);
-            background: rgba(99, 102, 241, 0.1);
+            transform: translateY(-3px);
         }
         
-        .user-list-item.active {
-            border-color: var(--primary);
-            background: rgba(99, 102, 241, 0.2);
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+        .global-stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
         }
         
-        /* Edytor główny */
+        .global-stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Edytor główny - GLOBALNY TEKST */
         .editor-container {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 30px;
             border: 1px solid var(--border);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
         }
         
         .editor-header {
@@ -324,14 +439,44 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 24px;
+            font-size: 26px;
             color: var(--text);
         }
         
         .editor-title i {
             color: var(--primary);
+            animation: spin 10s linear infinite;
         }
         
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Tekst globalny info */
+        .global-text-info {
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: highlight 2s ease;
+        }
+        
+        @keyframes highlight {
+            0% { background: rgba(37, 99, 235, 0.3); }
+            100% { background: rgba(37, 99, 235, 0.1); }
+        }
+        
+        .global-text-info i {
+            color: var(--primary);
+            font-size: 24px;
+        }
+        
+        /* Statystyki tekstu */
         .text-stats {
             display: flex;
             gap: 20px;
@@ -345,13 +490,28 @@
         .text-stat {
             text-align: center;
             flex: 1;
+            position: relative;
+        }
+        
+        .text-stat::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background: var(--border);
+        }
+        
+        .text-stat:last-child::after {
+            display: none;
         }
         
         .text-stat-value {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
             color: var(--primary);
-            text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+            text-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
         }
         
         .text-stat-label {
@@ -360,7 +520,7 @@
             margin-top: 5px;
         }
         
-        /* Pole tekstowe */
+        /* Pole tekstowe GLOBALNE */
         .textarea-container {
             position: relative;
             margin-bottom: 25px;
@@ -368,7 +528,7 @@
         
         textarea {
             width: 100%;
-            min-height: 400px;
+            min-height: 450px;
             padding: 25px;
             background: var(--darker-bg);
             border: 2px solid var(--border);
@@ -378,12 +538,13 @@
             line-height: 1.6;
             resize: vertical;
             transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
         }
         
         textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 0 25px rgba(37, 99, 235, 0.4);
         }
         
         .textarea-overlay {
@@ -392,16 +553,18 @@
             right: 20px;
             font-size: 12px;
             color: var(--text-secondary);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px 10px;
-            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 12px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
         }
         
         /* Przyciski akcji */
         .editor-actions {
             display: flex;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 25px;
+            flex-wrap: wrap;
         }
         
         .btn {
@@ -415,6 +578,26 @@
             gap: 10px;
             transition: all 0.3s ease;
             font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
         
         .btn-primary {
@@ -424,7 +607,7 @@
         
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
         }
         
         .btn-secondary {
@@ -434,7 +617,17 @@
         
         .btn-secondary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #d97706);
+            color: white;
+        }
+        
+        .btn-accent:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
         }
         
         .btn-danger {
@@ -444,45 +637,7 @@
         
         .btn-danger:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
-        }
-        
-        /* Panel podglądu */
-        .preview-container {
-            margin-top: 30px;
-        }
-        
-        .preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .preview-content {
-            min-height: 200px;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 20px;
-            background: var(--darker-bg);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            line-height: 1.6;
-        }
-        
-        .preview-content::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .preview-content::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        
-        .preview-content::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 3px;
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
         }
         
         /* Powiadomienia */
@@ -494,11 +649,12 @@
             border: 1px solid var(--border);
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             transform: translateX(400px);
             transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            max-width: 300px;
+            max-width: 350px;
             z-index: 1000;
+            backdrop-filter: blur(10px);
         }
         
         .notification.show {
@@ -513,13 +669,14 @@
         }
         
         .notification-icon {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
+            font-size: 18px;
         }
         
         .notification-icon.info {
@@ -534,7 +691,11 @@
             background: var(--accent);
         }
         
-        /* Efekty specjalne */
+        .notification-icon.error {
+            background: var(--danger);
+        }
+        
+        /* Efekty tekstu */
         .typewriter {
             overflow: hidden;
             border-right: 2px solid var(--primary);
@@ -547,19 +708,17 @@
             to { width: 100% }
         }
         
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: var(--primary) }
-        }
-        
         /* Stopka */
         footer {
             margin-top: 40px;
             text-align: center;
-            padding: 20px;
+            padding: 25px;
             color: var(--text-secondary);
             font-size: 14px;
             border-top: 1px solid var(--border);
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
         }
         
         /* Responsywność */
@@ -573,6 +732,7 @@
             .user-panel {
                 width: 100%;
                 justify-content: center;
+                flex-wrap: wrap;
             }
             
             .text-stats {
@@ -580,13 +740,16 @@
                 gap: 15px;
             }
             
+            .text-stat::after {
+                display: none;
+            }
+            
             .editor-actions {
-                flex-wrap: wrap;
+                flex-direction: column;
             }
             
             .btn {
-                flex: 1;
-                min-width: 140px;
+                width: 100%;
                 justify-content: center;
             }
         }
@@ -596,19 +759,35 @@
 <body>
     <!-- Animowane tło -->
     <div class="bg-animation" id="bgAnimation"></div>
+    <div class="glow-effect"></div>
     
     <div class="container">
         <!-- Nagłówek -->
         <header>
             <div class="logo">
                 <div class="logo-icon">
-                    <i class="fas fa-code"></i>
+                    <i class="fas fa-globe-americas"></i>
                 </div>
-                <h1 class="typewriter">Globalny Edytor Tekstu</h1>
+                <div>
+                    <h1 class="typewriter">Globalny Edytor Tekstu</h1>
+                    <div class="logo-subtitle">Tekst widoczny dla wszystkich w czasie rzeczywistym</div>
+                </div>
             </div>
             
-            <div class="user-panel" id="userPanel">
-                <!-- Zostanie wypełnione przez JavaScript -->
+            <div class="user-panel">
+                <!-- Licznik online - PRAWDZIWY -->
+                <div class="online-counter" id="onlineCounter">
+                    <div class="online-count" id="onlineCount">1</div>
+                    <div class="online-label">
+                        <i class="fas fa-users"></i>
+                        <span>online</span>
+                    </div>
+                </div>
+                
+                <!-- Panel użytkownika -->
+                <div class="user-card" id="userCard">
+                    <!-- Zostanie wypełnione przez JavaScript -->
+                </div>
             </div>
         </header>
         
@@ -616,70 +795,83 @@
         <div class="main-content">
             <!-- Panel boczny -->
             <div class="sidebar">
-                <!-- Statystyki na żywo -->
+                <!-- Użytkownicy online - PRAWDZIWI -->
                 <div class="panel">
-                    <h2><i class="fas fa-chart-line"></i> Statystyki na żywo</h2>
-                    <div class="live-stats">
-                        <div class="stat-item">
-                            <div class="stat-value" id="onlineUsers">0</div>
-                            <div class="stat-label">Online</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="totalVisits">0</div>
-                            <div class="stat-label">Wszystkie wizyty</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="yourVisits">0</div>
-                            <div class="stat-label">Twoje wizyty</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="aiEdits">0</div>
-                            <div class="stat-label">Edycje AI</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Aktywni użytkownicy -->
-                <div class="panel">
-                    <h2><i class="fas fa-users"></i> Aktywni teraz</h2>
-                    <div class="user-list" id="activeUsersList">
+                    <h2><i class="fas fa-user-check"></i> Użytkownicy online</h2>
+                    <div class="users-online-list" id="usersOnlineList">
                         <!-- Zostanie wypełnione przez JavaScript -->
                     </div>
                 </div>
                 
-                <!-- Historia edycji -->
+                <!-- Statystyki globalne -->
+                <div class="panel">
+                    <h2><i class="fas fa-chart-bar"></i> Statystyki globalne</h2>
+                    <div class="global-stats">
+                        <div class="global-stat-item">
+                            <div class="global-stat-value" id="globalVisits">0</div>
+                            <div class="global-stat-label">Wszystkich wizyt</div>
+                        </div>
+                        <div class="global-stat-item">
+                            <div class="global-stat-value" id="totalUsers">0</div>
+                            <div class="global-stat-label">Unikalnych użytk.</div>
+                        </div>
+                        <div class="global-stat-item">
+                            <div class="global-stat-value" id="totalEdits">0</div>
+                            <div class="global-stat-label">Edycji tekstu</div>
+                        </div>
+                        <div class="global-stat-item">
+                            <div class="global-stat-value" id="aiEdits">0</div>
+                            <div class="global-stat-label">Edycji AI</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ostatnie aktywności -->
                 <div class="panel">
                     <h2><i class="fas fa-history"></i> Ostatnie zmiany</h2>
-                    <div class="user-list" id="editHistory">
+                    <div class="users-online-list" id="recentActivities">
                         <!-- Zostanie wypełnione przez JavaScript -->
                     </div>
                 </div>
             </div>
             
-            <!-- Edytor główny -->
+            <!-- Edytor główny - GLOBALNY -->
             <div class="editor-container">
                 <div class="editor-header">
                     <h2 class="editor-title">
-                        <i class="fas fa-edit"></i> Współdzielony Edytor Tekstu
+                        <i class="fas fa-edit"></i> Globalny Edytor Tekstu
                     </h2>
-                    <div class="text-stats">
-                        <div class="text-stat">
-                            <div class="text-stat-value" id="charCount">0</div>
-                            <div class="text-stat-label">Znaki</div>
-                        </div>
-                        <div class="text-stat">
-                            <div class="text-stat-value" id="wordCount">0</div>
-                            <div class="text-stat-label">Słowa</div>
-                        </div>
-                        <div class="text-stat">
-                            <div class="text-stat-value" id="lineCount">0</div>
-                            <div class="text-stat-label">Linie</div>
-                        </div>
+                </div>
+                
+                <div class="global-text-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>To jest globalny tekst!</strong> Wszystko co tu napiszesz będzie widoczne
+                        dla każdej osoby na tej stronie. Zmiany są widoczne w czasie rzeczywistym.
+                    </div>
+                </div>
+                
+                <div class="text-stats">
+                    <div class="text-stat">
+                        <div class="text-stat-value" id="charCount">0</div>
+                        <div class="text-stat-label">Znaki</div>
+                    </div>
+                    <div class="text-stat">
+                        <div class="text-stat-value" id="wordCount">0</div>
+                        <div class="text-stat-label">Słowa</div>
+                    </div>
+                    <div class="text-stat">
+                        <div class="text-stat-value" id="lineCount">0</div>
+                        <div class="text-stat-label">Linie</div>
+                    </div>
+                    <div class="text-stat">
+                        <div class="text-stat-value" id="lastEditBy">-</div>
+                        <div class="text-stat-label">Ostatnio edytował</div>
                     </div>
                 </div>
                 
                 <div class="textarea-container">
-                    <textarea id="sharedText" placeholder="Wpisz tutaj coś... Tekst będzie widoczny dla wszystkich użytkowników w czasie rzeczywistym! AI może również edytować ten tekst..."></textarea>
+                    <textarea id="globalText" placeholder="Wpisz tutaj coś... Tekst będzie widoczny dla WSZYSTKICH użytkowników w czasie rzeczywistym! AI może również edytować ten tekst..."></textarea>
                     <div class="textarea-overlay">
                         <span id="lastEditTime">Ostatnia edycja: teraz</span>
                     </div>
@@ -692,32 +884,20 @@
                     <button class="btn btn-secondary" id="formatBtn">
                         <i class="fas fa-magic"></i> Formatuj tekst
                     </button>
-                    <button class="btn btn-danger" id="clearBtn">
-                        <i class="fas fa-trash"></i> Wyczyść wszystko
-                    </button>
-                    <button class="btn btn-primary" id="saveBtn">
+                    <button class="btn btn-accent" id="saveLocalBtn">
                         <i class="fas fa-save"></i> Zapisz lokalnie
                     </button>
-                </div>
-                
-                <!-- Podgląd -->
-                <div class="preview-container">
-                    <div class="preview-header">
-                        <h2 class="editor-title">
-                            <i class="fas fa-eye"></i> Podgląd dla wszystkich
-                        </h2>
-                    </div>
-                    <div class="preview-content" id="textPreview">
-                        Tekst pojawi się tutaj, gdy ktoś coś wpisze...
-                    </div>
+                    <button class="btn btn-danger" id="clearBtn">
+                        <i class="fas fa-trash"></i> Wyczyść globalnie
+                    </button>
                 </div>
             </div>
         </div>
         
         <!-- Stopka -->
         <footer>
-            <p>Globalny Edytor Tekstu &copy; 2024 | Wszystkie zmiany są widoczne w czasie rzeczywistym</p>
-            <p>Strona korzysta z cookies do zapisywania Twoich preferencji i statystyk</p>
+            <p><i class="fas fa-globe"></i> Globalny Edytor Tekstu &copy; 2024 | Tekst jest globalny i widoczny dla wszystkich</p>
+            <p><i class="fas fa-users"></i> <span id="footerOnlineCount">1</span> osób online | <span id="footerTotalVisits">0</span> wszystkich wizyt</p>
         </footer>
     </div>
     
@@ -729,63 +909,74 @@
             </div>
             <h3 id="notificationTitle">Powiadomienie</h3>
         </div>
-        <p id="notificationMessage">Witamy w edytorze!</p>
+        <p id="notificationMessage">Witamy w globalnym edytorze!</p>
     </div>
 
     <script>
         // ============= GLOBALNE ZMIENNE =============
         let currentUser = null;
-        let allUsers = {};
-        let sharedText = '';
-        let editHistory = [];
-        let aiEditCount = 0;
+        let globalText = '';
+        let onlineUsers = new Map(); // PRAWDZIWI użytkownicy online
+        let socket = null;
+        let isOnline = true;
+        let lastPingTime = Date.now();
         
-        // ============= INICJALIZACJA =============
+        // ============= INIT =============
         document.addEventListener('DOMContentLoaded', function() {
-            // Inicjuj animowane tło
+            // Stwórz animowane tło
             createBackgroundAnimation();
             
             // Inicjuj użytkownika
             initUser();
             
-            // Załaduj dane
-            loadAllData();
+            // Połącz z "serwerem" (symulacja)
+            connectToGlobalServer();
+            
+            // Załaduj globalny tekst
+            loadGlobalText();
             
             // Inicjuj edytor
             initEditor();
             
-            // Inicjuj statystyki
-            updateLiveStats();
+            // Aktualizuj statystyki
+            updateGlobalStats();
             
             // Inicjuj event listeners
             initEventListeners();
             
-            // Pokaż powiadomienie powitalne
-            showNotification('Witaj w globalnym edytorze!', 'info', 'Wszystkie zmiany są widoczne dla wszystkich użytkowników.');
+            // Pokaż powiadomienie
+            showNotification('Połączono z globalnym edytorem!', 'success', 
+                'Twój tekst jest widoczny dla wszystkich użytkowników.');
             
-            // Symuluj aktywnych użytkowników
-            simulateActiveUsers();
-            
-            // Automatyczna synchronizacja
-            setInterval(syncWithServer, 5000);
+            // Symuluj utratę połączenia
+            setupConnectionMonitor();
         });
         
         // ============= ANIMOWANE TŁO =============
         function createBackgroundAnimation() {
             const container = document.getElementById('bgAnimation');
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 25; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
                 
-                const size = Math.random() * 100 + 50;
+                const size = Math.random() * 150 + 50;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 
                 particle.style.left = `${Math.random() * 100}%`;
                 particle.style.top = `${Math.random() * 100}%`;
                 
-                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                particle.style.animationDuration = `${Math.random() * 25 + 15}s`;
                 particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                // Losowy kolor
+                const colors = [
+                    'rgba(37, 99, 235, 0.1)',
+                    'rgba(16, 185, 129, 0.1)',
+                    'rgba(245, 158, 11, 0.1)',
+                    'rgba(139, 92, 246, 0.1)'
+                ];
+                particle.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]}, transparent)`;
                 
                 container.appendChild(particle);
             }
@@ -793,131 +984,496 @@
         
         // ============= SYSTEM UŻYTKOWNIKÓW =============
         function initUser() {
-            // Generuj unikalny ID użytkownika na podstawie różnych danych przeglądarki
-            const userKey = 'global_editor_user_' + btoa(
-                navigator.userAgent + 
-                (navigator.platform || '') + 
-                (screen.width || '') + 
-                (screen.height || '')
-            ).substring(0, 20);
+            // Generuj unikalny ID użytkownika
+            const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             
-            // Sprawdź czy użytkownik już istnieje
-            const savedUser = localStorage.getItem(userKey);
+            // Losowe nazwy użytkowników
+            const prefixes = ['Byte', 'Cyber', 'Tech', 'Digital', 'Code', 'Web', 'Net', 'Data', 'Info', 'Smart'];
+            const suffixes = ['Master', 'Expert', 'Guru', 'Ninja', 'Wizard', 'Pro', 'King', 'Queen', 'Hero', 'Genius'];
             
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
+            const randomName = `@${prefixes[Math.floor(Math.random() * prefixes.length)]}_${suffixes[Math.floor(Math.random() * suffixes.length)]}`;
+            
+            // Kolory awatarów
+            const colors = ['#2563eb', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#14b8a6', '#3b82f6', '#06b6d4'];
+            
+            // Sprawdź czy użytkownik już istnieje (przez cookies)
+            let userData = getCookie('global_editor_user');
+            let visitCount = 1;
+            
+            if (userData) {
+                try {
+                    const parsed = JSON.parse(userData);
+                    currentUser = {
+                        ...parsed,
+                        id: userId, // Nowe ID każdej sesji
+                        lastSeen: Date.now(),
+                        isOnline: true,
+                        visitCount: (parsed.visitCount || 0) + 1
+                    };
+                    visitCount = currentUser.visitCount;
+                } catch (e) {
+                    currentUser = createNewUser(userId, randomName, colors);
+                }
             } else {
-                // Stwórz nowego użytkownika
-                const adjectives = ['Szybki', 'Mądry', 'Kreatywny', 'Techniczny', 'Digitalny', 'Wirtualny', 'Cyber', 'Mega', 'Super', 'Ultra'];
-                const nouns = ['Koder', 'Edytor', 'Pisarz', 'Twórca', 'Ekspert', 'Guru', 'Ninja', 'Magik', 'Bohater', 'Geniusz'];
-                
-                const randomName = `@${adjectives[Math.floor(Math.random() * adjectives.length)]}_${nouns[Math.floor(Math.random() * nouns.length)]}`;
-                
-                currentUser = {
-                    id: generateUserId(),
-                    username: randomName,
-                    avatarColor: getRandomColor(),
-                    visitCount: 1,
-                    firstVisit: new Date().toISOString(),
-                    lastVisit: new Date().toISOString(),
-                    totalEdits: 0
-                };
-                
-                localStorage.setItem(userKey, JSON.stringify(currentUser));
+                currentUser = createNewUser(userId, randomName, colors);
             }
             
-            // Zaktualizuj licznik wizyt
-            currentUser.visitCount++;
-            currentUser.lastVisit = new Date().toISOString();
-            localStorage.setItem(userKey, JSON.stringify(currentUser));
+            // Zapisz w cookies
+            setCookie('global_editor_user', JSON.stringify({
+                id: currentUser.id,
+                username: currentUser.username,
+                avatarColor: currentUser.avatarColor,
+                visitCount: visitCount,
+                firstVisit: currentUser.firstVisit
+            }), 365);
             
-            // Zapisz użytkownika w globalnej liście
-            saveUserToGlobalList();
+            // Dodaj do listy online
+            onlineUsers.set(currentUser.id, {
+                ...currentUser,
+                lastActivity: Date.now(),
+                isEditing: false
+            });
             
             // Zaktualizuj panel użytkownika
             updateUserPanel();
-        }
-        
-        function generateUserId() {
-            return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        }
-        
-        function getRandomColor() {
-            const colors = ['#6366f1', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#14b8a6'];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-        
-        function saveUserToGlobalList() {
-            // Symulacja zapisu do "globalnej" bazy (w rzeczywistości localStorage)
-            const globalUsers = JSON.parse(localStorage.getItem('global_editor_users') || '{}');
-            globalUsers[currentUser.id] = {
-                username: currentUser.username,
-                visitCount: currentUser.visitCount,
-                firstVisit: currentUser.firstVisit,
-                lastVisit: currentUser.lastVisit,
-                totalEdits: currentUser.totalEdits,
-                avatarColor: currentUser.avatarColor
-            };
             
-            localStorage.setItem('global_editor_users', JSON.stringify(globalUsers));
-            allUsers = globalUsers;
+            // Zaktualizuj licznik online
+            updateOnlineCounter();
+        }
+        
+        function createNewUser(userId, username, colors) {
+            return {
+                id: userId,
+                username: username,
+                avatarColor: colors[Math.floor(Math.random() * colors.length)],
+                visitCount: 1,
+                firstVisit: new Date().toISOString(),
+                lastSeen: Date.now(),
+                isOnline: true,
+                totalEdits: 0,
+                lastEdit: null
+            };
         }
         
         function updateUserPanel() {
-            const userPanel = document.getElementById('userPanel');
-            userPanel.innerHTML = `
-                <div class="user-card">
-                    <div class="user-avatar" style="background: ${currentUser.avatarColor}">
-                        ${currentUser.username.substring(1, 3).toUpperCase()}
+            const userCard = document.getElementById('userCard');
+            userCard.innerHTML = `
+                <div class="user-avatar" style="background: ${currentUser.avatarColor}">
+                    ${currentUser.username.substring(1, 3).toUpperCase()}
+                    <div class="online-dot"></div>
+                </div>
+                <div class="user-info">
+                    <div class="username">
+                        ${currentUser.username}
+                        <div class="status-dot"></div>
                     </div>
-                    <div class="user-info">
-                        <div class="username">${currentUser.username}</div>
-                        <div class="user-stats">${currentUser.visitCount} wizyt • ${currentUser.totalEdits} edycji</div>
-                    </div>
+                    <div class="user-status">${currentUser.visitCount} wizyt • online</div>
                 </div>
             `;
         }
         
-        // ============= SYSTEM EDYTORA =============
-        function initEditor() {
-            const textarea = document.getElementById('sharedText');
-            const preview = document.getElementById('textPreview');
+        // ============= POŁĄCZENIE Z GLOBALNYM SERWEREM (SYMULACJA) =============
+        function connectToGlobalServer() {
+            // W rzeczywistości tutaj byłoby WebSocket połączenie
+            // Na potrzeby demo symulujemy działanie
             
-            // Załaduj zapisany tekst
-            const savedText = localStorage.getItem('global_shared_text');
-            if (savedText) {
-                textarea.value = savedText;
-                preview.textContent = savedText;
-                updateTextStats(savedText);
+            // Pobierz globalny tekst z "serwera" (localStorage)
+            const serverText = localStorage.getItem('global_editor_text') || '';
+            globalText = serverText;
+            
+            // Pobierz listę użytkowników online z "serwera"
+            const serverUsers = JSON.parse(localStorage.getItem('global_online_users') || '{}');
+            
+            // Dodaj bieżących użytkowników
+            for (const [id, user] of Object.entries(serverUsers)) {
+                // Usuń nieaktywnych (ostatnia aktywność > 30 sekund)
+                if (Date.now() - user.lastActivity < 30000) {
+                    onlineUsers.set(id, user);
+                }
             }
+            
+            // Dodaj siebie
+            onlineUsers.set(currentUser.id, {
+                ...currentUser,
+                lastActivity: Date.now(),
+                isEditing: false
+            });
+            
+            // Zaktualizuj na "serwerze"
+            updateServerData();
+            
+            // Symuluj odbieranie aktualizacji od innych
+            simulateOtherUsers();
+            
+            // Automatyczna synchronizacja
+            setInterval(syncWithServer, 2000);
+        }
+        
+        function updateServerData() {
+            // Zapisz online users
+            const usersObj = {};
+            onlineUsers.forEach((user, id) => {
+                usersObj[id] = {
+                    username: user.username,
+                    avatarColor: user.avatarColor,
+                    lastActivity: user.lastActivity,
+                    isEditing: user.isEditing,
+                    visitCount: user.visitCount
+                };
+            });
+            
+            localStorage.setItem('global_online_users', JSON.stringify(usersObj));
+            
+            // Zapisz globalny tekst
+            localStorage.setItem('global_editor_text', globalText);
+            
+            // Zapisz statystyki
+            const stats = JSON.parse(localStorage.getItem('global_stats') || '{}');
+            stats.totalVisits = (stats.totalVisits || 0) + 1;
+            stats.lastUpdate = Date.now();
+            localStorage.setItem('global_stats', JSON.stringify(stats));
+        }
+        
+        function simulateOtherUsers() {
+            // Co 10-30 sekund symuluj aktywność innych użytkowników
+            setInterval(() => {
+                if (Math.random() > 0.7 && onlineUsers.size > 1) {
+                    // Losowy użytkownik edytuje tekst
+                    const randomUserId = Array.from(onlineUsers.keys())[
+                        Math.floor(Math.random() * (onlineUsers.size - 1))
+                    ];
+                    
+                    if (randomUserId !== currentUser.id) {
+                        const user = onlineUsers.get(randomUserId);
+                        
+                        // Dodaj do aktywności
+                        addRecentActivity(`${user.username} edytował tekst`);
+                        
+                        // Odśwież listę online
+                        updateOnlineUsersList();
+                    }
+                }
+            }, Math.random() * 20000 + 10000);
+        }
+        
+        // ============= EDYTOR GLOBALNEGO TEKSTU =============
+        function initEditor() {
+            const textarea = document.getElementById('globalText');
+            textarea.value = globalText;
+            updateTextStats(globalText);
             
             // Obsługa zmian w tekście
             textarea.addEventListener('input', function(e) {
-                sharedText = e.target.value;
+                const newText = e.target.value;
                 
-                // Zapisz lokalnie
-                localStorage.setItem('global_shared_text', sharedText);
-                
-                // Zaktualizuj podgląd
-                preview.textContent = sharedText;
+                // Zaktualizuj globalny tekst
+                globalText = newText;
                 
                 // Zaktualizuj statystyki
-                updateTextStats(sharedText);
+                updateTextStats(newText);
                 
                 // Zaktualizuj czas ostatniej edycji
                 document.getElementById('lastEditTime').textContent = 
                     `Ostatnia edycja: ${new Date().toLocaleTimeString()}`;
                 
-                // Zapisz w historii edycji
-                addToEditHistory('user_edit', currentUser.username);
+                // Zaktualizuj kto edytował
+                document.getElementById('lastEditBy').textContent = 
+                    currentUser.username.replace('@', '');
                 
-                // Zaktualizuj statystyki użytkownika
-                currentUser.totalEdits++;
-                saveUserToGlobalList();
-                updateUserPanel();
+                // Oznacz siebie jako edytującego
+                currentUser.isEditing = true;
+                currentUser.lastEdit = Date.now();
+                currentUser.totalEdits = (currentUser.totalEdits || 0) + 1;
+                
+                onlineUsers.set(currentUser.id, {
+                    ...currentUser,
+                    lastActivity: Date.now(),
+                    isEditing: true
+                });
+                
+                // Wyślij zmianę na "serwer"
+                sendTextUpdate(newText);
+                
+                // Dodaj do historii
+                addRecentActivity(`${currentUser.username} edytował tekst`);
+                
+                // Pokaż powiadomienie (tylko czasami)
+                if (Math.random() > 0.8) {
+                    showNotification('Tekst zaktualizowany!', 'success', 
+                        'Twoje zmiany są widoczne dla wszystkich.');
+                }
+                
+                // Odśwież listę online
+                updateOnlineUsersList();
+            });
+            
+            // Obsługa focus/blur
+            textarea.addEventListener('focus', function() {
+                currentUser.isEditing = true;
+                onlineUsers.set(currentUser.id, {
+                    ...currentUser,
+                    lastActivity: Date.now(),
+                    isEditing: true
+                });
+                updateOnlineUsersList();
+            });
+            
+            textarea.addEventListener('blur', function() {
+                currentUser.isEditing = false;
+                onlineUsers.set(currentUser.id, {
+                    ...currentUser,
+                    lastActivity: Date.now(),
+                    isEditing: false
+                });
+                updateOnlineUsersList();
             });
         }
         
+        function sendTextUpdate(text) {
+            // W rzeczywistości: wysłanie przez WebSocket
+            // Na potrzeby demo: zapisz w localStorage
+            localStorage.setItem('global_editor_text', text);
+            
+            // Zaktualizuj statystyki edycji
+            const stats = JSON.parse(localStorage.getItem('global_stats') || '{}');
+            stats.totalEdits = (stats.totalEdits || 0) + 1;
+            stats.lastTextUpdate = Date.now();
+            localStorage.setItem('global_stats', JSON.stringify(stats));
+        }
+        
+        function loadGlobalText() {
+            const savedText = localStorage.getItem('global_editor_text') || '';
+            globalText = savedText;
+            
+            // Jeśli jest tekst, pokaż kto ostatnio edytował
+            if (savedText) {
+                const stats = JSON.parse(localStorage.getItem('global_stats') || '{}');
+                if (stats.lastEditor) {
+                    document.getElementById('lastEditBy').textContent = stats.lastEditor;
+                }
+            }
+        }
+        
+        // ============= LICZNIK ONLINE - PRAWDZIWY =============
+        function updateOnlineCounter() {
+            // Usuń nieaktywnych użytkowników (> 30 sekund)
+            const now = Date.now();
+            for (const [id, user] of onlineUsers) {
+                if (now - user.lastActivity > 30000) {
+                    onlineUsers.delete(id);
+                }
+            }
+            
+            // Zaktualizuj licznik
+            const onlineCount = onlineUsers.size;
+            document.getElementById('onlineCount').textContent = onlineCount;
+            document.getElementById('footerOnlineCount').textContent = onlineCount;
+            
+            // Zaktualizuj listę użytkowników online
+            updateOnlineUsersList();
+        }
+        
+        function updateOnlineUsersList() {
+            const container = document.getElementById('usersOnlineList');
+            let html = '';
+            
+            // Sortuj: najpierw edytujący, potem aktywni
+            const sortedUsers = Array.from(onlineUsers.values())
+                .sort((a, b) => {
+                    if (a.isEditing && !b.isEditing) return -1;
+                    if (!a.isEditing && b.isEditing) return 1;
+                    return b.lastActivity - a.lastActivity;
+                });
+            
+            sortedUsers.forEach(user => {
+                const isCurrentUser = user.id === currentUser.id;
+                const timeAgo = Math.floor((Date.now() - user.lastActivity) / 1000);
+                const timeText = timeAgo < 60 ? 'teraz' : 
+                               timeAgo < 120 ? '1 min temu' : 
+                               `${Math.floor(timeAgo / 60)} min temu`;
+                
+                html += `
+                    <div class="online-user-item ${isCurrentUser ? 'active' : ''}">
+                        <div class="user-avatar" style="background: ${user.avatarColor}; width: 40px; height: 40px; font-size: 16px;">
+                            ${user.username.substring(1, 3).toUpperCase()}
+                            <div class="online-dot"></div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; display: flex; align-items: center; gap: 8px;">
+                                ${user.username}
+                                ${isCurrentUser ? '<span style="font-size: 10px; background: var(--primary); color: white; padding: 2px 6px; border-radius: 10px;">Ty</span>' : ''}
+                            </div>
+                            <div class="user-activity ${user.isEditing ? 'editing' : ''}">
+                                ${user.isEditing ? '<i class="fas fa-edit"></i> Edytuje tekst' : `Aktywny ${timeText}`}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html || '<div style="text-align: center; color: var(--text-secondary); padding: 30px;">Brak innych użytkowników online</div>';
+        }
+        
+        // ============= STATYSTYKI GLOBALNE =============
+        function updateGlobalStats() {
+            const stats = JSON.parse(localStorage.getItem('global_stats') || '{}');
+            
+            // Liczba wszystkich wizyt
+            const totalVisits = stats.totalVisits || onlineUsers.size;
+            document.getElementById('globalVisits').textContent = formatNumber(totalVisits);
+            document.getElementById('footerTotalVisits').textContent = formatNumber(totalVisits);
+            
+            // Liczba unikalnych użytkowników
+            const allUsers = JSON.parse(localStorage.getItem('all_users') || '{}');
+            const totalUsers = Object.keys(allUsers).length || onlineUsers.size;
+            document.getElementById('totalUsers').textContent = formatNumber(totalUsers);
+            
+            // Liczba edycji
+            const totalEdits = stats.totalEdits || 0;
+            document.getElementById('totalEdits').textContent = formatNumber(totalEdits);
+            
+            // Liczba edycji AI
+            const aiEdits = stats.aiEdits || 0;
+            document.getElementById('aiEdits').textContent = formatNumber(aiEdits);
+            
+            // Co 10 sekund odświeżaj
+            setTimeout(updateGlobalStats, 10000);
+        }
+        
+        function formatNumber(num) {
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'k';
+            }
+            return num.toString();
+        }
+        
+        // ============= AKTYWNOŚCI =============
+        function addRecentActivity(activity) {
+            const container = document.getElementById('recentActivities');
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            const activityItem = document.createElement('div');
+            activityItem.className = 'online-user-item';
+            activityItem.innerHTML = `
+                <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--darker-bg); 
+                     display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                    <i class="fas fa-history"></i>
+                </div>
+                <div style="flex: 1;">
+                    <div style="font-weight: bold; font-size: 14px;">${activity}</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">${time}</div>
+                </div>
+            `;
+            
+            container.insertBefore(activityItem, container.firstChild);
+            
+            // Zachowaj tylko 5 ostatnich
+            if (container.children.length > 5) {
+                container.removeChild(container.lastChild);
+            }
+        }
+        
+        // ============= PRZYCISKI AKCJI =============
+        document.getElementById('aiEditBtn').addEventListener('click', async function() {
+            const textarea = document.getElementById('globalText');
+            const currentText = textarea.value;
+            
+            if (!currentText.trim()) {
+                showNotification('Wpisz tekst przed użyciem AI!', 'warning', 'AI potrzebuje tekstu do edycji.');
+                return;
+            }
+            
+            // Przycisk ładowania
+            const btn = this;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI myśli...';
+            btn.disabled = true;
+            
+            try {
+                // Symulacja AI
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Różne akcje AI
+                const aiResponses = [
+                    `[AI: Dodałem optymistyczny komentarz!]\n\n${currentText}\n\n---\nEdytowane przez AI - wszystko wygląda świetnie!`,
+                    `${currentText}\n\n🤖 AI: "Ten tekst jest naprawdę interesujący!"`,
+                    `✨ WERSJA ULEPSZONA PRZEZ AI ✨\n\n${currentText.toUpperCase()}\n\n[Zoptymalizowane pod kątem czytelności]`,
+                    `${currentText}\n\n---\n💡 AI SUGERUJE: Możesz dodać więcej szczegółów do tego tekstu!`,
+                    `🚀 ROZWIJAMY TEKST Z AI 🚀\n\n${currentText}\n\n+ Dodane przez AI: Tekst zyskał na wartości dzięki sztucznej inteligencji!`
+                ];
+                
+                const aiText = aiResponses[Math.floor(Math.random() * aiResponses.length)];
+                textarea.value = aiText;
+                
+                // Wywołaj event input
+                const event = new Event('input', { bubbles: true });
+                textarea.dispatchEvent(event);
+                
+                // Zaktualizuj statystyki AI
+                const stats = JSON.parse(localStorage.getItem('global_stats') || '{}');
+                stats.aiEdits = (stats.aiEdits || 0) + 1;
+                localStorage.setItem('global_stats', JSON.stringify(stats));
+                
+                addRecentActivity('AI edytowało tekst');
+                
+                showNotification('AI edytowało tekst!', 'success', 'Sztuczna inteligencja dodała swoje poprawki.');
+                
+            } catch (error) {
+                showNotification('Błąd AI!', 'error', 'Spróbuj ponownie za chwilę.');
+            } finally {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        });
+        
+        document.getElementById('formatBtn').addEventListener('click', function() {
+            const textarea = document.getElementById('globalText');
+            let text = textarea.value;
+            
+            text = text
+                .replace(/\n{3,}/g, '\n\n')
+                .replace(/[ \t]+/g, ' ')
+                .replace(/([.!?])\s+(?=[A-Z])/g, '$1\n\n')
+                .trim();
+            
+            textarea.value = text;
+            const event = new Event('input', { bubbles: true });
+            textarea.dispatchEvent(event);
+            
+            showNotification('Tekst sformatowany!', 'success');
+        });
+        
+        document.getElementById('saveLocalBtn').addEventListener('click', function() {
+            const text = document.getElementById('globalText').value;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `global-editor-${new Date().toISOString().slice(0, 10)}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Tekst zapisany lokalnie!', 'success');
+        });
+        
+        document.getElementById('clearBtn').addEventListener('click', function() {
+            if (confirm('CZY NA PEWNO CHCESZ WYCZYŚCIĆ GLOBALNY TEKST?\n\nTa akcja usunie tekst dla WSZYSTKICH użytkowników!')) {
+                const textarea = document.getElementById('globalText');
+                textarea.value = '';
+                
+                const event = new Event('input', { bubbles: true });
+                textarea.dispatchEvent(event);
+                
+                addRecentActivity(`${currentUser.username} wyczyścił globalny tekst`);
+                
+                showNotification('Tekst wyczyszczony globalnie!', 'warning', 
+                    'Wszyscy użytkownicy widzą teraz pusty edytor.');
+            }
+        });
+        
+        // ============= STATYSTYKI TEKSTU =============
         function updateTextStats(text) {
             const chars = text.length;
             const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
@@ -928,327 +1484,122 @@
             document.getElementById('lineCount').textContent = lines;
         }
         
-        // ============= SYSTEM AI =============
-        document.getElementById('aiEditBtn').addEventListener('click', async function() {
-            const textarea = document.getElementById('sharedText');
-            const currentText = textarea.value;
+        // ============= SYNCHRONIZACJA =============
+        function syncWithServer() {
+            // Sprawdź czy tekst się zmienił na "serwerze"
+            const serverText = localStorage.getItem('global_editor_text') || '';
+            const currentText = document.getElementById('globalText').value;
             
-            if (!currentText.trim()) {
-                showNotification('Wpisz tekst przed użyciem AI!', 'warning', 'AI potrzebuje tekstu do edycji.');
-                return;
-            }
-            
-            // Przycisk ładowania
-            const originalHtml = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI myśli...';
-            this.disabled = true;
-            
-            try {
-                // Symulacja opóźnienia AI
-                await new Promise(resolve => setTimeout(resolve, 1500));
+            if (serverText !== currentText) {
+                // Tekst zmienił się na serwerze (ktoś inny edytował)
+                document.getElementById('globalText').value = serverText;
+                globalText = serverText;
+                updateTextStats(serverText);
                 
-                // Symulowane odpowiedzi AI
-                const aiActions = [
-                    () => currentText + '\n\n[AI: Dodałem tę linijkę, żeby tekst był bardziej interesujący!]',
-                    () => currentText.replace(/\. /g, '! '),
-                    () => currentText.toUpperCase(),
-                    () => currentText.split('').reverse().join(''),
-                    () => currentText + '\n\n---\nEdytowane przez sztuczną inteligencję',
-                    () => `[AI EDYCJA]\n${currentText}\n\nTo był świetny tekst!`,
-                    () => currentText + '\n\n🤖 AI was here!',
-                    () => currentText.replace(/\b(\w+)\b/g, (match) => 
-                        Math.random() > 0.7 ? match.toUpperCase() : match
-                    )
-                ];
-                
-                const aiAction = aiActions[Math.floor(Math.random() * aiActions.length)];
-                const newText = aiAction();
-                
-                // Zastosuj zmiany AI
-                textarea.value = newText;
-                
-                // Wywołaj event input
-                const event = new Event('input', { bubbles: true });
-                textarea.dispatchEvent(event);
-                
-                // Zaktualizuj licznik edycji AI
-                aiEditCount++;
-                localStorage.setItem('ai_edit_count', aiEditCount);
-                
-                // Dodaj do historii
-                addToEditHistory('ai_edit', 'AI Assistant');
-                
-                showNotification('AI edytowało tekst!', 'success', 'Sztuczna inteligencja dokonała zmian.');
-                
-            } catch (error) {
-                showNotification('Błąd AI!', 'warning', 'Spróbuj ponownie za chwilę.');
-                console.error('AI Error:', error);
-            } finally {
-                // Przywróć przycisk
-                this.innerHTML = originalHtml;
-                this.disabled = false;
-            }
-        });
-        
-        // ============= FORMATOWANIE TEKSTU =============
-        document.getElementById('formatBtn').addEventListener('click', function() {
-            const textarea = document.getElementById('sharedText');
-            let text = textarea.value;
-            
-            // Proste formatowanie
-            text = text
-                .replace(/\n{3,}/g, '\n\n') // Usuń puste linie
-                .replace(/ +/g, ' ') // Usuń podwójne spacje
-                .replace(/([.!?])\s*(?=[A-Z])/g, '$1\n\n') // Nowe linie po zdaniach
-                .trim();
-            
-            textarea.value = text;
-            
-            // Wywołaj event input
-            const event = new Event('input', { bubbles: true });
-            textarea.dispatchEvent(event);
-            
-            showNotification('Tekst sformatowany!', 'success', 'Tekst został uporządkowany.');
-        });
-        
-        // ============= CZYSZCZENIE =============
-        document.getElementById('clearBtn').addEventListener('click', function() {
-            if (confirm('Czy na pewno chcesz wyczyścić cały tekst? Wszyscy użytkownicy to zobaczą!')) {
-                const textarea = document.getElementById('sharedText');
-                textarea.value = '';
-                
-                const event = new Event('input', { bubbles: true });
-                textarea.dispatchEvent(event);
-                
-                addToEditHistory('clear', currentUser.username);
-                
-                showNotification('Tekst wyczyszczony!', 'warning', 'Wszystko zostało usunięte.');
-            }
-        });
-        
-        // ============= ZAPISYWANIE =============
-        document.getElementById('saveBtn').addEventListener('click', function() {
-            const text = document.getElementById('sharedText').value;
-            
-            // Tworzenie pliku do pobrania
-            const blob = new Blob([text], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `global-edytor-${new Date().toISOString().split('T')[0]}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            showNotification('Tekst zapisany!', 'success', 'Pobrano plik z tekstem.');
-        });
-        
-        // ============= HISTORIA EDYCJI =============
-        function addToEditHistory(type, user) {
-            const historyItem = {
-                type,
-                user,
-                time: new Date().toLocaleTimeString(),
-                timestamp: Date.now()
-            };
-            
-            editHistory.unshift(historyItem);
-            
-            // Zachowaj tylko 10 ostatnich wpisów
-            if (editHistory.length > 10) {
-                editHistory = editHistory.slice(0, 10);
-            }
-            
-            // Zapisz w localStorage
-            localStorage.setItem('edit_history', JSON.stringify(editHistory));
-            
-            // Zaktualizuj wyświetlaną historię
-            updateEditHistoryDisplay();
-        }
-        
-        function updateEditHistoryDisplay() {
-            const container = document.getElementById('editHistory');
-            let html = '';
-            
-            editHistory.forEach(item => {
-                const icon = item.type === 'ai_edit' ? 'fas fa-robot' : 
-                            item.type === 'clear' ? 'fas fa-trash' : 'fas fa-edit';
-                const color = item.type === 'ai_edit' ? '#8b5cf6' : 
-                             item.type === 'clear' ? '#ef4444' : '#10b981';
-                
-                html += `
-                    <div class="user-list-item">
-                        <div style="width: 30px; height: 30px; border-radius: 50%; background: ${color}; 
-                             display: flex; align-items: center; justify-content: center; color: white;">
-                            <i class="${icon}"></i>
-                        </div>
-                        <div style="flex: 1;">
-                            <div style="font-weight: bold;">${item.user}</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">${item.time}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html || '<div style="text-align: center; color: var(--text-secondary); padding: 20px;">Brak historii</div>';
-        }
-        
-        // ============= STATYSTYKI NA ŻYWO =============
-        function updateLiveStats() {
-            // Załaduj licznik edycji AI
-            aiEditCount = parseInt(localStorage.getItem('ai_edit_count') || '0');
-            
-            // Załaduj wszystkich użytkowników
-            const globalUsers = JSON.parse(localStorage.getItem('global_editor_users') || '{}');
-            const totalVisits = Object.values(globalUsers).reduce((sum, user) => sum + user.visitCount, 0);
-            
-            // Zaktualizuj statystyki
-            document.getElementById('onlineUsers').textContent = Math.floor(Math.random() * 20) + 5; // Symulacja
-            document.getElementById('totalVisits').textContent = totalVisits;
-            document.getElementById('yourVisits').textContent = currentUser.visitCount;
-            document.getElementById('aiEdits').textContent = aiEditCount;
-            
-            // Zaktualizuj listę aktywnych użytkowników
-            updateActiveUsersList();
-        }
-        
-        function updateActiveUsersList() {
-            const container = document.getElementById('activeUsersList');
-            const globalUsers = JSON.parse(localStorage.getItem('global_editor_users') || '{}');
-            
-            // Pobierz 5 losowych użytkowników
-            const usersArray = Object.values(globalUsers);
-            const randomUsers = usersArray
-                .sort(() => Math.random() - 0.5)
-                .slice(0, 5);
-            
-            let html = '';
-            randomUsers.forEach(user => {
-                html += `
-                    <div class="user-list-item">
-                        <div class="user-avatar" style="background: ${user.avatarColor || '#6366f1'}; width: 35px; height: 35px; font-size: 14px;">
-                            ${user.username.substring(1, 3).toUpperCase()}
-                        </div>
-                        <div style="flex: 1;">
-                            <div style="font-weight: bold;">${user.username}</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">${user.visitCount} wizyt</div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            container.innerHTML = html || '<div style="text-align: center; color: var(--text-secondary); padding: 20px;">Brak aktywnych użytkowników</div>';
-        }
-        
-        // ============= SYMULACJA AKTYWNYCH UŻYTKOWNIKÓW =============
-        function simulateActiveUsers() {
-            // Co 30 sekund aktualizuj statystyki
-            setInterval(updateLiveStats, 30000);
-            
-            // Co 60 sekund symuluj aktywność innych użytkowników
-            setInterval(() => {
-                if (Math.random() > 0.7) { // 30% szans
-                    // Symuluj edycję przez innego użytkownika
-                    addToEditHistory('user_edit', getRandomUsername());
-                    
-                    // Pokazuj powiadomienie tylko czasami
-                    if (Math.random() > 0.8) {
-                        showNotification('Ktoś właśnie edytował tekst!', 'info', 'Sprawdź co się zmieniło.');
-                    }
+                // Pokaż powiadomienie o zmianie
+                const stats = JSON.parse(localStorage.getItem('global_stats') || '{}');
+                if (stats.lastEditor && stats.lastEditor !== currentUser.username) {
+                    showNotification('Tekst zaktualizowany!', 'info', 
+                        `${stats.lastEditor} właśnie edytował tekst.`);
                 }
-            }, 60000);
+            }
+            
+            // Zaktualizuj swoją aktywność
+            currentUser.lastActivity = Date.now();
+            onlineUsers.set(currentUser.id, currentUser);
+            
+            // Odśwież licznik online
+            updateOnlineCounter();
+            
+            // Zaktualizuj dane na "serwerze"
+            updateServerData();
         }
         
-        function getRandomUsername() {
-            const usernames = [
-                '@Byte_Official', '@Cyber_Editor', '@Text_Master', '@AI_Helper',
-                '@Code_Wizard', '@Digital_Writer', '@Tech_Guru', '@Creative_Mind'
-            ];
-            return usernames[Math.floor(Math.random() * usernames.length)];
+        // ============= MONITOR POŁĄCZENIA =============
+        function setupConnectionMonitor() {
+            // Sprawdzaj połączenie co 5 sekund
+            setInterval(() => {
+                const now = Date.now();
+                if (now - lastPingTime > 10000) { // 10 sekund bez aktywności
+                    isOnline = false;
+                    showNotification('Utracono połączenie!', 'error', 
+                        'Próbuję ponownie połączyć...');
+                    
+                    // Próbuj ponownie
+                    setTimeout(() => {
+                        connectToGlobalServer();
+                        isOnline = true;
+                        lastPingTime = Date.now();
+                        showNotification('Połączenie przywrócone!', 'success');
+                    }, 3000);
+                }
+            }, 5000);
         }
         
         // ============= POWIADOMIENIA =============
-        function showNotification(title, type, message) {
+        function showNotification(title, type, message = '') {
             const notification = document.getElementById('notification');
             const icon = document.getElementById('notificationIcon');
             const titleEl = document.getElementById('notificationTitle');
             const messageEl = document.getElementById('notificationMessage');
             
-            // Ustaw typ powiadomienia
+            // Ustaw typ
             notification.className = 'notification';
             icon.className = 'notification-icon ' + type;
-            icon.innerHTML = type === 'info' ? '<i class="fas fa-info-circle"></i>' :
-                           type === 'success' ? '<i class="fas fa-check-circle"></i>' :
-                           '<i class="fas fa-exclamation-triangle"></i>';
+            icon.innerHTML = {
+                'info': '<i class="fas fa-info-circle"></i>',
+                'success': '<i class="fas fa-check-circle"></i>',
+                'warning': '<i class="fas fa-exclamation-triangle"></i>',
+                'error': '<i class="fas fa-times-circle"></i>'
+            }[type];
             
-            // Ustaw treść
             titleEl.textContent = title;
             messageEl.textContent = message;
             
-            // Pokaż powiadomienie
+            // Pokaż
             notification.classList.add('show');
             
-            // Ukryj po 5 sekundach
+            // Ukryj po 4 sekundach
             setTimeout(() => {
                 notification.classList.remove('show');
-            }, 5000);
-        }
-        
-        // ============= ŁADOWANIE DANYCH =============
-        function loadAllData() {
-            // Załaduj historię edycji
-            const savedHistory = localStorage.getItem('edit_history');
-            if (savedHistory) {
-                editHistory = JSON.parse(savedHistory);
-                updateEditHistoryDisplay();
-            }
-            
-            // Załaduj użytkowników
-            const savedUsers = localStorage.getItem('global_editor_users');
-            if (savedUsers) {
-                allUsers = JSON.parse(savedUsers);
-            }
-            
-            // Załaduj licznik AI
-            aiEditCount = parseInt(localStorage.getItem('ai_edit_count') || '0');
-        }
-        
-        // ============= SYNCHRONIZACJA =============
-        function syncWithServer() {
-            // W prawdziwej aplikacji tutaj byłaby synchronizacja z serwerem
-            // Na razie tylko odświeżamy statystyki
-            updateLiveStats();
-            
-            // Sprawdzamy czy tekst się nie zmienił z innej karty
-            const savedText = localStorage.getItem('global_shared_text');
-            const currentText = document.getElementById('sharedText').value;
-            
-            if (savedText !== currentText) {
-                document.getElementById('sharedText').value = savedText;
-                document.getElementById('textPreview').textContent = savedText;
-                updateTextStats(savedText);
-                
-                // Pokaż powiadomienie tylko jeśli tekst faktycznie się zmienił
-                if (currentText !== '') {
-                    showNotification('Tekst zaktualizowany!', 'info', 'Ktoś właśnie edytował tekst.');
-                }
-            }
+            }, 4000);
         }
         
         // ============= EVENT LISTENERS =============
         function initEventListeners() {
+            // Aktualizuj aktywność przy interakcjach
+            document.addEventListener('mousemove', updateUserActivity);
+            document.addEventListener('keydown', updateUserActivity);
+            document.addEventListener('click', updateUserActivity);
+            
             // Auto-save co 30 sekund
             setInterval(() => {
-                const text = document.getElementById('sharedText').value;
-                localStorage.setItem('global_shared_text', text);
-            }, 3000);
-            
-            // Aktualizacja czasu co minutę
-            setInterval(() => {
-                document.getElementById('lastEditTime').textContent = 
-                    `Ostatnia edycja: ${new Date().toLocaleTimeString()}`;
-            }, 60000);
+                localStorage.setItem('global_editor_text_backup', globalText);
+            }, 30000);
+        }
+        
+        function updateUserActivity() {
+            lastPingTime = Date.now();
+            currentUser.lastActivity = Date.now();
+        }
+        
+        // ============= COOKIES =============
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/;SameSite=Lax";
+        }
+        
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1);
+                if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
+            }
+            return null;
         }
     </script>
 </body>
