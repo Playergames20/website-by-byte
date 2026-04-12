@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Info o Twoim systemie 😎</title>
+    <title>Info o użytkowniku 😎</title>
     <style>
         body {
             font-family: Arial;
@@ -29,31 +29,31 @@
     <p><b>Rozdzielczość:</b> <span id="res"></span></p>
     <p><b>Godzina lokalna:</b> <span id="time"></span></p>
     <p><b>IP:</b> <span id="ip">Ładowanie...</span></p>
+    <p><b>Typ wejścia:</b> <span id="entry"></span></p>
 </div>
 
 <script>
-    // 🔥 system + przeglądarka (User-Agent)
-    document.getElementById("browser").innerText = navigator.userAgent;
-
-    // 🔥 język
-    document.getElementById("lang").innerText = navigator.language;
-
-    // 🔥 rozdzielczość
-    document.getElementById("res").innerText = screen.width + "x" + screen.height;
-
-    // 🔥 czas lokalny
-    document.getElementById("time").innerText = new Date().toLocaleString();
-
-    // 🔥 wykrywanie systemu (proste)
+    // 🌍 system
     let os = "Nieznany";
     if (navigator.userAgent.includes("Windows")) os = "Windows";
     if (navigator.userAgent.includes("Mac")) os = "MacOS";
     if (navigator.userAgent.includes("Android")) os = "Android";
     if (navigator.userAgent.includes("Linux")) os = "Linux";
-
     document.getElementById("os").innerText = os;
 
-    // 🔥 IP (zewnętrzne API)
+    // 🌐 przeglądarka
+    document.getElementById("browser").innerText = navigator.userAgent;
+
+    // 🧠 język
+    document.getElementById("lang").innerText = navigator.language;
+
+    // 📺 rozdzielczość
+    document.getElementById("res").innerText = screen.width + "x" + screen.height;
+
+    // ⏰ czas
+    document.getElementById("time").innerText = new Date().toLocaleString();
+
+    // 🔥 IP
     fetch("https://api.ipify.org?format=json")
         .then(res => res.json())
         .then(data => {
@@ -62,6 +62,25 @@
         .catch(() => {
             document.getElementById("ip").innerText = "Nie udało się pobrać IP";
         });
+
+    // 🚪 typ wejścia
+    let ref = document.referrer;
+    let entryType = "Direct (bezpośrednie wejście)";
+
+    if (!ref) {
+        entryType = "Direct (bezpośrednie wejście)";
+    } 
+    else if (ref.includes("google")) {
+        entryType = "Wejście z Google 🔍";
+    }
+    else if (ref.includes("youtube")) {
+        entryType = "Wejście z YouTube ▶️";
+    }
+    else {
+        entryType = "Wejście z innej strony 🌐";
+    }
+
+    document.getElementById("entry").innerText = entryType;
 </script>
 
 </body>
