@@ -4,34 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     
-    <!-- Podstawowe meta tagi SEO -->
-    <title>wyszukiwarka informacji na roblox</title>
-    <meta name="description" content="na tej stronie można wyszukać informacje o użytkowniku roblox a także o grupach roblox i grach">
-    <meta name="keywords" content="roblox, wyszukiwarka, użytkownik, gry, grupy, api, profil, statystyki">
+    <!-- Podstawowe meta tagi SEO - JEDNOLITE -->
+    <title>Roblox Info Hub | Wyszukiwarka profili, gier i grup</title>
+    <meta name="description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej. Wyszukiwanie po nazwie lub ID.">
+    <meta name="keywords" content="roblox, wyszukiwarka, użytkownik, gry, grupy, api, profil, statystyki, roblox search">
     <meta name="author" content="Roblox Info Hub">
     <meta name="robots" content="index, follow">
     
-    <!-- Open Graph meta tagi (Facebook, Discord, Slack, LinkedIn, WhatsApp, Telegram) -->
-    <meta property="og:title" content="wyszukiwarka informacji na roblox">
-    <meta property="og:description" content="na tej stronie można wyszukać informacje o użytkowniku roblox a także o grupach roblox i grach">
-    <meta property="og:image" content="https://www.roblox.com/favicon.ico">
+    <!-- Open Graph meta tagi (Facebook, Discord, Slack, LinkedIn, WhatsApp, Telegram) - JEDNOLITE -->
+    <meta property="og:title" content="Roblox Info Hub | Wyszukiwarka profili, gier i grup">
+    <meta property="og:description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej.">
+    <meta property="og:image" content="https://i.imgur.com/7zXrZ3H.png">
     <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="400">
-    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://roblox-info-hub.netlify.app/">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="pl_PL">
     <meta property="og:site_name" content="Roblox Info Hub">
     
-    <!-- Twitter Card meta tagi -->
+    <!-- Twitter Card meta tagi - JEDNOLITE -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Roblox Info Hub - Zaawansowane wyszukiwanie profili">
-    <meta name="twitter:description" content="Znajdź wszystkie informacje o użytkowniku Roblox - gry, grupy, awatar, datę utworzenia i wiele więcej!">
-    <meta name="twitter:image" content="https://www.roblox.com/favicon.ico">
+    <meta name="twitter:title" content="Roblox Info Hub | Wyszukiwarka profili, gier i grup">
+    <meta name="twitter:description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej.">
+    <meta name="twitter:image" content="https://i.imgur.com/7zXrZ3H.png">
     
     <!-- Dodatkowe meta tagi dla lepszego podglądu -->
     <meta name="theme-color" content="#2d68ff">
     <meta name="color-scheme" content="dark">
+    
+    <!-- Favicon / Logo -->
+    <link rel="icon" type="image/png" href="https://www.roblox.com/favicon.ico">
+    <link rel="apple-touch-icon" href="https://www.roblox.com/favicon.ico">
     
     <style>
         * {
@@ -50,7 +52,6 @@
             overflow-x: hidden;
         }
 
-        /* Dekoracyjne tło - animowane kropki */
         body::before {
             content: '';
             position: fixed;
@@ -64,7 +65,6 @@
             z-index: 0;
         }
 
-        /* Dekoracyjne gradientowe kule */
         .bg-glow {
             position: fixed;
             width: 500px;
@@ -92,7 +92,6 @@
             z-index: 1;
         }
 
-        /* Animowany gradient na nagłówku */
         .header {
             text-align: center;
             margin-bottom: 2rem;
@@ -108,6 +107,20 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
         }
 
         .header h1 {
@@ -470,7 +483,6 @@
             border-top: 1px solid #2d3348;
         }
 
-        /* Statystyki w czasie rzeczywistym - dekoracja */
         .live-stats {
             display: flex;
             justify-content: center;
@@ -492,7 +504,6 @@
             font-weight: bold;
         }
 
-        /* Responsywność */
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
@@ -511,14 +522,16 @@
     </style>
 </head>
 <body>
-    <!-- Dekoracyjne kule tła -->
     <div class="bg-glow glow-1"></div>
     <div class="bg-glow glow-2"></div>
     <div class="bg-glow glow-3"></div>
 
     <div class="container">
         <div class="header">
-            <h1>🎮 Roblox Deep Info</h1>
+            <div class="logo-container">
+                <img class="logo-img" src="https://www.roblox.com/favicon.ico" alt="Roblox Logo">
+                <h1>🎮 Roblox Info Hub</h1>
+            </div>
             <div class="badge-icon">
                 🔍 Wyszukiwarka | 👥 Użytkownicy | 🎮 Gry | 👑 Grupy
             </div>
@@ -540,7 +553,7 @@
                 <div class="search-input-group">
                     <div class="input-field">
                         <label>Nazwa użytkownika Roblox</label>
-                        <input type="text" id="username-input" placeholder="np. Roblox, Builderman" autocomplete="off">
+                        <input type="text" id="username-input" placeholder="np. oskar90193, Roblox, Builderman" autocomplete="off">
                     </div>
                     <button class="search-btn" id="search-by-username-btn">Pobierz dane →</button>
                 </div>
@@ -569,7 +582,6 @@
     </div>
 
     <script>
-        // Publiczne proxy CORS
         const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
         
         async function fetchWithProxy(url) {
@@ -689,7 +701,7 @@
             }
         }
 
-        async function fetchAndRender(userId, searchedUsername = null) {
+        async function fetchAndRender(userId) {
             setLoading(true);
             try {
                 const [userDetails, avatarUrl, userGames, userGroups] = await Promise.all([
@@ -720,7 +732,7 @@
             let profileHtml = `
                 <div class="profile-section">
                     <div class="profile-header">
-                        ${avatarUrl ? `<img class="avatar-img" src="${avatarUrl}" alt="avatar" onerror="this.src='https://www.roblox.com/headshot-thumbnail/image?userId=${user.id}&width=150&height=150&format=png'">` : `<div class="avatar-img" style="background:#2d334e; display:flex; align-items:center; justify-content:center;">🖼️</div>`}
+                        ${avatarUrl ? `<img class="avatar-img" src="${avatarUrl}" alt="avatar">` : `<div class="avatar-img" style="background:#2d334e; display:flex; align-items:center; justify-content:center;">🖼️</div>`}
                         <div class="user-basic">
                             <h2>${escapeHtml(user.name)} <span class="badge">${verifiedBadge}</span></h2>
                             <p>✨ Display: ${escapeHtml(user.displayName)}  •  🆔 ID: ${user.id}</p>
@@ -808,7 +820,6 @@
             errorDiv.innerText = '';
         }
 
-        // Event listeners
         document.getElementById('search-by-username-btn').addEventListener('click', async () => {
             const username = document.getElementById('username-input').value.trim();
             if (!username) {
@@ -820,7 +831,7 @@
             try {
                 const userLookup = await getUserIdByUsername(username);
                 if (!userLookup.id) throw new Error("Nie udało się pobrać ID");
-                await fetchAndRender(userLookup.id, username);
+                await fetchAndRender(userLookup.id);
             } catch (err) {
                 setLoading(false);
                 showError(err.message || "Nie znaleziono użytkownika lub błąd API");
@@ -836,10 +847,15 @@
             }
             const userId = parseInt(userIdRaw);
             clearError();
-            await fetchAndRender(userId);
+            setLoading(true);
+            try {
+                await fetchAndRender(userId);
+            } catch (err) {
+                setLoading(false);
+                showError(err.message);
+            }
         });
 
-        // Przełączanie zakładek
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
