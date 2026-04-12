@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Roblox Info Hub - Wyszukiwarka użytkowników, gier i grup</title>
+    <title>Roblox Info Hub - Pełne dane użytkownika, gier i grup</title>
     <style>
         * {
             margin: 0;
@@ -24,7 +24,6 @@
             margin: 0 auto;
         }
 
-        /* nagłówek i karta wyszukiwania */
         .header {
             text-align: center;
             margin-bottom: 2rem;
@@ -53,7 +52,6 @@
             margin-bottom: 2.5rem;
             border: 1px solid rgba(71, 85, 125, 0.4);
             box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5);
-            transition: all 0.2s;
         }
 
         .search-tabs {
@@ -131,7 +129,6 @@
             font-size: 1rem;
             cursor: pointer;
             transition: 0.2s;
-            margin-bottom: 2px;
         }
 
         .search-btn:hover {
@@ -148,7 +145,6 @@
             font-weight: 500;
         }
 
-        /* layout profili i sekcje */
         .profile-section {
             background: #0e111b;
             border-radius: 1.8rem;
@@ -231,7 +227,6 @@
             background: #0f1220;
             border-radius: 1.2rem;
             padding: 1rem;
-            transition: 0.1s;
             border: 1px solid #202536;
         }
 
@@ -250,7 +245,21 @@
         .loading-spinner {
             text-align: center;
             padding: 2rem;
-            color: #5f7ef2;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #2d334e;
+            border-top: 4px solid #2d68ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         footer {
@@ -265,7 +274,7 @@
 <div class="container">
     <div class="header">
         <h1>🎮 Roblox Deep Info</h1>
-        <p>Użytkownicy · Gry · Grupy — wszystko dzięki publicznemu API Roblox</p>
+        <p>Użytkownicy · Gry · Grupy — wszystkie publiczne dane z API Roblox</p>
     </div>
 
     <div class="search-card">
@@ -297,92 +306,87 @@
     </div>
 
     <div id="results-container">
-        <!-- dynamiczne dane: profil, gry, grupy -->
         <div style="text-align: center; padding: 3rem; opacity: 0.6;">
             ✨ Wpisz nazwę lub ID, aby wyświetlić wszystkie dostępne informacje o użytkowniku, jego grach i grupach.
         </div>
     </div>
-    <footer>Dane pochodzą z oficjalnego API Roblox (users.roblox.com, games.roblox.com, groups.roblox.com). Brak danych = brak publicznych informacji.</footer>
+    <footer>⚠️ Uwaga: Ze względu na ograniczenia CORS, używamy publicznego proxy. Dane pochodzą z oficjalnego API Roblox.</footer>
 </div>
 
 <script>
-    // ---- API endpoints ----
-    const API = {
-        getUserById: (id) => `https://users.roblox.com/v1/users/${id}`,
-        getUsernameToId: () => `https://users.roblox.com/v1/usernames/users`,  // POST
-        getUserGroups: (userId) => `https://groups.roblox.com/v1/users/${userId}/groups/roles`,
-        getUserGames: (userId) => `https://games.roblox.com/v2/users/${userId}/games?sortOrder=Asc&limit=50`,
-        getUserAvatar: (userId) => `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`,
-        getGameDetailsBatch: (universeIds) => `https://games.roblox.com/v1/games?universeIds=${universeIds}`, // dodatkowe informacje o grach (opcjonalne)
-        getGroupDetails: (groupId) => `https://groups.roblox.com/v1/groups/${groupId}`,
-    };
-
-    let currentUserId = null;
-
-    // Elementy DOM
-    const usernamePanel = document.getElementById('username-search');
-    const idPanel = document.getElementById('id-search');
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const resultsContainer = document.getElementById('results-container');
-    const errorDiv = document.getElementById('search-error');
-
-    // przełączanie zakładek
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            tabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const tab = btn.getAttribute('data-tab');
-            if (tab === 'username') {
-                usernamePanel.style.display = 'block';
-                idPanel.style.display = 'none';
-            } else {
-                usernamePanel.style.display = 'none';
-                idPanel.style.display = 'block';
+    // Publiczne proxy CORS (działa z Roblox API)
+    const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+    
+    // Funkcja pomocnicza do fetch przez proxy
+    async function fetchWithProxy(url) {
+        const encodedUrl = encodeURIComponent(url);
+        const proxyUrl = CORS_PROXY + encodedUrl;
+        
+        try {
+            const response = await fetch(proxyUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
             }
-            clearError();
-        });
-    });
-
-    function clearError() {
-        errorDiv.style.display = 'none';
-        errorDiv.innerText = '';
-    }
-
-    function showError(msg) {
-        errorDiv.innerText = msg;
-        errorDiv.style.display = 'block';
-        setTimeout(() => {
-            if(errorDiv.innerText === msg) errorDiv.style.display = 'none';
-        }, 7000);
-    }
-
-    function setLoading(loading) {
-        if (loading) {
-            resultsContainer.innerHTML = `<div class="loading-spinner"><div class="spinner"></div>⏳ Ładowanie danych z Roblox API...</div>
-            <style>.spinner { width: 40px; height: 40px; margin: 1rem auto; border: 4px solid #2d334e; border-top: 4px solid #2d68ff; border-radius: 50%; animation: spin 1s linear infinite; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>`;
+            const text = await response.text();
+            return JSON.parse(text);
+        } catch (error) {
+            console.error('Fetch error:', error);
+            throw new Error(`Nie udało się połączyć z API: ${error.message}`);
         }
     }
 
-    // 1. Pobranie ID po nazwie użytkownika (POST /v1/usernames/users)
-    async function getUserIdByUsername(username) {
-        if (!username || username.trim() === "") throw new Error("Nazwa użytkownika nie może być pusta.");
-        const response = await fetch(API.getUsernameToId(), {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ usernames: [username], excludeBannedUsers: false })
-        });
-        if (!response.ok) throw new Error(`API error: ${response.status}`);
-        const data = await response.json();
-        if (!data.data || data.data.length === 0) throw new Error(`Nie znaleziono użytkownika o nazwie "${username}"`);
-        const userData = data.data[0];
-        return { id: userData.id, username: userData.name, displayName: userData.displayName, hasVerifiedBadge: userData.hasVerifiedBadge };
+    // Funkcja do bezpośredniego fetch (dla POST, które nie przejdą przez proxy)
+    async function fetchDirect(url, options = {}) {
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Direct fetch error:', error);
+            throw error;
+        }
     }
 
-    // 2. Pobranie pełnych szczegółów użytkownika (opis, data, czy zbanowany itp) - endpoint users/{id}
+    // 1. Pobranie ID po nazwie użytkownika (POST - trzeba użyć bez proxy dla POST)
+    async function getUserIdByUsername(username) {
+        if (!username || username.trim() === "") throw new Error("Nazwa użytkownika nie może być pusta.");
+        
+        const url = 'https://users.roblox.com/v1/usernames/users';
+        const body = JSON.stringify({ usernames: [username], excludeBannedUsers: false });
+        
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: body
+            });
+            
+            if (!response.ok) throw new Error(`API error: ${response.status}`);
+            const data = await response.json();
+            
+            if (!data.data || data.data.length === 0) {
+                throw new Error(`Nie znaleziono użytkownika o nazwie "${username}"`);
+            }
+            
+            const userData = data.data[0];
+            return { 
+                id: userData.id, 
+                username: userData.name, 
+                displayName: userData.displayName, 
+                hasVerifiedBadge: userData.hasVerifiedBadge 
+            };
+        } catch (error) {
+            console.error('Username lookup error:', error);
+            throw new Error(`Nie można znaleźć użytkownika: ${error.message}`);
+        }
+    }
+
+    // 2. Pobranie szczegółów użytkownika
     async function getUserFullDetails(userId) {
-        const res = await fetch(API.getUserById(userId));
-        if (!res.ok) throw new Error(`Nie udało się pobrać profilu (kod ${res.status})`);
-        const data = await res.json();
+        const url = `https://users.roblox.com/v1/users/${userId}`;
+        const data = await fetchWithProxy(url);
         return {
             id: data.id,
             name: data.name,
@@ -390,84 +394,88 @@
             description: data.description || "Brak opisu",
             created: data.created,
             isBanned: data.isBanned || false,
-            hasVerifiedBadge: data.hasVerifiedBadge || false,
-            externalAppDisplayName: data.externalAppDisplayName || null
+            hasVerifiedBadge: data.hasVerifiedBadge || false
         };
     }
 
-    // 3. Pobranie awatara (URL)
+    // 3. Pobranie awatara
     async function getUserAvatarUrl(userId) {
-        const url = API.getUserAvatar(userId);
-        const res = await fetch(url);
-        if (!res.ok) return null;
-        const json = await res.json();
-        if (json.data && json.data.length > 0 && json.data[0].imageUrl) {
-            return json.data[0].imageUrl;
+        const url = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`;
+        try {
+            const data = await fetchWithProxy(url);
+            if (data.data && data.data.length > 0 && data.data[0].imageUrl) {
+                return data.data[0].imageUrl;
+            }
+            return null;
+        } catch (error) {
+            return null;
         }
-        return null;
     }
 
-    // 4. Gry użytkownika (twórca) - pobiera listę gier (universe) gdzie użytkownik jest twórcą / współtwórcą? Endpoint v2/users/{id}/games zwraca gry, w które grał? NIE, to pokazuje gry stworzone przez usera? Dokumentacja mówi o "games created by user" - świetnie
+    // 4. Gry użytkownika
     async function getUserGames(userId) {
-        const res = await fetch(API.getUserGames(userId));
-        if (!res.ok) return [];
-        const json = await res.json();
-        if (!json.data) return [];
-        // Mapujemy najważniejsze informacje
-        return json.data.map(game => ({
-            id: game.id,
-            name: game.name,
-            description: game.description || "Brak opisu",
-            created: game.created,
-            playing: game.playing || 0,
-            visits: game.visits || 0,
-            rootPlaceId: game.rootPlaceId
-        }));
+        const url = `https://games.roblox.com/v2/users/${userId}/games?sortOrder=Asc&limit=50`;
+        try {
+            const data = await fetchWithProxy(url);
+            if (!data.data) return [];
+            return data.data.map(game => ({
+                id: game.id,
+                name: game.name,
+                description: game.description || "Brak opisu",
+                created: game.created,
+                playing: game.playing || 0,
+                visits: game.visits || 0,
+                rootPlaceId: game.rootPlaceId
+            }));
+        } catch (error) {
+            console.error('Games fetch error:', error);
+            return [];
+        }
     }
 
-    // 5. Grupy użytkownika z rolami
+    // 5. Grupy użytkownika
     async function getUserGroupsWithRoles(userId) {
-        const res = await fetch(API.getUserGroups(userId));
-        if (!res.ok) return [];
-        const json = await res.json();
-        if (!json.data) return [];
-        // dla każdej grupy pobieramy dodatkowe info (nazwa, liczba członków, opis) – dane są już w data.group
-        const groups = json.data.map(item => ({
-            groupId: item.group.id,
-            groupName: item.group.name,
-            groupMemberCount: item.group.memberCount,
-            description: item.group.description || "",
-            roleName: item.role.name,
-            roleRank: item.role.rank,
-            isOwner: (item.role.rank === 255) // zazwyczaj rank 255 to właściciel
-        }));
-        return groups;
+        const url = `https://groups.roblox.com/v1/users/${userId}/groups/roles`;
+        try {
+            const data = await fetchWithProxy(url);
+            if (!data.data) return [];
+            return data.data.map(item => ({
+                groupId: item.group.id,
+                groupName: item.group.name,
+                groupMemberCount: item.group.memberCount,
+                description: item.group.description || "",
+                roleName: item.role.name,
+                roleRank: item.role.rank,
+                isOwner: item.role.rank === 255
+            }));
+        } catch (error) {
+            console.error('Groups fetch error:', error);
+            return [];
+        }
     }
 
-    // dodatkowe szczegóły gry (opcjonalnie ulepszenie)
-    // ale głównie gry już mają wszystko
-
-    // Główna funkcja renderująca wyniki na podstawie userId
-    async function fetchAndRender(userId, sourceUsername = null) {
+    // Główna funkcja renderująca
+    async function fetchAndRender(userId, searchedUsername = null) {
         setLoading(true);
         try {
-            // Pobieramy najpierw szczegóły użytkownika
-            let userDetails = await getUserFullDetails(userId);
-            // Upewniamy się, że nazwa jest zgodna (jeśli wyszukiwanie po nazwie to mamy już nazwę)
-            const avatarUrl = await getUserAvatarUrl(userId);
-            const userGames = await getUserGames(userId);
-            const userGroups = await getUserGroupsWithRoles(userId);
-
-            // RENDER
+            // Pobieramy wszystkie dane równolegle
+            const [userDetails, avatarUrl, userGames, userGroups] = await Promise.all([
+                getUserFullDetails(userId),
+                getUserAvatarUrl(userId),
+                getUserGames(userId),
+                getUserGroupsWithRoles(userId)
+            ]);
+            
             renderProfile(userDetails, avatarUrl, userGames, userGroups);
         } catch (err) {
-            console.error(err);
-            resultsContainer.innerHTML = `<div style="background:#1e1a2f; border-radius:1.6rem; padding:2rem; text-align:center; border:1px solid #ff4d6d30;">
-                ❌ <strong>Błąd:</strong> ${err.message || "Nie udało się pobrać danych. Sprawdź ID lub nazwę użytkownika."}<br>
-                <span style="font-size:0.8rem;">Upewnij się, że użytkownik istnieje i ma publiczny profil.</span>
-            </div>`;
+            console.error('Render error:', err);
+            resultsContainer.innerHTML = `
+                <div style="background:#1e1a2f; border-radius:1.6rem; padding:2rem; text-align:center; border:1px solid #ff4d6d30;">
+                    ❌ <strong>Błąd:</strong> ${err.message || "Nie udało się pobrać danych. Sprawdź ID lub nazwę użytkownika."}<br>
+                    <span style="font-size:0.8rem;">Upewnij się, że użytkownik istnieje i ma publiczny profil.</span>
+                </div>`;
         } finally {
-            // usuń loading flag (ale już wyrenderowane)
+            setLoading(false);
         }
     }
 
@@ -479,7 +487,7 @@
         let profileHtml = `
             <div class="profile-section">
                 <div class="profile-header">
-                    ${avatarUrl ? `<img class="avatar-img" src="${avatarUrl}" alt="avatar">` : `<div class="avatar-img" style="background:#2d334e; display:flex; align-items:center; justify-content:center;">🖼️</div>`}
+                    ${avatarUrl ? `<img class="avatar-img" src="${avatarUrl}" alt="avatar" onerror="this.src='https://www.roblox.com/headshot-thumbnail/image?userId=${user.id}&width=150&height=150&format=png'">` : `<div class="avatar-img" style="background:#2d334e; display:flex; align-items:center; justify-content:center;">🖼️</div>`}
                     <div class="user-basic">
                         <h2>${escapeHtml(user.name)} <span class="badge">${verifiedBadge}</span></h2>
                         <p>✨ Display: ${escapeHtml(user.displayName)}  •  🆔 ID: ${user.id}</p>
@@ -501,13 +509,13 @@
             gamesHtml += `<div style="background:#0b0e16; border-radius:1rem; padding:1rem;">Brak publicznych gier przypisanych do tego twórcy.</div>`;
         } else {
             gamesHtml += `<div class="games-list">`;
-            for (const game of games.slice(0, 20)) {  // limit 20
+            for (const game of games.slice(0, 20)) {
                 gamesHtml += `
                     <div class="game-item">
                         <div class="game-name">🎲 ${escapeHtml(game.name)}</div>
                         <div class="game-detail">📖 ${escapeHtml(game.description?.substring(0, 100) || "Brak opisu")}</div>
                         <div class="game-detail">👀 Odsłony: ${game.visits?.toLocaleString() || 0}  |  🟢 Gracze: ${game.playing || 0}</div>
-                        <div class="game-detail">📅 Data publikacji: ${game.created ? new Date(game.created).toLocaleDateString('pl-PL') : "nieznana"}</div>
+                        <div class="game-detail">📅 Data: ${game.created ? new Date(game.created).toLocaleDateString('pl-PL') : "nieznana"}</div>
                     </div>
                 `;
             }
@@ -526,7 +534,7 @@
                     <div class="group-item">
                         <div class="group-name">🏛️ ${escapeHtml(grp.groupName)} (ID: ${grp.groupId})</div>
                         <div class="group-detail">⭐ Rola: ${escapeHtml(grp.roleName)} | Ranga: ${grp.roleRank} ${grp.isOwner ? '👑 WŁAŚCICIEL' : ''}</div>
-                        <div class="group-detail">👥 Liczba członków: ${grp.groupMemberCount?.toLocaleString() || "?"}</div>
+                        <div class="group-detail">👥 Członków: ${grp.groupMemberCount?.toLocaleString() || "?"}</div>
                         <div class="group-detail">📄 ${escapeHtml(grp.description?.substring(0, 80) || "Brak opisu grupy")}</div>
                     </div>
                 `;
@@ -545,12 +553,31 @@
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
             return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
         });
     }
 
-    // HANDLERY
+    function setLoading(loading) {
+        if (loading) {
+            resultsContainer.innerHTML = `<div class="loading-spinner"><div class="spinner"></div>⏳ Ładowanie danych z Roblox API...<br><small>To może potrwać kilka sekund</small></div>`;
+        }
+    }
+
+    function showError(msg) {
+        const errorDiv = document.getElementById('search-error');
+        errorDiv.innerText = msg;
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+            if(errorDiv.innerText === msg) errorDiv.style.display = 'none';
+        }, 7000);
+    }
+
+    function clearError() {
+        const errorDiv = document.getElementById('search-error');
+        errorDiv.style.display = 'none';
+        errorDiv.innerText = '';
+    }
+
+    // Event listeners
     document.getElementById('search-by-username-btn').addEventListener('click', async () => {
         const username = document.getElementById('username-input').value.trim();
         if (!username) {
@@ -562,14 +589,11 @@
         try {
             const userLookup = await getUserIdByUsername(username);
             if (!userLookup.id) throw new Error("Nie udało się pobrać ID");
-            // teraz mamy ID, wywołujemy główne pobieranie i pokażemy wszystkie informacje (gry, grupy)
             await fetchAndRender(userLookup.id, username);
         } catch (err) {
             setLoading(false);
             showError(err.message || "Nie znaleziono użytkownika lub błąd API");
             resultsContainer.innerHTML = `<div style="background:#1e1a2f; border-radius:1.6rem; padding:2rem; text-align:center;">⚠️ ${err.message}</div>`;
-        } finally {
-            // setLoading false jeśli nie przeszło do fetchAndRender, ale fetchAndRender nie zmienia stanu ładowania na końcu? zmieniamy
         }
     });
 
@@ -581,20 +605,25 @@
         }
         const userId = parseInt(userIdRaw);
         clearError();
-        setLoading(true);
-        try {
-            await fetchAndRender(userId);
-        } catch (err) {
-            showError(err.message);
-            resultsContainer.innerHTML = `<div style="background:#1e1a2f; border-radius:1.6rem; padding:2rem; text-align:center;">❌ Błąd: ${err.message}</div>`;
-        } finally {
-            // obsługa końca ładowania - fetchAndRender też ustawia innerHTML, ale nie resetuje flagi
-        }
+        await fetchAndRender(userId);
     });
 
-    // dodatkowe: mały fix dla spinnera
-    const originalFetchRender = fetchAndRender;
-    window.fetchAndRender = fetchAndRender;
+    // Przełączanie zakładek
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const tab = btn.getAttribute('data-tab');
+            if (tab === 'username') {
+                document.getElementById('username-search').style.display = 'block';
+                document.getElementById('id-search').style.display = 'none';
+            } else {
+                document.getElementById('username-search').style.display = 'none';
+                document.getElementById('id-search').style.display = 'block';
+            }
+            clearError();
+        });
+    });
 </script>
 </body>
 </html>
