@@ -11,7 +11,7 @@
     <meta name="author" content="Roblox Info Hub">
     <meta name="robots" content="index, follow">
     
-    <!-- Open Graph meta tagi (Facebook, Discord, Slack, LinkedIn, WhatsApp, Telegram) -->
+    <!-- Open Graph meta tagi -->
     <meta property="og:title" content="Roblox Info Hub | Wyszukiwarka profili, gier i grup">
     <meta property="og:description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej.">
     <meta property="og:image" content="https://www.roblox.com/favicon.ico">
@@ -27,7 +27,6 @@
     <meta name="twitter:description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej.">
     <meta name="twitter:image" content="https://www.roblox.com/favicon.ico">
     
-    <!-- Dodatkowe meta tagi -->
     <meta name="theme-color" content="#2d68ff">
     <meta name="color-scheme" content="dark">
     
@@ -159,9 +158,7 @@
             margin-top: 0.5rem;
         }
 
-        /* ============================================ */
-        /* OPIS STRONY INTERNETOWEJ W BODY (WŁASNY TEKST) */
-        /* ============================================ */
+        /* Opis strony w body */
         .page-description {
             background: rgba(45, 104, 255, 0.1);
             border-left: 4px solid #2d68ff;
@@ -185,7 +182,6 @@
             color: #6c7aa8;
             font-size: 0.75rem;
         }
-        /* ============================================ */
 
         .search-card {
             background: rgba(20, 25, 40, 0.75);
@@ -340,6 +336,61 @@
             75% { transform: translateX(5px); }
         }
 
+        /* Animacja wyszukiwania z kropkami */
+        .searching-animation {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(14, 17, 27, 0.7);
+            border-radius: 1.8rem;
+            backdrop-filter: blur(8px);
+            margin: 1rem 0;
+        }
+        .searching-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2d68ff;
+            margin-bottom: 1rem;
+        }
+        .dots {
+            font-size: 2rem;
+            letter-spacing: 5px;
+            color: #8d9eff;
+        }
+        .searching-sub {
+            color: #9aa3bb;
+            margin-top: 1rem;
+        }
+
+        /* Pusty stan - brak wyszukanego konta */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(14, 17, 27, 0.6);
+            border-radius: 1.8rem;
+            backdrop-filter: blur(8px);
+            border: 1px dashed #2d68ff;
+            margin: 1rem 0;
+        }
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .empty-state h3 {
+            color: #8d9eff;
+            margin-bottom: 0.5rem;
+        }
+        .empty-state p {
+            color: #9aa3bb;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .empty-state small {
+            display: block;
+            margin-top: 1rem;
+            color: #5f6b8a;
+        }
+
         .profile-section {
             background: rgba(14, 17, 27, 0.9);
             backdrop-filter: blur(8px);
@@ -449,13 +500,13 @@
             padding-left: 1rem;
         }
 
-        .games-list, .groups-list {
+        .games-list, .groups-list, .badges-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
             gap: 1.2rem;
         }
 
-        .game-item, .group-item {
+        .game-item, .group-item, .badge-item {
             background: rgba(15, 18, 32, 0.8);
             border-radius: 1.2rem;
             padding: 1rem;
@@ -463,42 +514,22 @@
             transition: all 0.2s;
         }
 
-        .game-item:hover, .group-item:hover {
+        .game-item:hover, .group-item:hover, .badge-item:hover {
             transform: translateY(-3px);
             border-color: #2d68ff;
             box-shadow: 0 5px 15px rgba(45, 104, 255, 0.2);
         }
 
-        .game-name, .group-name {
+        .game-name, .group-name, .badge-name {
             font-weight: bold;
             font-size: 1.1rem;
             color: white;
         }
 
-        .game-detail, .group-detail {
+        .game-detail, .group-detail, .badge-detail {
             font-size: 0.75rem;
             color: #8f9ac0;
             margin-top: 6px;
-        }
-
-        .loading-spinner {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #2d334e;
-            border-top: 4px solid #2d68ff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 1rem auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         footer {
@@ -560,7 +591,7 @@
                 <h1>🎮 Roblox Info Hub</h1>
             </div>
             <div class="badge-icon">
-                🔍 Wyszukiwarka | 👥 Użytkownicy | 🎮 Gry | 👑 Grupy
+                🔍 Wyszukiwarka | 👥 Użytkownicy | 🎮 Gry | 👑 Grupy | 📊 Statystyki
             </div>
             <p>Kompleksowe dane z oficjalnego API Roblox — wszystko w jednym miejscu</p>
             <div class="live-stats">
@@ -570,20 +601,15 @@
             </div>
         </div>
 
-        <!-- ============================================ -->
-        <!-- OPIS STRONY INTERNETOWEJ W BODY (WŁASNY TEKST) -->
-        <!-- ============================================ -->
-        <!-- MOŻESZ EDYTOWAĆ TEN TEKST - TO JEST OPIS STRONY W BODY -->
+        <!-- OPIS STRONY INTERNETOWEJ W BODY -->
         <div class="page-description">
             <h3>📌 O tej stronie - Roblox Info Hub</h3>
             <p><strong>Roblox Info Hub</strong> to zaawansowana wyszukiwarka informacji o użytkownikach platformy Roblox. Strona korzysta z oficjalnego API Roblox, aby dostarczyć jak najwięcej publicznie dostępnych danych.</p>
-            <p>🔹 <strong>Co można znaleźć?</strong> - Pełny profil użytkownika (nazwa, ID, data utworzenia, opis, status konta), listę wszystkich publicznych gier stworzonych przez użytkownika, listę grup do których należy użytkownik wraz z rolami i rangami, awatar użytkownika oraz odznaki (badges).</p>
+            <p>🔹 <strong>Co można znaleźć?</strong> - Pełny profil użytkownika (nazwa, ID, data utworzenia, opis, status konta), listę wszystkich publicznych gier stworzonych przez użytkownika, listę grup do których należy użytkownik wraz z rolami i rangami, awatar użytkownika oraz odznaki.</p>
             <p>🔹 <strong>Jak wyszukiwać?</strong> - Możesz wyszukać użytkownika po nazwie (np. "oskar90193", "Roblox", "Builderman") lub po numerze ID konta. Po wpisaniu nazwy strona automatycznie znajdzie ID i pobierze wszystkie dane.</p>
-            <p>🔹 <strong>Dlaczego warto?</strong> - To najprostszy sposób aby sprawdzić szczegółowe informacje o dowolnym użytkowniku Roblox bez logowania się na platformę. Wszystkie dane pochodzą bezpośrednio z API Roblox i są na bieżąco aktualizowane.</p>
-            <p>🔹 <strong>Techniczne szczegóły</strong> - Strona używa endpointów API: <code>users.roblox.com</code> (dane użytkownika), <code>games.roblox.com</code> (gry użytkownika), <code>groups.roblox.com</code> (grupy użytkownika) oraz <code>thumbnails.roblox.com</code> (awatar). Ze względu na ograniczenia CORS używamy proxy <code>api.allorigins.win</code>.</p>
-            <small>📅 Data utworzenia strony: 2026 • Wersja: 2.0 • Wszystkie prawa zastrzeżone</small>
+            <p>🔹 <strong>Statystyki konta</strong> - Po wyszukaniu konta zobaczysz szczegółowe statystyki: datę rejestracji, status konta (czy zbanowane), weryfikację, liczbę gier, liczbę grup, liczbę odznak i wiele innych.</p>
+            <small>📅 Data utworzenia strony: 2026 • Wersja: 3.0 • Wszystkie prawa zastrzeżone</small>
         </div>
-        <!-- ============================================ -->
 
         <div class="search-card">
             <div class="search-tabs">
@@ -614,8 +640,12 @@
         </div>
 
         <div id="results-container">
-            <div style="text-align: center; padding: 3rem; opacity: 0.6;">
-                ✨ Wpisz nazwę lub ID, aby wyświetlić wszystkie dostępne informacje o użytkowniku, jego grach i grupach.
+            <!-- Pusty stan - gdy jeszcze nie wyszukano żadnego konta -->
+            <div class="empty-state" id="empty-state">
+                <div class="empty-state-icon">🔍</div>
+                <h3>Jeszcze nie wyszukałeś/aś żadnego konta na Robloxie</h3>
+                <p>Wpisz nick konta w zakładce <strong>"Wyszukaj po nazwie"</strong> lub <strong>"Wyszukaj po ID"</strong> aby rozpocząć wyszukiwanie informacji o użytkowniku.</p>
+                <small>💡 Podpowiedź: Możesz wyszukać każdego publicznego użytkownika Roblox!</small>
             </div>
         </div>
         <footer>
@@ -625,16 +655,11 @@
 
     <script>
         // ============================================
-        // POPRAWIONE API ROBLOX - zgodne z dokumentacją
-        // Endpointy użyte w skrypcie:
-        // - users.roblox.com/v1/users/{id} - dane użytkownika [citation:6]
-        // - thumbnails.roblox.com/v1/users/avatar-headshot - awatar [citation:6]
-        // - games.roblox.com/v2/users/{id}/games - gry użytkownika [citation:6]
-        // - groups.roblox.com/v1/users/{id}/groups/roles - grupy użytkownika [citation:6]
-        // - badges.roblox.com/v1/users/{id}/badges - odznaki użytkownika [citation:6]
+        // API ROBLOX - oficjalne endpointy
         // ============================================
         
         const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+        let isSearching = false;
         
         async function fetchWithProxy(url) {
             const encodedUrl = encodeURIComponent(url);
@@ -653,7 +678,53 @@
             }
         }
 
-        // Pobranie ID po nazwie użytkownika - endpoint POST /v1/usernames/users
+        // Animacja wyszukiwania z kropkami
+        let animationInterval = null;
+        function showSearchingAnimation() {
+            let dotCount = 1;
+            const dotsElement = document.getElementById('searching-dots');
+            if (dotsElement) {
+                animationInterval = setInterval(() => {
+                    dotCount = (dotCount % 5) + 1;
+                    dotsElement.textContent = '.'.repeat(dotCount);
+                }, 400);
+            }
+        }
+        
+        function stopSearchingAnimation() {
+            if (animationInterval) {
+                clearInterval(animationInterval);
+                animationInterval = null;
+            }
+        }
+
+        function showLoadingState() {
+            stopSearchingAnimation();
+            resultsContainer.innerHTML = `
+                <div class="searching-animation" id="searching-animation">
+                    <div class="searching-text">Wyszukiwanie informacji</div>
+                    <div class="dots" id="searching-dots">.</div>
+                    <div class="searching-sub">Ładowanie danych z API Roblox...</div>
+                </div>
+            `;
+            showSearchingAnimation();
+        }
+
+        function hideLoadingState() {
+            stopSearchingAnimation();
+        }
+
+        function showEmptyState() {
+            resultsContainer.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <h3>Jeszcze nie wyszukałeś/aś żadnego konta na Robloxie</h3>
+                    <p>Wpisz nick konta w zakładce <strong>"Wyszukaj po nazwie"</strong> lub <strong>"Wyszukaj po ID"</strong> aby rozpocząć wyszukiwanie informacji o użytkowniku.</p>
+                    <small>💡 Podpowiedź: Możesz wyszukać każdego publicznego użytkownika Roblox!</small>
+                </div>
+            `;
+        }
+
         async function getUserIdByUsername(username) {
             if (!username || username.trim() === "") throw new Error("Nazwa użytkownika nie może być pusta.");
             
@@ -687,7 +758,6 @@
             }
         }
 
-        // Pobranie szczegółów użytkownika - GET /v1/users/{id}
         async function getUserFullDetails(userId) {
             const url = `https://users.roblox.com/v1/users/${userId}`;
             const data = await fetchWithProxy(url);
@@ -702,7 +772,6 @@
             };
         }
 
-        // Pobranie awatara - GET /v1/users/avatar-headshot
         async function getUserAvatarUrl(userId) {
             const url = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`;
             try {
@@ -716,7 +785,6 @@
             }
         }
 
-        // Pobranie gier użytkownika - GET /v2/users/{id}/games
         async function getUserGames(userId) {
             const url = `https://games.roblox.com/v2/users/${userId}/games?sortOrder=Asc&limit=50`;
             try {
@@ -737,7 +805,6 @@
             }
         }
 
-        // Pobranie grup użytkownika - GET /v1/users/{id}/groups/roles
         async function getUserGroupsWithRoles(userId) {
             const url = `https://groups.roblox.com/v1/users/${userId}/groups/roles`;
             try {
@@ -758,7 +825,6 @@
             }
         }
 
-        // Pobranie odznak użytkownika - GET /v1/users/{id}/badges (dodatkowe API)
         async function getUserBadges(userId) {
             const url = `https://badges.roblox.com/v1/users/${userId}/badges?limit=20&sortOrder=Asc`;
             try {
@@ -776,7 +842,7 @@
         }
 
         async function fetchAndRender(userId) {
-            setLoading(true);
+            showLoadingState();
             try {
                 const [userDetails, avatarUrl, userGames, userGroups, userBadges] = await Promise.all([
                     getUserFullDetails(userId),
@@ -786,23 +852,41 @@
                     getUserBadges(userId)
                 ]);
                 
+                hideLoadingState();
                 renderProfile(userDetails, avatarUrl, userGames, userGroups, userBadges);
             } catch (err) {
+                hideLoadingState();
                 console.error('Render error:', err);
                 resultsContainer.innerHTML = `
                     <div style="background:#1e1a2f; border-radius:1.6rem; padding:2rem; text-align:center; border:1px solid #ff4d6d30;">
                         ❌ <strong>Błąd:</strong> ${err.message || "Nie udało się pobrać danych. Sprawdź ID lub nazwę użytkownika."}<br>
                         <span style="font-size:0.8rem;">Upewnij się, że użytkownik istnieje i ma publiczny profil.</span>
                     </div>`;
-            } finally {
-                setLoading(false);
             }
         }
 
         function renderProfile(user, avatarUrl, games, groups, badges) {
             const createdDate = user.created ? new Date(user.created).toLocaleDateString('pl-PL') : "Nieznana";
+            const createdFullDate = user.created ? new Date(user.created).toLocaleString('pl-PL') : "Nieznana";
             const isBannedText = user.isBanned ? "🚫 Tak (zbanowany)" : "✅ Nie";
             const verifiedBadge = user.hasVerifiedBadge ? "✔️ Zweryfikowany" : "Standardowe konto";
+
+            // Obliczanie wieku konta
+            let accountAge = "Nieznany";
+            if (user.created) {
+                const created = new Date(user.created);
+                const now = new Date();
+                const diffYears = now.getFullYear() - created.getFullYear();
+                const diffMonths = now.getMonth() - created.getMonth();
+                const diffDays = now.getDate() - created.getDate();
+                if (diffYears > 0) {
+                    accountAge = `${diffYears} lat, ${diffMonths} miesięcy`;
+                } else if (diffMonths > 0) {
+                    accountAge = `${diffMonths} miesięcy, ${diffDays} dni`;
+                } else {
+                    accountAge = `${diffDays} dni`;
+                }
+            }
 
             let profileHtml = `
                 <div class="profile-section">
@@ -816,25 +900,40 @@
                     </div>
                     <div class="info-grid">
                         <div class="info-card"><strong>📝 Opis profilu</strong><br>${escapeHtml(user.description) || "Brak opisu"}</div>
-                        <div class="info-card"><strong>📅 Data utworzenia</strong><br>${createdDate}</div>
-                        <div class="info-card"><strong>🚦 Status</strong><br>${isBannedText}</div>
+                        <div class="info-card"><strong>📅 Data utworzenia</strong><br>${createdDate}<br><small style="color:#6c7aa8;">${createdFullDate}</small></div>
+                        <div class="info-card"><strong>⏳ Wiek konta</strong><br>${accountAge}</div>
+                        <div class="info-card"><strong>🚦 Status konta</strong><br>${isBannedText}</div>
                         <div class="info-card"><strong>🏷️ Nazwa użytkownika</strong><br>${escapeHtml(user.name)}</div>
+                        <div class="info-card"><strong>🔢 ID użytkownika</strong><br>${user.id}</div>
                     </div>
                 </div>
             `;
 
-            // Sekcja odznak (badges) - dodatkowe API
+            // Statystyki podsumowujące
+            let statsHtml = `
+                <div class="profile-section">
+                    <div class="section-title">📊 Statystyki konta</div>
+                    <div class="info-grid">
+                        <div class="info-card"><strong>🎮 Liczba gier</strong><br>${games.length}</div>
+                        <div class="info-card"><strong>👥 Liczba grup</strong><br>${groups.length}</div>
+                        <div class="info-card"><strong>🏅 Liczba odznak</strong><br>${badges.length}</div>
+                        <div class="info-card"><strong>👀 Łączna liczba odwiedzin gier</strong><br>${games.reduce((sum, g) => sum + (g.visits || 0), 0).toLocaleString()}</div>
+                    </div>
+                </div>
+            `;
+
+            // Sekcja odznak
             let badgesHtml = `<div class="section-title">🏅 Odznaki użytkownika (${badges.length})</div>`;
             if (badges.length === 0) {
                 badgesHtml += `<div style="background:#0b0e16; border-radius:1rem; padding:1rem;">Brak publicznych odznak.</div>`;
             } else {
-                badgesHtml += `<div class="games-list" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">`;
+                badgesHtml += `<div class="badges-list">`;
                 for (const badge of badges.slice(0, 15)) {
                     badgesHtml += `
-                        <div class="game-item">
-                            <div class="game-name">🏅 ${escapeHtml(badge.name)}</div>
-                            <div class="game-detail">📖 ${escapeHtml(badge.description?.substring(0, 80) || "Brak opisu")}</div>
-                            <div class="game-detail">📅 Przyznano: ${badge.awardedAt ? new Date(badge.awardedAt).toLocaleDateString('pl-PL') : "nieznana"}</div>
+                        <div class="badge-item">
+                            <div class="badge-name">🏅 ${escapeHtml(badge.name)}</div>
+                            <div class="badge-detail">📖 ${escapeHtml(badge.description?.substring(0, 80) || "Brak opisu")}</div>
+                            <div class="badge-detail">📅 Przyznano: ${badge.awardedAt ? new Date(badge.awardedAt).toLocaleDateString('pl-PL') : "nieznana"}</div>
                         </div>
                     `;
                 }
@@ -878,7 +977,7 @@
                 groupsHtml += `</div>`;
             }
 
-            const fullHtml = profileHtml + badgesHtml + gamesHtml + groupsHtml;
+            const fullHtml = profileHtml + statsHtml + badgesHtml + gamesHtml + groupsHtml;
             resultsContainer.innerHTML = fullHtml;
         }
 
@@ -890,12 +989,6 @@
                 if (m === '>') return '&gt;';
                 return m;
             });
-        }
-
-        function setLoading(loading) {
-            if (loading) {
-                resultsContainer.innerHTML = `<div class="loading-spinner"><div class="spinner"></div>⏳ Ładowanie danych z Roblox API...<br><small>To może potrwać kilka sekund</small></div>`;
-            }
         }
 
         function showError(msg) {
@@ -920,13 +1013,12 @@
                 return;
             }
             clearError();
-            setLoading(true);
             try {
                 const userLookup = await getUserIdByUsername(username);
                 if (!userLookup.id) throw new Error("Nie udało się pobrać ID");
                 await fetchAndRender(userLookup.id);
             } catch (err) {
-                setLoading(false);
+                hideLoadingState();
                 showError(err.message || "Nie znaleziono użytkownika lub błąd API");
                 resultsContainer.innerHTML = `<div style="background:#1e1a2f; border-radius:1.6rem; padding:2rem; text-align:center;">⚠️ ${err.message}</div>`;
             }
@@ -940,11 +1032,10 @@
             }
             const userId = parseInt(userIdRaw);
             clearError();
-            setLoading(true);
             try {
                 await fetchAndRender(userId);
             } catch (err) {
-                setLoading(false);
+                hideLoadingState();
                 showError(err.message);
             }
         });
