@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     
     <title>Roblox Info Hub | Wyszukiwarka profili, gier i grup</title>
-    <meta name="description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej. Wyszukiwanie po nazwie lub ID.">
-    <meta name="keywords" content="roblox, wyszukiwarka, użytkownik, gry, grupy, api, profil, statystyki">
+    <meta name="description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej.">
+    <meta name="keywords" content="roblox, wyszukiwarka, użytkownik, gry, grupy, api, profil">
     <meta name="author" content="Roblox Info Hub">
     <meta name="robots" content="index, follow">
     
@@ -499,7 +499,8 @@
             <p>🔹 <strong>Co można znaleźć?</strong> - Pełny profil użytkownika (nazwa, ID, data utworzenia, opis, status konta), listę wszystkich publicznych gier stworzonych przez użytkownika, listę grup do których należy użytkownik wraz z rolami i rangami, awatar użytkownika oraz odznaki.</p>
             <p>🔹 <strong>Jak wyszukiwać?</strong> - Możesz wyszukać użytkownika po nazwie (np. "oskar90193", "Roblox", "Builderman") lub po numerze ID konta.</p>
             <p>🔹 <strong>Statystyki konta</strong> - Po wyszukaniu konta zobaczysz szczegółowe statystyki: datę rejestracji, status konta, weryfikację, liczbę gier, liczbę grup, liczbę odznak i wiele innych.</p>
-            <small>📅 Data utworzenia strony: 2026 • Wersja: 3.0</small>
+            <p>🔹 <strong>Statystyki konta</strong> - Jako właściciel tej stroy internetowej chcę podziękować tobie jako osobie na tej stronie za to że postanowiłeś odwiedzić tą stronę internetową mam nadzieję że wrócisz jeszcze tutaj ja życzę miłego dnia/wieczoru i pozdrawiam - byte official mam nadzieję że strona internetowa ci się spodobała.</p>
+            <small>📅 Strona internetowa powstała dnia 12 kwietnia 2026 roku przez użytkownika byte official</small>
         </div>
 
         <div class="search-card">
@@ -539,97 +540,71 @@
             </div>
         </div>
         <footer>
-            ⚡ Dane pochodzą z oficjalnego API Roblox • Wszystkie publiczne informacje • Podgląd linków działa na Discord, Slack, Facebook, Twitter/X
+            ⚡ Dane pochodzą z oficjalnego API Roblox przez proxy rprxy.xyz • Wszystkie publiczne informacje
         </footer>
     </div>
 
     <script>
         // ============================================
-        // POPRAWIONE API Z DZIAŁAJĄCYM PROXY CORS
-        // Używamy wielu proxy dla redundancji
+        // ROZWIĄZANIE PROBLEMU CORS - użycie publicznego proxy Roblox
+        // Proxy: rprxy.xyz - dedykowane proxy dla API Roblox [citation:6]
         // ============================================
         
-        // Lista działających proxy CORS (jeśli jedno nie działa, używa kolejnego)
-        const CORS_PROXIES = [
-            'https://api.allorigins.win/raw?url=',
-            'https://cors-anywhere.herokuapp.com/',
-            'https://corsproxy.io/?'
-        ];
+        const ROBLOX_PROXY = 'https://rprxy.xyz';
         
-        let currentProxyIndex = 0;
-        
-        async function fetchWithProxy(url) {
-            for (let i = 0; i < CORS_PROXIES.length; i++) {
-                try {
-                    const proxyUrl = CORS_PROXIES[currentProxyIndex] + encodeURIComponent(url);
-                    const response = await fetch(proxyUrl);
-                    
-                    if (response.ok) {
-                        const text = await response.text();
-                        return JSON.parse(text);
-                    }
-                } catch (e) {
-                    console.log(`Proxy ${currentProxyIndex} failed, trying next...`);
-                    currentProxyIndex = (currentProxyIndex + 1) % CORS_PROXIES.length;
+        // Funkcja do zapytań przez proxy Roblox
+        async function fetchRobloxAPI(path, useProxy = true) {
+            const url = useProxy ? `${ROBLOX_PROXY}/${path}` : `https://${path}`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
                 }
+                return await response.json();
+            } catch (error) {
+                console.error('API Error:', error);
+                throw new Error(`Nie udało się połączyć: ${error.message}`);
             }
-            throw new Error("Wszystkie proxy CORS są niedostępne. Spróbuj ponownie za chwilę.");
         }
         
-        // Alternatywny endpoint do pobierania ID po nazwie (GET zamiast POST - unika CORS)
-        async function getUserIdByUsernameAlt(username) {
+        // Pobranie ID po nazwie użytkownika przez proxy
+        async function getUserIdByUsername(username) {
             if (!username || username.trim() === "") throw new Error("Nazwa użytkownika nie może być pusta.");
             
-            // Użyjemy search endpoint z GET zamiast POST
-            const url = `https://users.roblox.com/v1/users/search?keyword=${encodeURIComponent(username)}&limit=10`;
-            try {
-                const data = await fetchWithProxy(url);
-                if (data.data && data.data.length > 0) {
-                    // Szukamy dokładnego dopasowania
-                    const exactMatch = data.data.find(u => u.name.toLowerCase() === username.toLowerCase());
-                    if (exactMatch) {
-                        return { 
-                            id: exactMatch.id, 
-                            username: exactMatch.name, 
-                            displayName: exactMatch.displayName, 
-                            hasVerifiedBadge: exactMatch.hasVerifiedBadge 
-                        };
-                    }
-                    // Jeśli nie ma dokładnego, bierzemy pierwszy wynik
-                    if (data.data[0]) {
-                        return { 
-                            id: data.data[0].id, 
-                            username: data.data[0].name, 
-                            displayName: data.data[0].displayName, 
-                            hasVerifiedBadge: data.data[0].hasVerifiedBadge 
-                        };
-                    }
+            // Użycie endpointu search przez proxy
+            const data = await fetchRobloxAPI(`users.roblox.com/v1/users/search?keyword=${encodeURIComponent(username)}&limit=10`);
+            
+            if (data.data && data.data.length > 0) {
+                const exactMatch = data.data.find(u => u.name.toLowerCase() === username.toLowerCase());
+                if (exactMatch) {
+                    return { 
+                        id: exactMatch.id, 
+                        username: exactMatch.name, 
+                        displayName: exactMatch.displayName, 
+                        hasVerifiedBadge: exactMatch.hasVerifiedBadge 
+                    };
                 }
-                throw new Error(`Nie znaleziono użytkownika o nazwie "${username}"`);
-            } catch (error) {
-                console.error('Username lookup error:', error);
-                throw new Error(`Nie można znaleźć użytkownika: ${error.message}`);
+                if (data.data[0]) {
+                    return { 
+                        id: data.data[0].id, 
+                        username: data.data[0].name, 
+                        displayName: data.data[0].displayName, 
+                        hasVerifiedBadge: data.data[0].hasVerifiedBadge 
+                    };
+                }
             }
+            throw new Error(`Nie znaleziono użytkownika o nazwie "${username}"`);
         }
 
+        // Pobranie szczegółów użytkownika
         async function getUserFullDetails(userId) {
-            const url = `https://users.roblox.com/v1/users/${userId}`;
-            const data = await fetchWithProxy(url);
-            return {
-                id: data.id,
-                name: data.name,
-                displayName: data.displayName,
-                description: data.description || "Brak opisu",
-                created: data.created,
-                isBanned: data.isBanned || false,
-                hasVerifiedBadge: data.hasVerifiedBadge || false
-            };
+            return await fetchRobloxAPI(`users.roblox.com/v1/users/${userId}`);
         }
 
+        // Pobranie awatara
         async function getUserAvatarUrl(userId) {
-            const url = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`;
             try {
-                const data = await fetchWithProxy(url);
+                const data = await fetchRobloxAPI(`thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`);
                 if (data.data && data.data.length > 0 && data.data[0].imageUrl) {
                     return data.data[0].imageUrl;
                 }
@@ -639,10 +614,10 @@
             }
         }
 
+        // Pobranie gier użytkownika
         async function getUserGames(userId) {
-            const url = `https://games.roblox.com/v2/users/${userId}/games?sortOrder=Asc&limit=50`;
             try {
-                const data = await fetchWithProxy(url);
+                const data = await fetchRobloxAPI(`games.roblox.com/v2/users/${userId}/games?sortOrder=Asc&limit=50`);
                 if (!data.data) return [];
                 return data.data.map(game => ({
                     id: game.id,
@@ -658,10 +633,10 @@
             }
         }
 
+        // Pobranie grup użytkownika
         async function getUserGroupsWithRoles(userId) {
-            const url = `https://groups.roblox.com/v1/users/${userId}/groups/roles`;
             try {
-                const data = await fetchWithProxy(url);
+                const data = await fetchRobloxAPI(`groups.roblox.com/v1/users/${userId}/groups/roles`);
                 if (!data.data) return [];
                 return data.data.map(item => ({
                     groupId: item.group.id,
@@ -678,10 +653,10 @@
             }
         }
 
+        // Pobranie odznak użytkownika
         async function getUserBadges(userId) {
-            const url = `https://badges.roblox.com/v1/users/${userId}/badges?limit=20&sortOrder=Asc`;
             try {
-                const data = await fetchWithProxy(url);
+                const data = await fetchRobloxAPI(`badges.roblox.com/v1/users/${userId}/badges?limit=20&sortOrder=Asc`);
                 if (!data.data) return [];
                 return data.data.map(badge => ({
                     name: badge.name,
@@ -703,7 +678,7 @@
                 <div class="searching-animation" id="searching-animation">
                     <div class="searching-text">Wyszukiwanie informacji</div>
                     <div class="dots" id="searching-dots">.</div>
-                    <div class="searching-sub">Ładowanie danych z API Roblox...</div>
+                    <div class="searching-sub">Ładowanie danych z API Roblox przez proxy...</div>
                 </div>
             `;
             animationInterval = setInterval(() => {
@@ -740,9 +715,8 @@
                 console.error('Render error:', err);
                 document.getElementById('results-container').innerHTML = `
                     <div style="background:#1e1a2f; border-radius:1.6rem; padding:2rem; text-align:center; border:1px solid #ff4d6d30;">
-                        ❌ <strong>Błąd:</strong> ${err.message || "Nie udało się pobrać danych. Sprawdź ID lub nazwę użytkownika."}<br>
-                        <span style="font-size:0.8rem;">Upewnij się, że użytkownik istnieje i ma publiczny profil.</span><br>
-                        <span style="font-size:0.7rem;">Spróbuj ponownie za chwilę lub użyj innej nazwy użytkownika.</span>
+                        ❌ <strong>Błąd:</strong> ${err.message || "Nie udało się pobrać danych."}<br>
+                        <span style="font-size:0.8rem;">Spróbuj ponownie za chwilę lub użyj innej nazwy użytkownika.</span>
                     </div>`;
             }
         }
@@ -893,7 +867,7 @@
             }
             clearError();
             try {
-                const userLookup = await getUserIdByUsernameAlt(username);
+                const userLookup = await getUserIdByUsername(username);
                 if (!userLookup.id) throw new Error("Nie udało się pobrać ID");
                 await fetchAndRender(userLookup.id);
             } catch (err) {
