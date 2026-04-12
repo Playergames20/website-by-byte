@@ -4,34 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     
-    <!-- Podstawowe meta tagi SEO - JEDNOLITE -->
+    <!-- Podstawowe meta tagi SEO -->
     <title>Roblox Info Hub | Wyszukiwarka profili, gier i grup</title>
     <meta name="description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej. Wyszukiwanie po nazwie lub ID.">
     <meta name="keywords" content="roblox, wyszukiwarka, użytkownik, gry, grupy, api, profil, statystyki, roblox search">
     <meta name="author" content="Roblox Info Hub">
     <meta name="robots" content="index, follow">
     
-    <!-- Open Graph meta tagi (Facebook, Discord, Slack, LinkedIn, WhatsApp, Telegram) - JEDNOLITE -->
+    <!-- Open Graph meta tagi (Facebook, Discord, Slack, LinkedIn, WhatsApp, Telegram) -->
     <meta property="og:title" content="Roblox Info Hub | Wyszukiwarka profili, gier i grup">
     <meta property="og:description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej.">
-    <meta property="og:image" content="https://i.imgur.com/7zXrZ3H.png">
+    <meta property="og:image" content="https://www.roblox.com/favicon.ico">
     <meta property="og:image:type" content="image/png">
     <meta property="og:url" content="https://roblox-info-hub.netlify.app/">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="pl_PL">
     <meta property="og:site_name" content="Roblox Info Hub">
     
-    <!-- Twitter Card meta tagi - JEDNOLITE -->
+    <!-- Twitter Card meta tagi -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Roblox Info Hub | Wyszukiwarka profili, gier i grup">
     <meta name="twitter:description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej.">
-    <meta name="twitter:image" content="https://i.imgur.com/7zXrZ3H.png">
+    <meta name="twitter:image" content="https://www.roblox.com/favicon.ico">
     
-    <!-- Dodatkowe meta tagi dla lepszego podglądu -->
+    <!-- Dodatkowe meta tagi -->
     <meta name="theme-color" content="#2d68ff">
     <meta name="color-scheme" content="dark">
     
-    <!-- Favicon / Logo -->
     <link rel="icon" type="image/png" href="https://www.roblox.com/favicon.ico">
     <link rel="apple-touch-icon" href="https://www.roblox.com/favicon.ico">
     
@@ -159,6 +158,34 @@
             font-weight: 500;
             margin-top: 0.5rem;
         }
+
+        /* ============================================ */
+        /* OPIS STRONY INTERNETOWEJ W BODY (WŁASNY TEKST) */
+        /* ============================================ */
+        .page-description {
+            background: rgba(45, 104, 255, 0.1);
+            border-left: 4px solid #2d68ff;
+            border-radius: 1rem;
+            padding: 1.2rem 1.8rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(8px);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #cbd5ff;
+        }
+        .page-description h3 {
+            color: #2d68ff;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .page-description p {
+            margin-bottom: 0.5rem;
+        }
+        .page-description small {
+            color: #6c7aa8;
+            font-size: 0.75rem;
+        }
+        /* ============================================ */
 
         .search-card {
             background: rgba(20, 25, 40, 0.75);
@@ -543,6 +570,21 @@
             </div>
         </div>
 
+        <!-- ============================================ -->
+        <!-- OPIS STRONY INTERNETOWEJ W BODY (WŁASNY TEKST) -->
+        <!-- ============================================ -->
+        <!-- MOŻESZ EDYTOWAĆ TEN TEKST - TO JEST OPIS STRONY W BODY -->
+        <div class="page-description">
+            <h3>📌 O tej stronie - Roblox Info Hub</h3>
+            <p><strong>Roblox Info Hub</strong> to zaawansowana wyszukiwarka informacji o użytkownikach platformy Roblox. Strona korzysta z oficjalnego API Roblox, aby dostarczyć jak najwięcej publicznie dostępnych danych.</p>
+            <p>🔹 <strong>Co można znaleźć?</strong> - Pełny profil użytkownika (nazwa, ID, data utworzenia, opis, status konta), listę wszystkich publicznych gier stworzonych przez użytkownika, listę grup do których należy użytkownik wraz z rolami i rangami, awatar użytkownika oraz odznaki (badges).</p>
+            <p>🔹 <strong>Jak wyszukiwać?</strong> - Możesz wyszukać użytkownika po nazwie (np. "oskar90193", "Roblox", "Builderman") lub po numerze ID konta. Po wpisaniu nazwy strona automatycznie znajdzie ID i pobierze wszystkie dane.</p>
+            <p>🔹 <strong>Dlaczego warto?</strong> - To najprostszy sposób aby sprawdzić szczegółowe informacje o dowolnym użytkowniku Roblox bez logowania się na platformę. Wszystkie dane pochodzą bezpośrednio z API Roblox i są na bieżąco aktualizowane.</p>
+            <p>🔹 <strong>Techniczne szczegóły</strong> - Strona używa endpointów API: <code>users.roblox.com</code> (dane użytkownika), <code>games.roblox.com</code> (gry użytkownika), <code>groups.roblox.com</code> (grupy użytkownika) oraz <code>thumbnails.roblox.com</code> (awatar). Ze względu na ograniczenia CORS używamy proxy <code>api.allorigins.win</code>.</p>
+            <small>📅 Data utworzenia strony: 2026 • Wersja: 2.0 • Wszystkie prawa zastrzeżone</small>
+        </div>
+        <!-- ============================================ -->
+
         <div class="search-card">
             <div class="search-tabs">
                 <button class="tab-btn active" data-tab="username">🔍 Wyszukaj po nazwie</button>
@@ -582,6 +624,16 @@
     </div>
 
     <script>
+        // ============================================
+        // POPRAWIONE API ROBLOX - zgodne z dokumentacją
+        // Endpointy użyte w skrypcie:
+        // - users.roblox.com/v1/users/{id} - dane użytkownika [citation:6]
+        // - thumbnails.roblox.com/v1/users/avatar-headshot - awatar [citation:6]
+        // - games.roblox.com/v2/users/{id}/games - gry użytkownika [citation:6]
+        // - groups.roblox.com/v1/users/{id}/groups/roles - grupy użytkownika [citation:6]
+        // - badges.roblox.com/v1/users/{id}/badges - odznaki użytkownika [citation:6]
+        // ============================================
+        
         const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
         
         async function fetchWithProxy(url) {
@@ -601,6 +653,7 @@
             }
         }
 
+        // Pobranie ID po nazwie użytkownika - endpoint POST /v1/usernames/users
         async function getUserIdByUsername(username) {
             if (!username || username.trim() === "") throw new Error("Nazwa użytkownika nie może być pusta.");
             
@@ -634,6 +687,7 @@
             }
         }
 
+        // Pobranie szczegółów użytkownika - GET /v1/users/{id}
         async function getUserFullDetails(userId) {
             const url = `https://users.roblox.com/v1/users/${userId}`;
             const data = await fetchWithProxy(url);
@@ -648,6 +702,7 @@
             };
         }
 
+        // Pobranie awatara - GET /v1/users/avatar-headshot
         async function getUserAvatarUrl(userId) {
             const url = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`;
             try {
@@ -661,6 +716,7 @@
             }
         }
 
+        // Pobranie gier użytkownika - GET /v2/users/{id}/games
         async function getUserGames(userId) {
             const url = `https://games.roblox.com/v2/users/${userId}/games?sortOrder=Asc&limit=50`;
             try {
@@ -681,6 +737,7 @@
             }
         }
 
+        // Pobranie grup użytkownika - GET /v1/users/{id}/groups/roles
         async function getUserGroupsWithRoles(userId) {
             const url = `https://groups.roblox.com/v1/users/${userId}/groups/roles`;
             try {
@@ -701,17 +758,35 @@
             }
         }
 
+        // Pobranie odznak użytkownika - GET /v1/users/{id}/badges (dodatkowe API)
+        async function getUserBadges(userId) {
+            const url = `https://badges.roblox.com/v1/users/${userId}/badges?limit=20&sortOrder=Asc`;
+            try {
+                const data = await fetchWithProxy(url);
+                if (!data.data) return [];
+                return data.data.map(badge => ({
+                    name: badge.name,
+                    description: badge.description || "Brak opisu",
+                    awardedAt: badge.awardedAt
+                }));
+            } catch (error) {
+                console.error('Badges fetch error:', error);
+                return [];
+            }
+        }
+
         async function fetchAndRender(userId) {
             setLoading(true);
             try {
-                const [userDetails, avatarUrl, userGames, userGroups] = await Promise.all([
+                const [userDetails, avatarUrl, userGames, userGroups, userBadges] = await Promise.all([
                     getUserFullDetails(userId),
                     getUserAvatarUrl(userId),
                     getUserGames(userId),
-                    getUserGroupsWithRoles(userId)
+                    getUserGroupsWithRoles(userId),
+                    getUserBadges(userId)
                 ]);
                 
-                renderProfile(userDetails, avatarUrl, userGames, userGroups);
+                renderProfile(userDetails, avatarUrl, userGames, userGroups, userBadges);
             } catch (err) {
                 console.error('Render error:', err);
                 resultsContainer.innerHTML = `
@@ -724,7 +799,7 @@
             }
         }
 
-        function renderProfile(user, avatarUrl, games, groups) {
+        function renderProfile(user, avatarUrl, games, groups, badges) {
             const createdDate = user.created ? new Date(user.created).toLocaleDateString('pl-PL') : "Nieznana";
             const isBannedText = user.isBanned ? "🚫 Tak (zbanowany)" : "✅ Nie";
             const verifiedBadge = user.hasVerifiedBadge ? "✔️ Zweryfikowany" : "Standardowe konto";
@@ -747,6 +822,24 @@
                     </div>
                 </div>
             `;
+
+            // Sekcja odznak (badges) - dodatkowe API
+            let badgesHtml = `<div class="section-title">🏅 Odznaki użytkownika (${badges.length})</div>`;
+            if (badges.length === 0) {
+                badgesHtml += `<div style="background:#0b0e16; border-radius:1rem; padding:1rem;">Brak publicznych odznak.</div>`;
+            } else {
+                badgesHtml += `<div class="games-list" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">`;
+                for (const badge of badges.slice(0, 15)) {
+                    badgesHtml += `
+                        <div class="game-item">
+                            <div class="game-name">🏅 ${escapeHtml(badge.name)}</div>
+                            <div class="game-detail">📖 ${escapeHtml(badge.description?.substring(0, 80) || "Brak opisu")}</div>
+                            <div class="game-detail">📅 Przyznano: ${badge.awardedAt ? new Date(badge.awardedAt).toLocaleDateString('pl-PL') : "nieznana"}</div>
+                        </div>
+                    `;
+                }
+                badgesHtml += `</div>`;
+            }
 
             let gamesHtml = `<div class="section-title">🎮 Gry stworzone przez użytkownika (${games.length})</div>`;
             if (games.length === 0) {
@@ -785,7 +878,7 @@
                 groupsHtml += `</div>`;
             }
 
-            const fullHtml = profileHtml + gamesHtml + groupsHtml;
+            const fullHtml = profileHtml + badgesHtml + gamesHtml + groupsHtml;
             resultsContainer.innerHTML = fullHtml;
         }
 
