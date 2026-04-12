@@ -28,12 +28,17 @@
     <p><b>Język:</b> <span id="lang"></span></p>
     <p><b>Rozdzielczość:</b> <span id="res"></span></p>
     <p><b>Godzina lokalna:</b> <span id="time"></span></p>
+
     <p><b>IP:</b> <span id="ip">Ładowanie...</span></p>
+    <p><b>Miasto:</b> <span id="city"></span></p>
+    <p><b>Region:</b> <span id="region"></span></p>
+    <p><b>Kraj:</b> <span id="country"></span></p>
+
     <p><b>Typ wejścia:</b> <span id="entry"></span></p>
 </div>
 
 <script>
-    // 🌍 system
+    // 🧠 SYSTEM
     let os = "Nieznany";
     if (navigator.userAgent.includes("Windows")) os = "Windows";
     if (navigator.userAgent.includes("Mac")) os = "MacOS";
@@ -53,17 +58,23 @@
     // ⏰ czas
     document.getElementById("time").innerText = new Date().toLocaleString();
 
-    // 🔥 IP
-    fetch("https://api.ipify.org?format=json")
+    // 🌍 IP + GEOLOCATION
+    fetch("https://ipapi.co/json/")
         .then(res => res.json())
         .then(data => {
-            document.getElementById("ip").innerText = data.ip;
+            document.getElementById("ip").innerText = data.ip || "Nieznane";
+            document.getElementById("city").innerText = data.city || "Nieznane";
+            document.getElementById("region").innerText = data.region || "Nieznane";
+            document.getElementById("country").innerText = data.country_name || "Nieznane";
         })
         .catch(() => {
-            document.getElementById("ip").innerText = "Nie udało się pobrać IP";
+            document.getElementById("ip").innerText = "Błąd";
+            document.getElementById("city").innerText = "Błąd";
+            document.getElementById("region").innerText = "Błąd";
+            document.getElementById("country").innerText = "Błąd";
         });
 
-    // 🚪 typ wejścia
+    // 🚪 TYP WEJŚCIA
     let ref = document.referrer;
     let entryType = "Direct (bezpośrednie wejście)";
 
