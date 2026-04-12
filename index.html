@@ -7,7 +7,7 @@
     <title>Roblox Info Hub | Wyszukiwarka profili, gier i grup</title>
     <meta name="description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej.">
     <meta name="keywords" content="roblox, wyszukiwarka, użytkownik, gry, grupy, api, profil">
-    <meta name="author" content="Roblox Info Hub">
+    <meta name="author" content="byte official">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph meta tagi -->
@@ -27,11 +27,7 @@
     <link rel="icon" type="image/png" href="https://www.roblox.com/favicon.ico">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
@@ -77,37 +73,13 @@
             66% { transform: translate(-20px, 20px); }
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
+        .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
 
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-            animation: fadeInDown 0.8s ease-out;
-        }
+        .header { text-align: center; margin-bottom: 2rem; animation: fadeInDown 0.8s ease-out; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .logo-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 1rem;
-        }
-
-        .logo-img {
-            width: 55px;
-            height: 55px;
-            object-fit: contain;
-        }
+        .logo-container { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 1rem; }
+        .logo-img { width: 55px; height: 55px; object-fit: contain; }
 
         .header h1 {
             font-size: 2.5rem;
@@ -119,11 +91,7 @@
             animation: shimmer 3s infinite;
         }
 
-        @keyframes shimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         .badge-icon {
             display: inline-flex;
@@ -149,17 +117,9 @@
             line-height: 1.5;
             color: #cbd5ff;
         }
-        .page-description h3 {
-            color: #2d68ff;
-            margin-bottom: 0.5rem;
-        }
-        .page-description p {
-            margin-bottom: 0.5rem;
-        }
-        .page-description small {
-            color: #6c7aa8;
-            font-size: 0.75rem;
-        }
+        .page-description h3 { color: #2d68ff; margin-bottom: 0.5rem; }
+        .page-description p { margin-bottom: 0.5rem; }
+        .page-description small { color: #6c7aa8; font-size: 0.75rem; }
 
         .search-card {
             background: rgba(20, 25, 40, 0.75);
@@ -170,10 +130,7 @@
             border: 1px solid rgba(71, 85, 125, 0.4);
             transition: all 0.3s ease;
         }
-
-        .search-card:hover {
-            border-color: rgba(45, 104, 255, 0.6);
-        }
+        .search-card:hover { border-color: rgba(45, 104, 255, 0.6); }
 
         .search-tabs {
             display: flex;
@@ -194,50 +151,13 @@
             border-radius: 40px;
             transition: all 0.2s;
         }
+        .tab-btn.active { background: #2d68ff; color: white; box-shadow: 0 4px 12px rgba(45, 104, 255, 0.3); }
 
-        .tab-btn.active {
-            background: #2d68ff;
-            color: white;
-            box-shadow: 0 4px 12px rgba(45, 104, 255, 0.3);
-        }
-
-        .search-input-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: flex-end;
-        }
-
-        .input-field {
-            flex: 3;
-            min-width: 200px;
-        }
-
-        .input-field label {
-            display: block;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #a5b0d0;
-        }
-
-        .input-field input {
-            width: 100%;
-            padding: 0.9rem 1.2rem;
-            background: #0f111c;
-            border: 1px solid #2d334e;
-            border-radius: 1.2rem;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .input-field input:focus {
-            border-color: #2d68ff;
-            box-shadow: 0 0 0 3px rgba(45, 104, 255, 0.2);
-        }
+        .search-input-group { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; }
+        .input-field { flex: 3; min-width: 200px; }
+        .input-field label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 0.5rem; color: #a5b0d0; }
+        .input-field input { width: 100%; padding: 0.9rem 1.2rem; background: #0f111c; border: 1px solid #2d334e; border-radius: 1.2rem; color: white; font-size: 1rem; outline: none; }
+        .input-field input:focus { border-color: #2d68ff; box-shadow: 0 0 0 3px rgba(45, 104, 255, 0.2); }
 
         .search-btn {
             background: linear-gradient(135deg, #2d68ff, #1a53e0);
@@ -250,217 +170,69 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+        .search-btn:hover { transform: scale(0.98); box-shadow: 0 8px 20px rgba(45, 104, 255, 0.4); }
 
-        .search-btn:hover {
-            transform: scale(0.98);
-            box-shadow: 0 8px 20px rgba(45, 104, 255, 0.4);
-        }
-
+        /* Szczegółowe błędy - styl */
         .error-msg {
             margin-top: 1rem;
             background: #ff336633;
-            padding: 0.8rem 1rem;
+            padding: 1rem 1.2rem;
             border-radius: 1rem;
             color: #ffb4b4;
             font-weight: 500;
+            border-left: 4px solid #ff3366;
         }
-
-        .searching-animation {
-            text-align: center;
-            padding: 3rem;
-            background: rgba(14, 17, 27, 0.7);
-            border-radius: 1.8rem;
-            backdrop-filter: blur(8px);
-            margin: 1rem 0;
-        }
-        .searching-text {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #2d68ff;
-            margin-bottom: 1rem;
-        }
-        .dots {
-            font-size: 2rem;
-            letter-spacing: 5px;
-            color: #8d9eff;
-            font-family: monospace;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: rgba(14, 17, 27, 0.6);
-            border-radius: 1.8rem;
-            backdrop-filter: blur(8px);
-            border: 1px dashed #2d68ff;
-            margin: 1rem 0;
-        }
-        .empty-state-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-        .empty-state h3 {
-            color: #8d9eff;
-            margin-bottom: 0.5rem;
-        }
-        .empty-state p {
-            color: #9aa3bb;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .profile-section {
-            background: rgba(14, 17, 27, 0.9);
-            backdrop-filter: blur(8px);
-            border-radius: 1.8rem;
-            padding: 1.6rem;
-            margin-bottom: 2rem;
-            border: 1px solid #252a3f;
-            transition: transform 0.3s ease;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        .profile-section:hover {
-            transform: translateY(-3px);
-            border-color: rgba(45, 104, 255, 0.4);
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .profile-header {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .avatar-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 28px;
-            background: linear-gradient(135deg, #1e2338, #0f1220);
-            object-fit: cover;
-            border: 3px solid #2d68ff;
-        }
-
-        .user-basic h2 {
-            font-size: 1.9rem;
-            background: linear-gradient(135deg, #fff, #b2f0ff);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-
-        .user-basic p {
-            color: #b9c3e6;
-        }
-
-        .badge {
-            background: linear-gradient(135deg, #2d334e, #1e2338);
-            border-radius: 50px;
-            padding: 0.2rem 0.8rem;
-            font-size: 0.7rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-left: 0.5rem;
-            border: 1px solid rgba(45, 104, 255, 0.3);
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1rem;
-            margin-top: 1.2rem;
-        }
-
-        .info-card {
-            background: rgba(11, 14, 22, 0.8);
-            border-radius: 1.2rem;
-            padding: 0.9rem 1.2rem;
-            border-left: 4px solid #2d68ff;
-            transition: all 0.2s;
-        }
-
-        .info-card:hover {
-            background: rgba(20, 25, 45, 0.9);
-            transform: translateX(5px);
-        }
-
-        .info-card strong {
-            color: #8d9eff;
-        }
-
-        .section-title {
-            font-size: 1.6rem;
-            margin: 1.6rem 0 1rem 0;
-            border-left: 4px solid #2d68ff;
-            padding-left: 1rem;
-        }
-
-        .games-list, .groups-list, .badges-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 1.2rem;
-        }
-
-        .game-item, .group-item, .badge-item {
-            background: rgba(15, 18, 32, 0.8);
-            border-radius: 1.2rem;
-            padding: 1rem;
-            border: 1px solid #202536;
-            transition: all 0.2s;
-        }
-
-        .game-item:hover, .group-item:hover, .badge-item:hover {
-            transform: translateY(-3px);
-            border-color: #2d68ff;
-        }
-
-        .game-name, .group-name, .badge-name {
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: white;
-        }
-
-        .game-detail, .group-detail, .badge-detail {
-            font-size: 0.75rem;
-            color: #8f9ac0;
-            margin-top: 6px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding: 1.5rem;
-            font-size: 0.75rem;
-            color: #5f6b8a;
-            border-top: 1px solid #2d3348;
-        }
-
-        .live-stats {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .stat-item {
-            background: rgba(45, 104, 255, 0.1);
-            padding: 0.3rem 1rem;
-            border-radius: 50px;
+        .error-details {
+            margin-top: 0.5rem;
             font-size: 0.8rem;
+            color: #ff9999;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
-        
-        .stat-item span {
-            color: #2d68ff;
-            font-weight: bold;
+        .error-possible-causes {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #ffaa99;
+            border-top: 1px solid rgba(255,51,102,0.3);
+            padding-top: 0.5rem;
         }
+
+        .searching-animation { text-align: center; padding: 3rem; background: rgba(14, 17, 27, 0.7); border-radius: 1.8rem; backdrop-filter: blur(8px); margin: 1rem 0; }
+        .searching-text { font-size: 1.8rem; font-weight: bold; color: #2d68ff; margin-bottom: 1rem; }
+        .dots { font-size: 2rem; letter-spacing: 5px; color: #8d9eff; font-family: monospace; }
+
+        .empty-state { text-align: center; padding: 4rem 2rem; background: rgba(14, 17, 27, 0.6); border-radius: 1.8rem; backdrop-filter: blur(8px); border: 1px dashed #2d68ff; margin: 1rem 0; }
+        .empty-state-icon { font-size: 4rem; margin-bottom: 1rem; opacity: 0.5; }
+        .empty-state h3 { color: #8d9eff; margin-bottom: 0.5rem; }
+        .empty-state p { color: #9aa3bb; max-width: 500px; margin: 0 auto; }
+
+        .profile-section { background: rgba(14, 17, 27, 0.9); backdrop-filter: blur(8px); border-radius: 1.8rem; padding: 1.6rem; margin-bottom: 2rem; border: 1px solid #252a3f; transition: transform 0.3s ease; animation: fadeInUp 0.6s ease-out; }
+        .profile-section:hover { transform: translateY(-3px); border-color: rgba(45, 104, 255, 0.4); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .profile-header { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; margin-bottom: 1.5rem; }
+        .avatar-img { width: 100px; height: 100px; border-radius: 28px; background: linear-gradient(135deg, #1e2338, #0f1220); object-fit: cover; border: 3px solid #2d68ff; }
+        .user-basic h2 { font-size: 1.9rem; background: linear-gradient(135deg, #fff, #b2f0ff); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .user-basic p { color: #b9c3e6; }
+        .badge { background: linear-gradient(135deg, #2d334e, #1e2338); border-radius: 50px; padding: 0.2rem 0.8rem; font-size: 0.7rem; font-weight: bold; display: inline-block; margin-left: 0.5rem; border: 1px solid rgba(45, 104, 255, 0.3); }
+
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+        .info-card { background: rgba(11, 14, 22, 0.8); border-radius: 1.2rem; padding: 0.9rem 1.2rem; border-left: 4px solid #2d68ff; transition: all 0.2s; }
+        .info-card:hover { background: rgba(20, 25, 45, 0.9); transform: translateX(5px); }
+        .info-card strong { color: #8d9eff; }
+
+        .section-title { font-size: 1.6rem; margin: 1.6rem 0 1rem 0; border-left: 4px solid #2d68ff; padding-left: 1rem; }
+        .games-list, .groups-list, .badges-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.2rem; }
+        .game-item, .group-item, .badge-item { background: rgba(15, 18, 32, 0.8); border-radius: 1.2rem; padding: 1rem; border: 1px solid #202536; transition: all 0.2s; }
+        .game-item:hover, .group-item:hover, .badge-item:hover { transform: translateY(-3px); border-color: #2d68ff; }
+        .game-name, .group-name, .badge-name { font-weight: bold; font-size: 1.1rem; color: white; }
+        .game-detail, .group-detail, .badge-detail { font-size: 0.75rem; color: #8f9ac0; margin-top: 6px; }
+
+        footer { text-align: center; margin-top: 3rem; padding: 1.5rem; font-size: 0.75rem; color: #5f6b8a; border-top: 1px solid #2d3348; }
+        .live-stats { display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; flex-wrap: wrap; }
+        .stat-item { background: rgba(45, 104, 255, 0.1); padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.8rem; }
+        .stat-item span { color: #2d68ff; font-weight: bold; }
 
         @media (max-width: 768px) {
             body { padding: 1rem; }
@@ -492,14 +264,13 @@
             </div>
         </div>
 
-        <!-- OPIS STRONY INTERNETOWEJ W BODY - MOŻESZ EDYTOWAĆ -->
         <div class="page-description">
             <h3>📌 O tej stronie - Roblox Info Hub</h3>
             <p><strong>Roblox Info Hub</strong> to zaawansowana wyszukiwarka informacji o użytkownikach platformy Roblox. Strona korzysta z oficjalnego API Roblox, aby dostarczyć jak najwięcej publicznie dostępnych danych.</p>
             <p>🔹 <strong>Co można znaleźć?</strong> - Pełny profil użytkownika (nazwa, ID, data utworzenia, opis, status konta), listę wszystkich publicznych gier stworzonych przez użytkownika, listę grup do których należy użytkownik wraz z rolami i rangami, awatar użytkownika oraz odznaki.</p>
             <p>🔹 <strong>Jak wyszukiwać?</strong> - Możesz wyszukać użytkownika po nazwie (np. "oskar90193", "Roblox", "Builderman") lub po numerze ID konta.</p>
             <p>🔹 <strong>Statystyki konta</strong> - Po wyszukaniu konta zobaczysz szczegółowe statystyki: datę rejestracji, status konta, weryfikację, liczbę gier, liczbę grup, liczbę odznak i wiele innych.</p>
-            <p>🔹 <strong>Statystyki konta</strong> - Jako właściciel tej stroy internetowej chcę podziękować tobie jako osobie na tej stronie za to że postanowiłeś odwiedzić tą stronę internetową mam nadzieję że wrócisz jeszcze tutaj ja życzę miłego dnia/wieczoru i pozdrawiam - byte official mam nadzieję że strona internetowa ci się spodobała.</p>
+            <p>🔹 <strong>Podziękowania za odwiedzenie strony od właściciela(byte official)</strong> - Jako właściciel tej strony internetowej chcę podziękować tobie jako osobie na tej stronie za to że postanowiłeś odwiedzić tą stronę internetową mam nadzieję że wrócisz jeszcze tutaj ja życzę miłego dnia/wieczoru i pozdrawiam - byte official mam nadzieję że strona internetowa ci się spodobała.</p>
             <small>📅 Strona internetowa powstała dnia 12 kwietnia 2026 roku przez użytkownika byte official</small>
         </div>
 
@@ -540,133 +311,295 @@
             </div>
         </div>
         <footer>
-            ⚡ Dane pochodzą z oficjalnego API Roblox przez proxy rprxy.xyz • Wszystkie publiczne informacje
+            ⚡ Dane pochodzą z oficjalnego API Roblox przez proxy • Wszystkie publiczne informacje
         </footer>
     </div>
 
     <script>
         // ============================================
-        // ROZWIĄZANIE PROBLEMU CORS - użycie publicznego proxy Roblox
-        // Proxy: rprxy.xyz - dedykowane proxy dla API Roblox [citation:6]
+        // ROZWIĄZANIE PROBLEMU CORS - użycie proxy roproxy.com
+        // Według forum Roblox Developer Forum, oficjalne API Roblox blokuje zapytania z przeglądarki [citation:1][citation:2]
+        // Rozwiązaniem jest użycie proxy: roproxy.com lub rprxy.xyz [citation:3]
         // ============================================
         
-        const ROBLOX_PROXY = 'https://rprxy.xyz';
+        // Lista dostępnych proxy (w przypadku awarii jednego, użyjemy następnego)
+        const PROXY_LIST = [
+            'https://users.roproxy.com',
+            'https://api.allorigins.win/raw?url=https://users.roblox.com',
+            'https://corsproxy.io/?https://users.roblox.com'
+        ];
         
-        // Funkcja do zapytań przez proxy Roblox
-        async function fetchRobloxAPI(path, useProxy = true) {
-            const url = useProxy ? `${ROBLOX_PROXY}/${path}` : `https://${path}`;
+        let currentProxyIndex = 0;
+        
+        // Funkcja do szczegółowego logowania błędów
+        function logErrorDetails(error, context, url = null) {
+            console.error(`[${new Date().toISOString()}] Błąd w ${context}:`, error);
+            if (url) console.error(`URL: ${url}`);
+            if (error.stack) console.error(`Stack: ${error.stack}`);
+        }
+        
+        // Funkcja do wyświetlania szczegółowych błędów z możliwymi przyczynami
+        function showDetailedError(userMessage, technicalDetails, possibleCauses) {
+            const errorDiv = document.getElementById('search-error');
+            errorDiv.innerHTML = `
+                <strong>❌ ${userMessage}</strong>
+                <div class="error-details">📋 Szczegóły techniczne: ${technicalDetails}</div>
+                <div class="error-possible-causes">
+                    🔍 Możliwe przyczyny:<br>
+                    ${possibleCauses.map(cause => `• ${cause}`).join('<br>')}
+                </div>
+            `;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                if(errorDiv.innerHTML === errorDiv.innerHTML) errorDiv.style.display = 'none';
+            }, 15000);
+        }
+        
+        // Funkcja do zapytań przez proxy z obsługą błędów
+        async function fetchWithProxy(endpoint, baseUrl = null) {
+            const actualBaseUrl = baseUrl || PROXY_LIST[currentProxyIndex];
+            let url;
+            
+            if (actualBaseUrl.includes('allorigins') || actualBaseUrl.includes('corsproxy')) {
+                url = `${actualBaseUrl}${endpoint}`;
+            } else {
+                url = `${actualBaseUrl}/${endpoint}`;
+            }
+            
             try {
                 const response = await fetch(url);
+                
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
+                    const errorText = await response.text();
+                    let errorJson = null;
+                    try {
+                        errorJson = JSON.parse(errorText);
+                    } catch(e) {}
+                    
+                    throw { 
+                        status: response.status, 
+                        statusText: response.statusText,
+                        body: errorJson || errorText
+                    };
                 }
+                
                 return await response.json();
             } catch (error) {
-                console.error('API Error:', error);
-                throw new Error(`Nie udało się połączyć: ${error.message}`);
+                logErrorDetails(error, 'fetchWithProxy', url);
+                throw error;
             }
         }
         
         // Pobranie ID po nazwie użytkownika przez proxy
         async function getUserIdByUsername(username) {
-            if (!username || username.trim() === "") throw new Error("Nazwa użytkownika nie może być pusta.");
+            if (!username || username.trim() === "") {
+                throw new Error("Nazwa użytkownika nie może być pusta.");
+            }
             
-            // Użycie endpointu search przez proxy
-            const data = await fetchRobloxAPI(`users.roblox.com/v1/users/search?keyword=${encodeURIComponent(username)}&limit=10`);
+            // Użycie endpointu search z GET (działa lepiej z CORS niż POST) [citation:2]
+            const encodedUsername = encodeURIComponent(username);
             
-            if (data.data && data.data.length > 0) {
-                const exactMatch = data.data.find(u => u.name.toLowerCase() === username.toLowerCase());
-                if (exactMatch) {
-                    return { 
-                        id: exactMatch.id, 
-                        username: exactMatch.name, 
-                        displayName: exactMatch.displayName, 
-                        hasVerifiedBadge: exactMatch.hasVerifiedBadge 
-                    };
-                }
-                if (data.data[0]) {
-                    return { 
-                        id: data.data[0].id, 
-                        username: data.data[0].name, 
-                        displayName: data.data[0].displayName, 
-                        hasVerifiedBadge: data.data[0].hasVerifiedBadge 
-                    };
+            // Próba z różnymi proxy
+            for (let attempt = 0; attempt < PROXY_LIST.length; attempt++) {
+                try {
+                    const data = await fetchWithProxy(`v1/users/search?keyword=${encodedUsername}&limit=10`);
+                    
+                    if (data.data && data.data.length > 0) {
+                        const exactMatch = data.data.find(u => u.name.toLowerCase() === username.toLowerCase());
+                        if (exactMatch) {
+                            return { 
+                                id: exactMatch.id, 
+                                username: exactMatch.name, 
+                                displayName: exactMatch.displayName, 
+                                hasVerifiedBadge: exactMatch.hasVerifiedBadge 
+                            };
+                        }
+                        if (data.data[0]) {
+                            return { 
+                                id: data.data[0].id, 
+                                username: data.data[0].name, 
+                                displayName: data.data[0].displayName, 
+                                hasVerifiedBadge: data.data[0].hasVerifiedBadge 
+                            };
+                        }
+                    }
+                    throw new Error(`Nie znaleziono użytkownika o nazwie "${username}"`);
+                } catch (error) {
+                    logErrorDetails(error, `getUserIdByUsername (proxy ${attempt})`);
+                    if (attempt === PROXY_LIST.length - 1) throw error;
+                    currentProxyIndex = (currentProxyIndex + 1) % PROXY_LIST.length;
                 }
             }
-            throw new Error(`Nie znaleziono użytkownika o nazwie "${username}"`);
+            throw new Error(`Nie znaleziono użytkownika o nazwie "${username}" po wyczerpaniu wszystkich proxy`);
         }
 
         // Pobranie szczegółów użytkownika
         async function getUserFullDetails(userId) {
-            return await fetchRobloxAPI(`users.roblox.com/v1/users/${userId}`);
+            const proxies = ['https://users.roproxy.com', 'https://api.allorigins.win/raw?url=https://users.roblox.com'];
+            let lastError = null;
+            
+            for (const proxy of proxies) {
+                try {
+                    const url = proxy.includes('allorigins') 
+                        ? `${proxy}${encodeURIComponent(`https://users.roblox.com/v1/users/${userId}`)}`
+                        : `${proxy}/v1/users/${userId}`;
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    const data = await response.json();
+                    
+                    // Sprawdź czy API zwróciło błąd [citation:4]
+                    if (data.errors && data.errors.length > 0) {
+                        throw {
+                            status: response.status,
+                            code: data.errors[0].code,
+                            message: data.errors[0].message,
+                            userMessage: data.errors[0].userFacingMessage
+                        };
+                    }
+                    
+                    return {
+                        id: data.id,
+                        name: data.name,
+                        displayName: data.displayName,
+                        description: data.description || "Brak opisu",
+                        created: data.created,
+                        isBanned: data.isBanned || false,
+                        hasVerifiedBadge: data.hasVerifiedBadge || false
+                    };
+                } catch (error) {
+                    lastError = error;
+                    logErrorDetails(error, 'getUserFullDetails', proxy);
+                }
+            }
+            throw lastError;
         }
 
         // Pobranie awatara
         async function getUserAvatarUrl(userId) {
-            try {
-                const data = await fetchRobloxAPI(`thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`);
-                if (data.data && data.data.length > 0 && data.data[0].imageUrl) {
-                    return data.data[0].imageUrl;
+            const proxies = ['https://thumbnails.roproxy.com', 'https://api.allorigins.win/raw?url=https://thumbnails.roblox.com'];
+            
+            for (const proxy of proxies) {
+                try {
+                    let url;
+                    if (proxy.includes('allorigins')) {
+                        url = `${proxy}${encodeURIComponent(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`)}`;
+                    } else {
+                        url = `${proxy}/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`;
+                    }
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    
+                    if (data.data && data.data.length > 0 && data.data[0].imageUrl) {
+                        return data.data[0].imageUrl;
+                    }
+                    return null;
+                } catch (error) {
+                    logErrorDetails(error, 'getUserAvatarUrl', proxy);
                 }
-                return null;
-            } catch (error) {
-                return null;
             }
+            return null;
         }
 
         // Pobranie gier użytkownika
         async function getUserGames(userId) {
-            try {
-                const data = await fetchRobloxAPI(`games.roblox.com/v2/users/${userId}/games?sortOrder=Asc&limit=50`);
-                if (!data.data) return [];
-                return data.data.map(game => ({
-                    id: game.id,
-                    name: game.name,
-                    description: game.description || "Brak opisu",
-                    created: game.created,
-                    playing: game.playing || 0,
-                    visits: game.visits || 0
-                }));
-            } catch (error) {
-                console.error('Games fetch error:', error);
-                return [];
+            const proxies = ['https://games.roproxy.com', 'https://api.allorigins.win/raw?url=https://games.roblox.com'];
+            
+            for (const proxy of proxies) {
+                try {
+                    let url;
+                    if (proxy.includes('allorigins')) {
+                        url = `${proxy}${encodeURIComponent(`https://games.roblox.com/v2/users/${userId}/games?sortOrder=Asc&limit=50`)}`;
+                    } else {
+                        url = `${proxy}/v2/users/${userId}/games?sortOrder=Asc&limit=50`;
+                    }
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    
+                    if (!data.data) return [];
+                    return data.data.map(game => ({
+                        id: game.id,
+                        name: game.name,
+                        description: game.description || "Brak opisu",
+                        created: game.created,
+                        playing: game.playing || 0,
+                        visits: game.visits || 0
+                    }));
+                } catch (error) {
+                    logErrorDetails(error, 'getUserGames', proxy);
+                }
             }
+            return [];
         }
 
         // Pobranie grup użytkownika
         async function getUserGroupsWithRoles(userId) {
-            try {
-                const data = await fetchRobloxAPI(`groups.roblox.com/v1/users/${userId}/groups/roles`);
-                if (!data.data) return [];
-                return data.data.map(item => ({
-                    groupId: item.group.id,
-                    groupName: item.group.name,
-                    groupMemberCount: item.group.memberCount,
-                    description: item.group.description || "",
-                    roleName: item.role.name,
-                    roleRank: item.role.rank,
-                    isOwner: item.role.rank === 255
-                }));
-            } catch (error) {
-                console.error('Groups fetch error:', error);
-                return [];
+            const proxies = ['https://groups.roproxy.com', 'https://api.allorigins.win/raw?url=https://groups.roblox.com'];
+            
+            for (const proxy of proxies) {
+                try {
+                    let url;
+                    if (proxy.includes('allorigins')) {
+                        url = `${proxy}${encodeURIComponent(`https://groups.roblox.com/v1/users/${userId}/groups/roles`)}`;
+                    } else {
+                        url = `${proxy}/v1/users/${userId}/groups/roles`;
+                    }
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    
+                    if (!data.data) return [];
+                    return data.data.map(item => ({
+                        groupId: item.group.id,
+                        groupName: item.group.name,
+                        groupMemberCount: item.group.memberCount,
+                        description: item.group.description || "",
+                        roleName: item.role.name,
+                        roleRank: item.role.rank,
+                        isOwner: item.role.rank === 255
+                    }));
+                } catch (error) {
+                    logErrorDetails(error, 'getUserGroupsWithRoles', proxy);
+                }
             }
+            return [];
         }
 
         // Pobranie odznak użytkownika
         async function getUserBadges(userId) {
-            try {
-                const data = await fetchRobloxAPI(`badges.roblox.com/v1/users/${userId}/badges?limit=20&sortOrder=Asc`);
-                if (!data.data) return [];
-                return data.data.map(badge => ({
-                    name: badge.name,
-                    description: badge.description || "Brak opisu",
-                    awardedAt: badge.awardedAt
-                }));
-            } catch (error) {
-                console.error('Badges fetch error:', error);
-                return [];
+            const proxies = ['https://badges.roproxy.com', 'https://api.allorigins.win/raw?url=https://badges.roblox.com'];
+            
+            for (const proxy of proxies) {
+                try {
+                    let url;
+                    if (proxy.includes('allorigins')) {
+                        url = `${proxy}${encodeURIComponent(`https://badges.roblox.com/v1/users/${userId}/badges?limit=20&sortOrder=Asc`)}`;
+                    } else {
+                        url = `${proxy}/v1/users/${userId}/badges?limit=20&sortOrder=Asc`;
+                    }
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    
+                    if (!data.data) return [];
+                    return data.data.map(badge => ({
+                        name: badge.name,
+                        description: badge.description || "Brak opisu",
+                        awardedAt: badge.awardedAt
+                    }));
+                } catch (error) {
+                    logErrorDetails(error, 'getUserBadges', proxy);
+                }
             }
+            return [];
         }
 
         // Animacja wyszukiwania
@@ -712,11 +645,69 @@
                 renderProfile(userDetails, avatarUrl, userGames, userGroups, userBadges);
             } catch (err) {
                 stopSearchingAnimation();
-                console.error('Render error:', err);
+                logErrorDetails(err, 'fetchAndRender');
+                
+                let technicalDetails = err.message || "Nieznany błąd";
+                let possibleCauses = [];
+                
+                if (err.status === 404) {
+                    technicalDetails = `HTTP 404 - Użytkownik o ID ${userId} nie istnieje`;
+                    possibleCauses = [
+                        "Podane ID użytkownika jest nieprawidłowe lub nie istnieje w bazie Roblox",
+                        "Konto zostało usunięte lub zablokowane",
+                        "API Roblox tymczasowo nie może znaleźć tego użytkownika"
+                    ];
+                } else if (err.message && err.message.includes('Failed to fetch')) {
+                    technicalDetails = "Brak połączenia z serwerami Roblox - błąd CORS lub sieciowy";
+                    possibleCauses = [
+                        "Blokada CORS - przeglądarka uniemożliwia połączenie z API Roblox (najczęstsza przyczyna) [citation:1][citation:2]",
+                        "Proxy używane do obejścia CORS jest niedostępne lub przeciążone [citation:3]",
+                        "Twoje połączenie internetowe blokuje zapytania do API Roblox",
+                        "Serwery Roblox tymczasowo nie odpowiadają",
+                        "Zapora sieciowa lub rozszerzenie przeglądarki blokuje zapytania"
+                    ];
+                } else if (err.code === 429 || (err.message && err.message.includes('Too many requests'))) {
+                    technicalDetails = "Limit zapytań API został przekroczony";
+                    possibleCauses = [
+                        "Wysłałeś zbyt wiele zapytań w krótkim czasie - Roblox ma limit rate limiting [citation:6]",
+                        "Serwer proxy ma ograniczenia przepustowości",
+                        "Odczekaj 30-60 sekund przed kolejną próbą"
+                    ];
+                } else if (err.status === 504 || err.message.includes('Gateway Timeout')) {
+                    technicalDetails = "Przekroczono czas oczekiwania na odpowiedź serwera";
+                    possibleCauses = [
+                        "Proxy jest przeciążone i nie odpowiada w terminie [citation:8]",
+                        "Serwery Roblox odpowiadają zbyt wolno",
+                        "Tymczasowe przeciążenie infrastruktury - spróbuj ponownie za chwilę"
+                    ];
+                } else if (err.message && err.message.includes('InvalidRedirect')) {
+                    technicalDetails = "Błąd przekierowania HTTP (301/302)";
+                    possibleCauses = [
+                        "Proxy zwróciło nieprawidłowe przekierowanie [citation:3]",
+                        "Tymczasowy błąd proxy - spróbuj użyć innego proxy",
+                        "Problem z routingiem zapytań do API Roblox"
+                    ];
+                } else {
+                    possibleCauses = [
+                        "Tymczasowa niedostępność API Roblox - spróbuj ponownie za kilka minut",
+                        "Problem z proxy używanym do komunikacji z API",
+                        "Błąd po stronie serwerów Roblox (kod 500, 503) [citation:9]",
+                        "Nieprawidłowy format zapytania do API",
+                        "Przekroczono limit czasu połączenia"
+                    ];
+                }
+                
+                showDetailedError(
+                    "Nie udało się pobrać danych użytkownika",
+                    technicalDetails,
+                    possibleCauses
+                );
+                
                 document.getElementById('results-container').innerHTML = `
                     <div style="background:#1e1a2f; border-radius:1.6rem; padding:2rem; text-align:center; border:1px solid #ff4d6d30;">
-                        ❌ <strong>Błąd:</strong> ${err.message || "Nie udało się pobrać danych."}<br>
-                        <span style="font-size:0.8rem;">Spróbuj ponownie za chwilę lub użyj innej nazwy użytkownika.</span>
+                        <strong>⚠️ Błąd pobierania danych</strong><br>
+                        <span style="font-size:0.85rem;">${err.message || "Nieznany błąd"}</span><br><br>
+                        <span style="font-size:0.75rem; color:#8d9eff;">💡 Sprawdź szczegóły błędu powyżej - zawierają możliwe przyczyny i rozwiązania</span>
                     </div>`;
             }
         }
@@ -844,25 +835,20 @@
             });
         }
 
-        function showError(msg) {
-            const errorDiv = document.getElementById('search-error');
-            errorDiv.innerText = msg;
-            errorDiv.style.display = 'block';
-            setTimeout(() => {
-                if(errorDiv.innerText === msg) errorDiv.style.display = 'none';
-            }, 7000);
-        }
-
         function clearError() {
             const errorDiv = document.getElementById('search-error');
             errorDiv.style.display = 'none';
-            errorDiv.innerText = '';
+            errorDiv.innerHTML = '';
         }
 
         document.getElementById('search-by-username-btn').addEventListener('click', async () => {
             const username = document.getElementById('username-input').value.trim();
             if (!username) {
-                showError("Wprowadź nazwę użytkownika Roblox!");
+                showDetailedError(
+                    "Nie podano nazwy użytkownika",
+                    "Pole wyszukiwania jest puste",
+                    ["Wprowadź nazwę użytkownika Roblox w polu tekstowym", "Sprawdź czy nazwa nie zawiera błędów ortograficznych"]
+                );
                 return;
             }
             clearError();
@@ -872,7 +858,29 @@
                 await fetchAndRender(userLookup.id);
             } catch (err) {
                 stopSearchingAnimation();
-                showError(err.message || "Nie znaleziono użytkownika lub błąd API");
+                let technicalDetails = err.message || "Nieznany błąd";
+                let possibleCauses = [
+                    "Użytkownik o podanej nazwie nie istnieje w bazie Roblox",
+                    "Nazwa została błędnie wpisana (Roblox rozróżnia wielkość liter?)",
+                    "Konto zostało usunięte lub zablokowane",
+                    "Tymczasowy problem z API Roblox - spróbuj ponownie za chwilę"
+                ];
+                
+                if (err.message && err.message.includes('Failed to fetch')) {
+                    technicalDetails = "Błąd połączenia z API - problem CORS lub sieciowy";
+                    possibleCauses = [
+                        "Blokada CORS - przeglądarka nie może połączyć się z API Roblox [citation:1][citation:2]",
+                        "Proxy używane do komunikacji jest niedostępne",
+                        "Sprawdź swoje połączenie internetowe",
+                        "Wyłącz rozszerzenia przeglądarki blokujące zapytania (adblock, VPN)"
+                    ];
+                }
+                
+                showDetailedError(
+                    `Nie znaleziono użytkownika "${username}"`,
+                    technicalDetails,
+                    possibleCauses
+                );
                 document.getElementById('results-container').innerHTML = `<div style="background:#1e1a2f; border-radius:1.6rem; padding:2rem; text-align:center;">⚠️ ${err.message}</div>`;
             }
         });
@@ -880,7 +888,11 @@
         document.getElementById('search-by-id-btn').addEventListener('click', async () => {
             const userIdRaw = document.getElementById('id-input').value.trim();
             if (!userIdRaw || isNaN(parseInt(userIdRaw))) {
-                showError("Podaj poprawne numeryczne ID użytkownika Roblox");
+                showDetailedError(
+                    "Nieprawidłowe ID użytkownika",
+                    `Wprowadzono: "${userIdRaw}" - oczekiwano liczby całkowitej`,
+                    ["ID użytkownika Roblox musi być liczbą (np. 1, 123456789)", "Sprawdź czy nie wpisujesz liter lub znaków specjalnych"]
+                );
                 return;
             }
             const userId = parseInt(userIdRaw);
@@ -889,7 +901,15 @@
                 await fetchAndRender(userId);
             } catch (err) {
                 stopSearchingAnimation();
-                showError(err.message);
+                showDetailedError(
+                    `Nie udało się pobrać danych dla ID ${userId}`,
+                    err.message || "Nieznany błąd",
+                    [
+                        "Użytkownik o podanym ID może nie istnieć w bazie Roblox",
+                        "API Roblox tymczasowo nie odpowiada - spróbuj ponownie za minutę",
+                        "Problem z proxy używanym do komunikacji z API"
+                    ]
+                );
             }
         });
 
