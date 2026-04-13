@@ -106,7 +106,6 @@
             border: 1px solid rgba(45, 104, 255, 0.3);
         }
 
-        /* NOWOŚĆ: animowane tło gradientowe */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -124,7 +123,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* NOWOŚĆ: cząsteczki */
         .particles {
             position: fixed;
             top: 0;
@@ -214,7 +212,6 @@
         }
         .search-btn:hover { transform: scale(0.98); box-shadow: 0 8px 20px rgba(45, 104, 255, 0.4); }
 
-        /* NOWOŚĆ: przyciski szybkiego testu */
         .quick-test {
             margin-top: 1rem;
             display: flex;
@@ -233,7 +230,6 @@
         }
         .quick-btn:hover { background: #2d68ff; transform: scale(0.95); }
 
-        /* Szczegółowe błędy - styl */
         .error-msg {
             margin-top: 1rem;
             background: #ff336633;
@@ -283,7 +279,6 @@
         .user-basic p { color: #b9c3e6; }
         .badge { background: linear-gradient(135deg, #2d334e, #1e2338); border-radius: 50px; padding: 0.2rem 0.8rem; font-size: 0.7rem; font-weight: bold; display: inline-block; margin-left: 0.5rem; border: 1px solid rgba(45, 104, 255, 0.3); }
         
-        /* NOWOŚĆ: status online */
         .online-badge { background: #00cc88; color: #000; }
         .offline-badge { background: #5f6b8a; }
         .ingame-badge { background: #ffaa33; color: #000; }
@@ -314,7 +309,6 @@
     </style>
 </head>
 <body>
-    <!-- NOWOŚĆ: animowane tło i cząsteczki -->
     <div class="animated-bg"></div>
     <div class="particles" id="particles"></div>
     
@@ -375,7 +369,6 @@
                 </div>
             </div>
             
-            <!-- NOWOŚĆ: przyciski szybkiego testu -->
             <div class="quick-test">
                 <span style="font-size:0.7rem; color:#8d9eff;">⚡ Szybki test:</span>
                 <button class="quick-btn" data-quick-id="1">ID 1 (Roblox)</button>
@@ -402,12 +395,9 @@
 
     <script>
         // ============================================
-        // ROZWIĄZANIE PROBLEMU CORS - użycie proxy roproxy.com
-        // Według forum Roblox Developer Forum, oficjalne API Roblox blokuje zapytania z przeglądarki [citation:1][citation:2]
-        // Rozwiązaniem jest użycie proxy: roproxy.com lub rprxy.xyz [citation:3]
+        // ROZWIĄZANIE PROBLEMU CORS - użycie proxy
         // ============================================
         
-        // Lista dostępnych proxy (w przypadku awarii jednego, użyjemy następnego)
         const PROXY_LIST = [
             'https://users.roproxy.com',
             'https://api.allorigins.win/raw?url=https://users.roblox.com',
@@ -416,14 +406,12 @@
         
         let currentProxyIndex = 0;
         
-        // Funkcja do szczegółowego logowania błędów
         function logErrorDetails(error, context, url = null) {
             console.error(`[${new Date().toISOString()}] Błąd w ${context}:`, error);
             if (url) console.error(`URL: ${url}`);
             if (error.stack) console.error(`Stack: ${error.stack}`);
         }
         
-        // Funkcja do wyświetlania szczegółowych błędów z możliwymi przyczynami
         function showDetailedError(userMessage, technicalDetails, possibleCauses) {
             const errorDiv = document.getElementById('search-error');
             errorDiv.innerHTML = `
@@ -440,7 +428,6 @@
             }, 15000);
         }
         
-        // Funkcja do zapytań przez proxy z obsługą błędów
         async function fetchWithProxy(endpoint, baseUrl = null) {
             const actualBaseUrl = baseUrl || PROXY_LIST[currentProxyIndex];
             let url;
@@ -475,7 +462,6 @@
             }
         }
         
-        // Pobranie ID po nazwie użytkownika przez proxy
         async function getUserIdByUsername(username) {
             if (!username || username.trim() === "") {
                 throw new Error("Nazwa użytkownika nie może być pusta.");
@@ -516,7 +502,6 @@
             throw new Error(`Nie znaleziono użytkownika o nazwie "${username}" po wyczerpaniu wszystkich proxy`);
         }
 
-        // Pobranie szczegółów użytkownika
         async function getUserFullDetails(userId) {
             const proxies = ['https://users.roproxy.com', 'https://api.allorigins.win/raw?url=https://users.roblox.com'];
             let lastError = null;
@@ -559,7 +544,6 @@
             throw lastError;
         }
 
-        // Pobranie awatara
         async function getUserAvatarUrl(userId) {
             const proxies = ['https://thumbnails.roproxy.com', 'https://api.allorigins.win/raw?url=https://thumbnails.roblox.com'];
             
@@ -587,7 +571,6 @@
             return null;
         }
 
-        // ============ NOWOŚĆ: Status online (presence) ============
         async function getUserPresence(userId) {
             try {
                 const url = `https://presence.roproxy.com/v1/presence/users?userIds=${userId}`;
@@ -595,13 +578,12 @@
                 const res = await fetch(proxyUrl);
                 const data = await res.json();
                 if (data.userPresences && data.userPresences[0]) {
-                    return data.userPresences[0].userPresenceType; // 0-offline, 1-online, 2-ingame
+                    return data.userPresences[0].userPresenceType;
                 }
             } catch(e) { logErrorDetails(e, 'getUserPresence'); }
             return null;
         }
 
-        // ============ NOWOŚĆ: Lista znajomych ============
         async function getUserFriends(userId) {
             try {
                 const url = `https://friends.roproxy.com/v1/users/${userId}/friends?limit=30`;
@@ -613,7 +595,6 @@
             } catch(e) { logErrorDetails(e, 'getUserFriends'); return []; }
         }
 
-        // ============ NOWOŚĆ: Ilość przedmiotów w ekwipunku ============
         async function getUserInventoryCount(userId) {
             try {
                 const url = `https://inventory.roproxy.com/v1/users/${userId}/items/AssetTypes?limit=1`;
@@ -625,7 +606,6 @@
             } catch(e) { return '?'; }
         }
 
-        // Pobranie gier użytkownika
         async function getUserGames(userId) {
             const proxies = ['https://games.roproxy.com', 'https://api.allorigins.win/raw?url=https://games.roblox.com'];
             
@@ -658,7 +638,6 @@
             return [];
         }
 
-        // Pobranie grup użytkownika
         async function getUserGroupsWithRoles(userId) {
             const proxies = ['https://groups.roproxy.com', 'https://api.allorigins.win/raw?url=https://groups.roblox.com'];
             
@@ -692,7 +671,6 @@
             return [];
         }
 
-        // Pobranie odznak użytkownika
         async function getUserBadges(userId) {
             const proxies = ['https://badges.roproxy.com', 'https://api.allorigins.win/raw?url=https://badges.roblox.com'];
             
@@ -722,7 +700,6 @@
             return [];
         }
 
-        // Animacja wyszukiwania
         let animationInterval = null;
         function showSearchingAnimation() {
             let dotCount = 1;
@@ -750,7 +727,6 @@
             }
         }
 
-        // Główna funkcja pobierająca i renderująca dane (TERAZ Z NOWYMI DANYMI)
         async function fetchAndRender(userId) {
             showSearchingAnimation();
             try {
@@ -784,8 +760,8 @@
                 } else if (err.message && err.message.includes('Failed to fetch')) {
                     technicalDetails = "Brak połączenia z serwerami Roblox - błąd CORS lub sieciowy";
                     possibleCauses = [
-                        "Blokada CORS - przeglądarka uniemożliwia połączenie z API Roblox (najczęstsza przyczyna) [citation:1][citation:2]",
-                        "Proxy używane do obejścia CORS jest niedostępne lub przeciążone [citation:3]",
+                        "Blokada CORS - przeglądarka uniemożliwia połączenie z API Roblox",
+                        "Proxy używane do obejścia CORS jest niedostępne lub przeciążone",
                         "Twoje połączenie internetowe blokuje zapytania do API Roblox",
                         "Serwery Roblox tymczasowo nie odpowiadają",
                         "Zapora sieciowa lub rozszerzenie przeglądarki blokuje zapytania"
@@ -793,29 +769,22 @@
                 } else if (err.code === 429 || (err.message && err.message.includes('Too many requests'))) {
                     technicalDetails = "Limit zapytań API został przekroczony";
                     possibleCauses = [
-                        "Wysłałeś zbyt wiele zapytań w krótkim czasie - Roblox ma limit rate limiting [citation:6]",
+                        "Wysłałeś zbyt wiele zapytań w krótkim czasie - Roblox ma limit rate limiting",
                         "Serwer proxy ma ograniczenia przepustowości",
                         "Odczekaj 30-60 sekund przed kolejną próbą"
                     ];
                 } else if (err.status === 504 || err.message.includes('Gateway Timeout')) {
                     technicalDetails = "Przekroczono czas oczekiwania na odpowiedź serwera";
                     possibleCauses = [
-                        "Proxy jest przeciążone i nie odpowiada w terminie [citation:8]",
+                        "Proxy jest przeciążone i nie odpowiada w terminie",
                         "Serwery Roblox odpowiadają zbyt wolno",
                         "Tymczasowe przeciążenie infrastruktury - spróbuj ponownie za chwilę"
-                    ];
-                } else if (err.message && err.message.includes('InvalidRedirect')) {
-                    technicalDetails = "Błąd przekierowania HTTP (301/302)";
-                    possibleCauses = [
-                        "Proxy zwróciło nieprawidłowe przekierowanie [citation:3]",
-                        "Tymczasowy błąd proxy - spróbuj użyć innego proxy",
-                        "Problem z routingiem zapytań do API Roblox"
                     ];
                 } else {
                     possibleCauses = [
                         "Tymczasowa niedostępność API Roblox - spróbuj ponownie za kilka minut",
                         "Problem z proxy używanym do komunikacji z API",
-                        "Błąd po stronie serwerów Roblox (kod 500, 503) [citation:9]",
+                        "Błąd po stronie serwerów Roblox (kod 500, 503)",
                         "Nieprawidłowy format zapytania do API",
                         "Przekroczono limit czasu połączenia"
                     ];
@@ -836,14 +805,12 @@
             }
         }
 
-        // Funkcja renderująca profil (ROZBUDOWANA O NOWE DANE)
         function renderProfile(user, avatarUrl, games, groups, badges, presence, friends, inventoryCount) {
             const createdDate = user.created ? new Date(user.created).toLocaleDateString('pl-PL') : "Nieznana";
             const createdFullDate = user.created ? new Date(user.created).toLocaleString('pl-PL') : "Nieznana";
             const isBannedText = user.isBanned ? "🚫 Konto zbanowane" : "✅ Konto niezbanowane";
             const verifiedBadge = user.hasVerifiedBadge ? "✔️ Konto zweryfikowane" : "Standardowe konto";
             
-            // NOWOŚĆ: status online
             let statusText = "⚫ Offline";
             let statusClass = "offline-badge";
             if (presence === 1) { statusText = "🟢 Online"; statusClass = "online-badge"; }
@@ -867,13 +834,14 @@
 
             const totalVisits = games.reduce((sum, g) => sum + (g.visits || 0), 0);
 
+            // Duży napis = Display Name, niżej mniejszy = Nazwa konta (username)
             let profileHtml = `
                 <div class="profile-section">
                     <div class="profile-header">
                         ${avatarUrl ? `<img class="avatar-img" src="${avatarUrl}" alt="avatar">` : `<div class="avatar-img" style="background:#2d334e; display:flex; align-items:center; justify-content:center;">🖼️</div>`}
                         <div class="user-basic">
-                            <h2>${escapeHtml(user.name)} <span class="badge ${statusClass}">${statusText}</span> <span class="badge">${verifiedBadge}</span></h2>
-                            <p>✨ Display: ${escapeHtml(user.displayName)}  •  🆔 ID użytkownika: ${user.id}</p>
+                            <h2>${escapeHtml(user.displayName)} <span class="badge ${statusClass}">${statusText}</span> <span class="badge">${verifiedBadge}</span></h2>
+                            <p>👤 Nazwa konta: ${escapeHtml(user.name)}  •  🆔 ID użytkownika: ${user.id}</p>
                             ${user.isBanned ? '<p style="color:#ff8a8a;">⚠️ Konto zablokowane / Banned</p>' : ''}
                         </div>
                     </div>
@@ -902,7 +870,6 @@
                 </div>
             `;
 
-            // NOWOŚĆ: lista znajomych
             let friendsHtml = `<div class="section-title">🤝 Znajomi użytkownika (${friends.length})</div>`;
             if (friends.length === 0) {
                 friendsHtml += `<div style="background:#0b0e16; border-radius:1rem; padding:1rem;">Brak publicznych znajomych lub brak dostępu.</div>`;
@@ -991,7 +958,6 @@
             errorDiv.innerHTML = '';
         }
 
-        // Event listeners
         document.getElementById('search-by-username-btn').addEventListener('click', async () => {
             const username = document.getElementById('username-input').value.trim();
             if (!username) {
@@ -1012,7 +978,7 @@
                 let technicalDetails = err.message || "Nieznany błąd";
                 let possibleCauses = [
                     "Użytkownik o podanej nazwie nie istnieje w bazie Roblox",
-                    "Nazwa została błędnie wpisana (Roblox rozróżnia wielkość liter?)",
+                    "Nazwa została błędnie wpisana",
                     "Konto zostało usunięte lub zablokowane",
                     "Tymczasowy problem z API Roblox - spróbuj ponownie za chwilę"
                 ];
@@ -1020,10 +986,10 @@
                 if (err.message && err.message.includes('Failed to fetch')) {
                     technicalDetails = "Błąd połączenia z API - problem CORS lub sieciowy";
                     possibleCauses = [
-                        "Blokada CORS - przeglądarka nie może połączyć się z API Roblox [citation:1][citation:2]",
+                        "Blokada CORS - przeglądarka nie może połączyć się z API Roblox",
                         "Proxy używane do komunikacji jest niedostępne",
                         "Sprawdź swoje połączenie internetowe",
-                        "Wyłącz rozszerzenia przeglądarki blokujące zapytania (adblock, VPN)"
+                        "Wyłącz rozszerzenia przeglądarki blokujące zapytania"
                     ];
                 }
                 
@@ -1064,7 +1030,6 @@
             }
         });
 
-        // NOWOŚĆ: eventy dla przycisków szybkiego testu
         document.querySelectorAll('.quick-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const quickId = btn.getAttribute('data-quick-id');
@@ -1099,7 +1064,6 @@
             });
         });
 
-        // NOWOŚĆ: dodanie cząsteczek do tła
         for(let i = 0; i < 60; i++) {
             let p = document.createElement('div');
             p.classList.add('particle');
