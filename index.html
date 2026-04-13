@@ -5,22 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     
     <title>Roblox Info Hub | Wyszukiwarka profili, gier i grup</title>
-    <meta name="description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej.">
-    <meta name="keywords" content="roblox, wyszukiwarka, użytkownik, gry, grupy, api, profil">
+    <meta name="description" content="wyszukiwarka informacji o kontach roblox.">
+    <meta name="keywords" content="roblox, wyszukiwarka, użytkownik, gry, grupy, api, profil, profile, roblox games, group, search">
     <meta name="author" content="byte official">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph meta tagi -->
-    <meta property="og:title" content="Roblox Info Hub | Wyszukiwarka profili, gier i grup">
-    <meta property="og:description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox. Sprawdź profile, gry, grupy, ID konta i wiele więcej.">
+    <meta property="og:title" content="wyszukiwarka informacji o kontach roblox">
+    <meta property="og:description" content="na tej stronie internetowej można wyszukać informacje o danym koncie roblox wyszukując przy wpisaniu nazwy konta lub id konta wpisując nazwę przykładową Roblox lub wpisując przykładowe id 1 a następnie klikając przycisk pobierz dane">
     <meta property="og:image" content="https://www.roblox.com/favicon.ico">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="pl_PL">
-    <meta property="og:site_name" content="Roblox Info Hub">
+    <meta property="og:site_name" content="na tej stronie internetowej można wyszukać informacje o danym koncie roblox wyszukując przy wpisaniu nazwy konta lub id konta wpisując nazwę przykładową Roblox lub wpisując przykładowe id 1 a następnie klikając przycisk pobierz dane">
     
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Roblox Info Hub | Wyszukiwarka profili, gier i grup">
-    <meta name="twitter:description" content="Roblox Info Hub - zaawansowana wyszukiwarka informacji o użytkownikach Roblox.">
+    <meta name="twitter:title" content="wyszukiwarka informacji o kontach roblox">
+    <meta name="twitter:description" content="na tej stronie internetowej można wyszukać informacje o danym koncie roblox wyszukując przy wpisaniu nazwy konta lub id konta wpisując nazwę przykładową Roblox lub wpisując przykładowe id 1 a następnie klikając przycisk pobierz dane">
     <meta name="twitter:image" content="https://www.roblox.com/favicon.ico">
     
     <meta name="theme-color" content="#2d68ff">
@@ -258,9 +258,9 @@
             </div>
             <p>Kompleksowe dane z oficjalnego API Roblox — wszystko w jednym miejscu</p>
             <div class="live-stats">
-                <div class="stat-item">📊 <span>+200M</span> użytkowników</div>
-                <div class="stat-item">🎮 <span>+40M</span> gier</div>
-                <div class="stat-item">👥 <span>+50M</span> grup</div>
+                <div class="stat-item">📊 <span>+200M</span> użytkowników na platformie</div>
+                <div class="stat-item">🎮 <span>+40M</span> gier do poznania</div>
+                <div class="stat-item">👥 <span>+50M</span> grup do dołączenia</div>
             </div>
         </div>
 
@@ -277,7 +277,7 @@
         <div class="search-card">
             <div class="search-tabs">
                 <button class="tab-btn active" data-tab="username">🔍 Wyszukaj użytkownika po nazwie konta</button>
-                <button class="tab-btn" data-tab="id">🆔 Wyszukaj użytkownika po ID konta </button>
+                <button class="tab-btn" data-tab="id">🆔 Wyszukaj użytkownika po ID konta</button>
             </div>
 
             <div id="username-search" class="search-panel">
@@ -286,7 +286,7 @@
                         <label>Nazwa użytkownika Roblox</label>
                         <input type="text" id="username-input" placeholder="np. Roblox, Builderman. Wpisz nazwę konta o którym chcesz dostać informacje" autocomplete="off">
                     </div>
-                    <button class="search-btn" id="search-by-username-btn">Pobierz dane →</button>
+                    <button class="search-btn" id="search-by-username-btn">Pobierz dane o koncie →</button>
                 </div>
             </div>
 
@@ -305,13 +305,13 @@
         <div id="results-container">
             <div class="empty-state">
                 <div class="empty-state-icon">🔍</div>
-                <h3>Jeszcze nie wyszukałeś/aś żadnego konta na Robloxie</h3>
+                <h3>Aktualnie nie wyszukano jeszcze żadnego konta na Robloxie</h3>
                 <p>Wpisz nick konta w zakładce <strong>"Wyszukaj po nazwie"</strong> lub <strong>"Wyszukaj po ID"</strong> aby rozpocząć wyszukiwanie informacji o użytkownikach Roblox.</p>
-                <small>💡 Podpowiedź: Możesz wyszukać każdego publicznego użytkownika Roblox!</small>
+                <small>💡 Podpowiedź: W pole wpisywania nazwy możesz wyszukać dowolne konto o którym chcesz zobaczyć informacje</small>
             </div>
         </div>
         <footer>
-            ⚡ Dane pochodzą z oficjalnego API Roblox przez proxy • Wszystkie publiczne informacje
+            ⚡ Wszystkie dane które się pokazują na tej stronie są pobierane z oficjalnego API Robloxa
         </footer>
     </div>
 
@@ -464,7 +464,7 @@
                         id: data.id,
                         name: data.name,
                         displayName: data.displayName,
-                        description: data.description || "Brak opisu",
+                        description: data.description || "Użytkownik nie posiada opisu, opis nie został ustawiony przez użytkownika",
                         created: data.created,
                         isBanned: data.isBanned || false,
                         hasVerifiedBadge: data.hasVerifiedBadge || false
@@ -526,7 +526,7 @@
                     return data.data.map(game => ({
                         id: game.id,
                         name: game.name,
-                        description: game.description || "Brak opisu",
+                        description: game.description || "Gra nie posiada opisu, opis nie został ustawiony",
                         created: game.created,
                         playing: game.playing || 0,
                         visits: game.visits || 0
@@ -560,7 +560,7 @@
                         groupId: item.group.id,
                         groupName: item.group.name,
                         groupMemberCount: item.group.memberCount,
-                        description: item.group.description || "",
+                        description: item.group.description || "grupa nie posiada opisu, właściciel grupy nie ustawił go",
                         roleName: item.role.name,
                         roleRank: item.role.rank,
                         isOwner: item.role.rank === 255
@@ -592,7 +592,7 @@
                     if (!data.data) return [];
                     return data.data.map(badge => ({
                         name: badge.name,
-                        description: badge.description || "Brak opisu",
+                        description: badge.description || "Brak opisu, odznaka nie posiada opisu",
                         awardedAt: badge.awardedAt
                     }));
                 } catch (error) {
@@ -609,9 +609,9 @@
             const resultsContainer = document.getElementById('results-container');
             resultsContainer.innerHTML = `
                 <div class="searching-animation" id="searching-animation">
-                    <div class="searching-text">Wyszukiwanie informacji</div>
+                    <div class="searching-text">Wyszukiwanie informacji o koncie</div>
                     <div class="dots" id="searching-dots">.</div>
-                    <div class="searching-sub">Ładowanie danych z API Roblox przez proxy...</div>
+                    <div class="searching-sub">Ładowanie informacji o koncie z oficjalnego Api Robloxa...</div>
                 </div>
             `;
             animationInterval = setInterval(() => {
@@ -715,8 +715,8 @@
         function renderProfile(user, avatarUrl, games, groups, badges) {
             const createdDate = user.created ? new Date(user.created).toLocaleDateString('pl-PL') : "Nieznana";
             const createdFullDate = user.created ? new Date(user.created).toLocaleString('pl-PL') : "Nieznana";
-            const isBannedText = user.isBanned ? "🚫 Tak (zbanowany)" : "✅ Nie";
-            const verifiedBadge = user.hasVerifiedBadge ? "✔️ Zweryfikowany" : "Standardowe konto";
+            const isBannedText = user.isBanned ? "🚫 Konto zbanowane" : "✅ Konto niezbanowane";
+            const verifiedBadge = user.hasVerifiedBadge ? "✔️ Konto zweryfikowane" : "Standardowe konto";
 
             let accountAge = "Nieznany";
             if (user.created) {
@@ -742,7 +742,7 @@
                         ${avatarUrl ? `<img class="avatar-img" src="${avatarUrl}" alt="avatar">` : `<div class="avatar-img" style="background:#2d334e; display:flex; align-items:center; justify-content:center;">🖼️</div>`}
                         <div class="user-basic">
                             <h2>${escapeHtml(user.name)} <span class="badge">${verifiedBadge}</span></h2>
-                            <p>✨ Display: ${escapeHtml(user.displayName)}  •  🆔 ID: ${user.id}</p>
+                            <p>✨ Display: ${escapeHtml(user.displayName)}  •  🆔 ID użytkownika: ${user.id}</p>
                             ${user.isBanned ? '<p style="color:#ff8a8a;">⚠️ Konto zablokowane / Banned</p>' : ''}
                         </div>
                     </div>
@@ -750,7 +750,7 @@
                         <div class="info-card"><strong>📝 Opis profilu</strong><br>${escapeHtml(user.description) || "Brak opisu"}</div>
                         <div class="info-card"><strong>📅 Data utworzenia</strong><br>${createdDate}<br><small style="color:#6c7aa8;">${createdFullDate}</small></div>
                         <div class="info-card"><strong>⏳ Wiek konta</strong><br>${accountAge}</div>
-                        <div class="info-card"><strong>🚦 Status konta</strong><br>${isBannedText}</div>
+                        <div class="info-card"><strong>🚦 Status zbanowania użytkownika</strong><br>${isBannedText}</div>
                         <div class="info-card"><strong>🏷️ Nazwa użytkownika</strong><br>${escapeHtml(user.name)}</div>
                         <div class="info-card"><strong>🔢 ID użytkownika</strong><br>${user.id}</div>
                     </div>
