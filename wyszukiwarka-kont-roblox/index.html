@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    
+    <title>Roblox Info Hub | Wyszukiwarka profili, gier i grup</title>
+    <meta name="description" content="wyszukiwarka informacji o kontach roblox.">
+    <meta name="keywords" content="roblox, wyszukiwarka, użytkownik, gry, grupy, api, profil, profile, roblox games, group, search">
+    <meta name="author" content="byte official">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph meta tagi -->
+    <meta property="og:title" content="wyszukiwarka informacji o kontach roblox">
+    <meta property="og:description" content="na tej stronie internetowej można wyszukać informacje o danym koncie roblox wyszukując przy wpisaniu nazwy konta lub id konta wpisując nazwę przykładową Roblox lub wpisując przykładowe id 1 a następnie klikając przycisk pobierz dane">
+    <meta property="og:image" content="https://www.roblox.com/favicon.ico">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pl_PL">
+    <meta property="og:site_name" content="na tej stronie internetowej można wyszukać informacje o danym koncie roblox wyszukując przy wpisaniu nazwy konta lub id konta wpisując nazwę przykładową Roblox lub wpisując przykładowe id 1 a następnie klikając przycisk pobierz dane">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="wyszukiwarka informacji o kontach roblox">
+    <meta name="twitter:description" content="na tej stronie internetowej można wyszukać informacje o danym koncie roblox wyszukując przy wpisaniu nazwy konta lub id konta wpisując nazwę przykładową Roblox lub wpisując przykładowe id 1 a następnie klikając przycisk pobierz dane">
+    <meta name="twitter:image" content="https://www.roblox.com/favicon.ico">
+    
+    <meta name="theme-color" content="#2d68ff">
+    <link rel="icon" type="image/png" href="https://www.roblox.com/favicon.ico">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            background: linear-gradient(145deg, #0a0c12 0%, #12141c 100%);
+            color: #eef2ff;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(45, 104, 255, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(45,104,255,0.12) 0%, rgba(45,104,255,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        .glow-1 { top: -200px; right: -200px; }
+        .glow-2 { bottom: -250px; left: -150px; background: radial-gradient(circle, rgba(255,75,150,0.08) 0%, transparent 70%); animation-delay: -5s; }
+        .glow-3 { top: 40%; left: 30%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(0,255,200,0.06) 0%, transparent 70%); animation-delay: -10s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            33% { transform: translate(30px, -30px); }
+            66% { transform: translate(-20px, 20px); }
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+
+        .header { text-align: center; margin-bottom: 2rem; animation: fadeInDown 0.8s ease-out; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .logo-container { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 1rem; }
+        .logo-img { width: 55px; height: 55px; object-fit: contain; }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #ffffff, #b2f0ff, #2d68ff);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        .badge-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(45, 104, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-top: 0.8rem;
+            border: 1px solid rgba(45, 104, 255, 0.3);
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(125deg, #0a0c18, #11162a, #0a0f22);
+            background-size: 300% 300%;
+            animation: gradientFlow 18s ease infinite;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .particle {
+            position: absolute;
+            background: rgba(45, 104, 255, 0.2);
+            border-radius: 50%;
+            filter: blur(3px);
+            animation: floatParticle 15s infinite linear;
+        }
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+
+        .page-description {
+            background: rgba(45, 104, 255, 0.08);
+            border-left: 4px solid #2d68ff;
+            border-radius: 1rem;
+            padding: 1.2rem 1.8rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(8px);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #cbd5ff;
+        }
+        .page-description h3 { color: #2d68ff; margin-bottom: 0.5rem; }
+        .page-description p { margin-bottom: 0.5rem; }
+        .page-description small { color: #6c7aa8; font-size: 0.75rem; }
+
+        .search-card {
+            background: rgba(20, 25, 40, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.8rem;
+            margin-bottom: 2.5rem;
+            border: 1px solid rgba(71, 85, 125, 0.4);
+            transition: all 0.3s ease;
+        }
+        .search-card:hover { border-color: rgba(45, 104, 255, 0.6); transform: translateY(-3px); }
+
+        .search-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.8rem;
+            border-bottom: 1px solid #2d3348;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: #9aa4c2;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.6rem 1.4rem;
+            cursor: pointer;
+            border-radius: 40px;
+            transition: all 0.2s;
+        }
+        .tab-btn.active { background: #2d68ff; color: white; box-shadow: 0 4px 12px rgba(45, 104, 255, 0.3); }
+
+        .search-input-group { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; }
+        .input-field { flex: 3; min-width: 200px; }
+        .input-field label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 0.5rem; color: #a5b0d0; }
+        .input-field input { width: 100%; padding: 0.9rem 1.2rem; background: #0f111c; border: 1px solid #2d334e; border-radius: 1.2rem; color: white; font-size: 1rem; outline: none; }
+        .input-field input:focus { border-color: #2d68ff; box-shadow: 0 0 0 3px rgba(45, 104, 255, 0.2); }
+
+        .search-btn {
+            background: linear-gradient(135deg, #2d68ff, #1a53e0);
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 1.8rem;
+            font-weight: bold;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .search-btn:hover { transform: scale(0.98); box-shadow: 0 8px 20px rgba(45, 104, 255, 0.4); }
+
+        .quick-test {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .quick-btn {
+            background: rgba(45, 104, 255, 0.2);
+            border: 1px solid rgba(45, 104, 255, 0.4);
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .quick-btn:hover { background: #2d68ff; transform: scale(0.95); }
+
+        .error-msg {
+            margin-top: 1rem;
+            background: #ff336633;
+            padding: 1rem 1.2rem;
+            border-radius: 1rem;
+            color: #ffb4b4;
+            font-weight: 500;
+            border-left: 4px solid #ff3366;
+        }
+        .error-details {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #ff9999;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .error-possible-causes {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #ffaa99;
+            border-top: 1px solid rgba(255,51,102,0.3);
+            padding-top: 0.5rem;
+        }
+
+        .searching-animation { text-align: center; padding: 3rem; background: rgba(14, 17, 27, 0.7); border-radius: 1.8rem; backdrop-filter: blur(8px); margin: 1rem 0; animation: pulseGlow 1.2s infinite alternate; }
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; box-shadow: 0 0 0px #2d68ff; }
+            100% { opacity: 1; box-shadow: 0 0 20px rgba(45, 104, 255, 0.3); }
+        }
+        .searching-text { font-size: 1.8rem; font-weight: bold; color: #2d68ff; margin-bottom: 1rem; }
+        .dots { font-size: 2rem; letter-spacing: 5px; color: #8d9eff; font-family: monospace; }
+
+        .empty-state { text-align: center; padding: 4rem 2rem; background: rgba(14, 17, 27, 0.6); border-radius: 1.8rem; backdrop-filter: blur(8px); border: 1px dashed #2d68ff; margin: 1rem 0; }
+        .empty-state-icon { font-size: 4rem; margin-bottom: 1rem; opacity: 0.5; }
+        .empty-state h3 { color: #8d9eff; margin-bottom: 0.5rem; }
+        .empty-state p { color: #9aa3bb; max-width: 500px; margin: 0 auto; }
+
+        .profile-section { background: rgba(14, 17, 27, 0.9); backdrop-filter: blur(8px); border-radius: 1.8rem; padding: 1.6rem; margin-bottom: 2rem; border: 1px solid #252a3f; transition: transform 0.3s ease, box-shadow 0.3s; animation: fadeInUp 0.6s ease-out; }
+        .profile-section:hover { transform: translateY(-3px); border-color: rgba(45, 104, 255, 0.4); box-shadow: 0 20px 30px -12px rgba(0,0,0,0.5); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .profile-header { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; margin-bottom: 1.5rem; }
+        .avatar-img { width: 100px; height: 100px; border-radius: 28px; background: linear-gradient(135deg, #1e2338, #0f1220); object-fit: cover; border: 3px solid #2d68ff; transition: 0.3s; }
+        .avatar-img:hover { transform: scale(1.02); filter: drop-shadow(0 0 12px #2d68ff); }
+        .user-basic h2 { font-size: 1.9rem; background: linear-gradient(135deg, #fff, #b2f0ff); background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .user-basic p { color: #b9c3e6; }
+        .badge { background: linear-gradient(135deg, #2d334e, #1e2338); border-radius: 50px; padding: 0.2rem 0.8rem; font-size: 0.7rem; font-weight: bold; display: inline-block; margin-left: 0.5rem; border: 1px solid rgba(45, 104, 255, 0.3); }
+        
+        .online-badge { background: #00cc88; color: #000; }
+        .offline-badge { background: #5f6b8a; }
+        .ingame-badge { background: #ffaa33; color: #000; }
+
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+        .info-card { background: rgba(11, 14, 22, 0.8); border-radius: 1.2rem; padding: 0.9rem 1.2rem; border-left: 4px solid #2d68ff; transition: all 0.2s; }
+        .info-card:hover { background: rgba(20, 25, 45, 0.9); transform: translateX(5px); }
+        .info-card strong { color: #8d9eff; }
+
+        .section-title { font-size: 1.6rem; margin: 1.6rem 0 1rem 0; border-left: 4px solid #2d68ff; padding-left: 1rem; }
+        .games-list, .groups-list, .badges-list, .friends-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.2rem; }
+        .game-item, .group-item, .badge-item, .friend-item { background: rgba(15, 18, 32, 0.8); border-radius: 1.2rem; padding: 1rem; border: 1px solid #202536; transition: all 0.2s; }
+        .game-item:hover, .group-item:hover, .badge-item:hover, .friend-item:hover { transform: translateY(-3px); border-color: #2d68ff; background: rgba(45,104,255,0.1); }
+        .game-name, .group-name, .badge-name, .friend-name { font-weight: bold; font-size: 1.1rem; color: white; }
+        .game-detail, .group-detail, .badge-detail, .friend-detail { font-size: 0.75rem; color: #8f9ac0; margin-top: 6px; }
+
+        footer { text-align: center; margin-top: 3rem; padding: 1.5rem; font-size: 0.75rem; color: #5f6b8a; border-top: 1px solid #2d3348; }
+        .live-stats { display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; flex-wrap: wrap; }
+        .stat-item { background: rgba(45, 104, 255, 0.1); padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.8rem; }
+        .stat-item span { color: #2d68ff; font-weight: bold; }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header h1 { font-size: 1.6rem; }
+            .section-title { font-size: 1.3rem; }
+            .profile-header { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="particles" id="particles"></div>
+    
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+    <div class="bg-glow glow-3"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img class="logo-img" src="https://www.roblox.com/favicon.ico" alt="Roblox Logo">
+                <h1>🎮 Roblox Info Hub</h1>
+            </div>
+            <div class="badge-icon">
+                🔍 Wyszukiwarka | 👥 Użytkownicy | 🎮 Gry | 👑 Grupy | 📊 Statystyki | 🟢 Online | 🤝 Znajomi
+            </div>
+            <p>Kompleksowe dane z oficjalnego API Roblox — wszystko w jednym miejscu</p>
+            <div class="live-stats">
+                <div class="stat-item">📊 <span>+200M</span> użytkowników na platformie</div>
+                <div class="stat-item">🎮 <span>+40M</span> gier do poznania</div>
+                <div class="stat-item">👥 <span>+50M</span> grup do dołączenia</div>
+            </div>
+        </div>
+
+        <div class="page-description">
+            <h3>📌 O tej stronie - Roblox Info Hub</h3>
+            <p><strong>Roblox Info Hub</strong> to zaawansowana wyszukiwarka informacji o użytkownikach platformy Roblox. Strona korzysta z oficjalnego API Roblox, aby dostarczyć jak najwięcej publicznie dostępnych danych.</p>
+            <p>🔹 <strong>Co można znaleźć?</strong> - Pełny profil użytkownika (nazwa, ID, data utworzenia, opis, status konta), listę wszystkich publicznych gier stworzonych przez użytkownika, listę grup do których należy użytkownik wraz z rolami i rangami, awatar użytkownika, odznaki, <strong>status online/offline/w grze</strong>, <strong>listę znajomych</strong> oraz <strong>ilość przedmiotów w ekwipunku</strong>.</p>
+            <p>🔹 <strong>Jak wyszukiwać?</strong> - Możesz wyszukać użytkownika po nazwie (np. "oskar90193", "Roblox", "Builderman") lub po numerze ID konta.</p>
+            <p>🔹 <strong>Statystyki konta</strong> - Po wyszukaniu konta zobaczysz szczegółowe statystyki: datę rejestracji, status konta, weryfikację, liczbę gier, liczbę grup, liczbę odznak, wiek konta, łączną liczbę odwiedzin gier, status online, listę znajomych i wiele innych.</p>
+            <p>🔹 <strong>Podziękowania za odwiedzenie strony od właściciela(byte official)</strong> - Jako właściciel tej strony internetowej chcę podziękować tobie jako osobie na tej stronie za to że postanowiłeś odwiedzić tą stronę internetową mam nadzieję że wrócisz jeszcze tutaj ja życzę miłego dnia/wieczoru i pozdrawiam - byte official mam nadzieję że strona internetowa ci się spodobała.</p>
+            <small>📅 Strona internetowa powstała dnia 12 kwietnia 2026 roku przez użytkownika byte official a ostatnia aktualizacja strony internetowej nastąpiła dnia 13 kwietnia 2026 (dodano status online, listę znajomych, ilość przedmiotów, animowane tło i cząsteczki)</small>
+        </div>
+
+        <div class="search-card">
+            <div class="search-tabs">
+                <button class="tab-btn active" data-tab="username">🔍 Wyszukaj użytkownika po nazwie konta</button>
+                <button class="tab-btn" data-tab="id">🆔 Wyszukaj użytkownika po ID konta</button>
+            </div>
+
+            <div id="username-search" class="search-panel">
+                <div class="search-input-group">
+                    <div class="input-field">
+                        <label>Nazwa użytkownika Roblox</label>
+                        <input type="text" id="username-input" placeholder="np. Roblox, Builderman. Wpisz nazwę konta o którym chcesz dostać informacje" autocomplete="off">
+                    </div>
+                    <button class="search-btn" id="search-by-username-btn">Pobierz dane o koncie →</button>
+                </div>
+            </div>
+
+            <div id="id-search" class="search-panel" style="display: none;">
+                <div class="search-input-group">
+                    <div class="input-field">
+                        <label>ID konta (numer)</label>
+                        <input type="number" id="id-input" placeholder="np. 1" autocomplete="off">
+                    </div>
+                    <button class="search-btn" id="search-by-id-btn">Pobierz dane o koncie →</button>
+                </div>
+            </div>
+            
+            <div class="quick-test">
+                <span style="font-size:0.7rem; color:#8d9eff;">⚡ Szybki test:</span>
+                <button class="quick-btn" data-quick-id="1">ID 1 (Roblox)</button>
+                <button class="quick-btn" data-quick-id="196">ID 196 (Builderman)</button>
+                <button class="quick-btn" data-quick-name="Roblox">Nazwa: Roblox</button>
+                <button class="quick-btn" data-quick-name="Builderman">Nazwa: Builderman</button>
+            </div>
+            
+            <div id="search-error" class="error-msg" style="display: none;"></div>
+        </div>
+
+        <div id="results-container">
+            <div class="empty-state">
+                <div class="empty-state-icon">🔍</div>
+                <h3>Aktualnie nie wyszukano jeszcze żadnego konta na Robloxie</h3>
+                <p>Wpisz nick konta w zakładce <strong>"Wyszukaj po nazwie"</strong> lub <strong>"Wyszukaj po ID"</strong> aby rozpocząć wyszukiwanie informacji o użytkownikach Roblox.</p>
+                <small>💡 Podpowiedź: W pole wpisywania nazwy możesz wyszukać dowolne konto o którym chcesz zobaczyć informacje</small>
+            </div>
+        </div>
+        <footer>
+            ⚡ Wszystkie dane które się pokazują na tej stronie są pobierane z oficjalnego API Robloxa
+        </footer>
+    </div>
+
+    <script>
+        // ============================================
+        // ROZWIĄZANIE PROBLEMU CORS - użycie proxy
+        // ============================================
+        
+        const PROXY_LIST = [
+            'https://users.roproxy.com',
+            'https://api.allorigins.win/raw?url=https://users.roblox.com',
+            'https://corsproxy.io/?https://users.roblox.com'
+        ];
+        
+        let currentProxyIndex = 0;
+        
+        function logErrorDetails(error, context, url = null) {
+            console.error(`[${new Date().toISOString()}] Błąd w ${context}:`, error);
+            if (url) console.error(`URL: ${url}`);
+            if (error.stack) console.error(`Stack: ${error.stack}`);
+        }
+        
+        function showDetailedError(userMessage, technicalDetails, possibleCauses) {
+            const errorDiv = document.getElementById('search-error');
+            errorDiv.innerHTML = `
+                <strong>❌ ${userMessage}</strong>
+                <div class="error-details">📋 Szczegóły techniczne: ${technicalDetails}</div>
+                <div class="error-possible-causes">
+                    🔍 Możliwe przyczyny:<br>
+                    ${possibleCauses.map(cause => `• ${cause}`).join('<br>')}
+                </div>
+            `;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                if(errorDiv.innerHTML === errorDiv.innerHTML) errorDiv.style.display = 'none';
+            }, 15000);
+        }
+        
+        async function fetchWithProxy(endpoint, baseUrl = null) {
+            const actualBaseUrl = baseUrl || PROXY_LIST[currentProxyIndex];
+            let url;
+            
+            if (actualBaseUrl.includes('allorigins') || actualBaseUrl.includes('corsproxy')) {
+                url = `${actualBaseUrl}${endpoint}`;
+            } else {
+                url = `${actualBaseUrl}/${endpoint}`;
+            }
+            
+            try {
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    let errorJson = null;
+                    try {
+                        errorJson = JSON.parse(errorText);
+                    } catch(e) {}
+                    
+                    throw { 
+                        status: response.status, 
+                        statusText: response.statusText,
+                        body: errorJson || errorText
+                    };
+                }
+                
+                return await response.json();
+            } catch (error) {
+                logErrorDetails(error, 'fetchWithProxy', url);
+                throw error;
+            }
+        }
+        
+        async function getUserIdByUsername(username) {
+            if (!username || username.trim() === "") {
+                throw new Error("Nazwa użytkownika nie może być pusta.");
+            }
+            
+            const encodedUsername = encodeURIComponent(username);
+            
+            for (let attempt = 0; attempt < PROXY_LIST.length; attempt++) {
+                try {
+                    const data = await fetchWithProxy(`v1/users/search?keyword=${encodedUsername}&limit=10`);
+                    
+                    if (data.data && data.data.length > 0) {
+                        const exactMatch = data.data.find(u => u.name.toLowerCase() === username.toLowerCase());
+                        if (exactMatch) {
+                            return { 
+                                id: exactMatch.id, 
+                                username: exactMatch.name, 
+                                displayName: exactMatch.displayName, 
+                                hasVerifiedBadge: exactMatch.hasVerifiedBadge 
+                            };
+                        }
+                        if (data.data[0]) {
+                            return { 
+                                id: data.data[0].id, 
+                                username: data.data[0].name, 
+                                displayName: data.data[0].displayName, 
+                                hasVerifiedBadge: data.data[0].hasVerifiedBadge 
+                            };
+                        }
+                    }
+                    throw new Error(`Nie znaleziono użytkownika o nazwie "${username}"`);
+                } catch (error) {
+                    logErrorDetails(error, `getUserIdByUsername (proxy ${attempt})`);
+                    if (attempt === PROXY_LIST.length - 1) throw error;
+                    currentProxyIndex = (currentProxyIndex + 1) % PROXY_LIST.length;
+                }
+            }
+            throw new Error(`Nie znaleziono użytkownika o nazwie "${username}" po wyczerpaniu wszystkich proxy`);
+        }
+
+        async function getUserFullDetails(userId) {
+            const proxies = ['https://users.roproxy.com', 'https://api.allorigins.win/raw?url=https://users.roblox.com'];
+            let lastError = null;
+            
+            for (const proxy of proxies) {
+                try {
+                    const url = proxy.includes('allorigins') 
+                        ? `${proxy}${encodeURIComponent(`https://users.roblox.com/v1/users/${userId}`)}`
+                        : `${proxy}/v1/users/${userId}`;
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    const data = await response.json();
+                    
+                    if (data.errors && data.errors.length > 0) {
+                        throw {
+                            status: response.status,
+                            code: data.errors[0].code,
+                            message: data.errors[0].message,
+                            userMessage: data.errors[0].userFacingMessage
+                        };
+                    }
+                    
+                    return {
+                        id: data.id,
+                        name: data.name,
+                        displayName: data.displayName,
+                        description: data.description || "Użytkownik nie posiada opisu, opis nie został ustawiony przez użytkownika",
+                        created: data.created,
+                        isBanned: data.isBanned || false,
+                        hasVerifiedBadge: data.hasVerifiedBadge || false
+                    };
+                } catch (error) {
+                    lastError = error;
+                    logErrorDetails(error, 'getUserFullDetails', proxy);
+                }
+            }
+            throw lastError;
+        }
+
+        async function getUserAvatarUrl(userId) {
+            const proxies = ['https://thumbnails.roproxy.com', 'https://api.allorigins.win/raw?url=https://thumbnails.roblox.com'];
+            
+            for (const proxy of proxies) {
+                try {
+                    let url;
+                    if (proxy.includes('allorigins')) {
+                        url = `${proxy}${encodeURIComponent(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`)}`;
+                    } else {
+                        url = `${proxy}/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`;
+                    }
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    
+                    if (data.data && data.data.length > 0 && data.data[0].imageUrl) {
+                        return data.data[0].imageUrl;
+                    }
+                    return null;
+                } catch (error) {
+                    logErrorDetails(error, 'getUserAvatarUrl', proxy);
+                }
+            }
+            return null;
+        }
+
+        async function getUserPresence(userId) {
+            try {
+                const url = `https://presence.roproxy.com/v1/presence/users?userIds=${userId}`;
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+                const res = await fetch(proxyUrl);
+                const data = await res.json();
+                if (data.userPresences && data.userPresences[0]) {
+                    return data.userPresences[0].userPresenceType;
+                }
+            } catch(e) { logErrorDetails(e, 'getUserPresence'); }
+            return null;
+        }
+
+        async function getUserFriends(userId) {
+            try {
+                const url = `https://friends.roproxy.com/v1/users/${userId}/friends?limit=30`;
+                const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+                const res = await fetch(proxy);
+                const data = await res.json();
+                if (data.data) return data.data.slice(0, 25).map(f => ({ id: f.id, name: f.name, displayName: f.displayName }));
+                return [];
+            } catch(e) { logErrorDetails(e, 'getUserFriends'); return []; }
+        }
+
+        async function getUserInventoryCount(userId) {
+            try {
+                const url = `https://inventory.roproxy.com/v1/users/${userId}/items/AssetTypes?limit=1`;
+                const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+                const res = await fetch(proxy);
+                const data = await res.json();
+                if (data.totalItems) return data.totalItems;
+                return '?';
+            } catch(e) { return '?'; }
+        }
+
+        async function getUserGames(userId) {
+            const proxies = ['https://games.roproxy.com', 'https://api.allorigins.win/raw?url=https://games.roblox.com'];
+            
+            for (const proxy of proxies) {
+                try {
+                    let url;
+                    if (proxy.includes('allorigins')) {
+                        url = `${proxy}${encodeURIComponent(`https://games.roblox.com/v2/users/${userId}/games?sortOrder=Asc&limit=50`)}`;
+                    } else {
+                        url = `${proxy}/v2/users/${userId}/games?sortOrder=Asc&limit=50`;
+                    }
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    
+                    if (!data.data) return [];
+                    return data.data.map(game => ({
+                        id: game.id,
+                        name: game.name,
+                        description: game.description || "Gra nie posiada opisu, opis nie został ustawiony",
+                        created: game.created,
+                        playing: game.playing || 0,
+                        visits: game.visits || 0
+                    }));
+                } catch (error) {
+                    logErrorDetails(error, 'getUserGames', proxy);
+                }
+            }
+            return [];
+        }
+
+        async function getUserGroupsWithRoles(userId) {
+            const proxies = ['https://groups.roproxy.com', 'https://api.allorigins.win/raw?url=https://groups.roblox.com'];
+            
+            for (const proxy of proxies) {
+                try {
+                    let url;
+                    if (proxy.includes('allorigins')) {
+                        url = `${proxy}${encodeURIComponent(`https://groups.roblox.com/v1/users/${userId}/groups/roles`)}`;
+                    } else {
+                        url = `${proxy}/v1/users/${userId}/groups/roles`;
+                    }
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    
+                    if (!data.data) return [];
+                    return data.data.map(item => ({
+                        groupId: item.group.id,
+                        groupName: item.group.name,
+                        groupMemberCount: item.group.memberCount,
+                        description: item.group.description || "grupa nie posiada opisu, właściciel grupy nie ustawił go",
+                        roleName: item.role.name,
+                        roleRank: item.role.rank,
+                        isOwner: item.role.rank === 255
+                    }));
+                } catch (error) {
+                    logErrorDetails(error, 'getUserGroupsWithRoles', proxy);
+                }
+            }
+            return [];
+        }
+
+        async function getUserBadges(userId) {
+            const proxies = ['https://badges.roproxy.com', 'https://api.allorigins.win/raw?url=https://badges.roblox.com'];
+            
+            for (const proxy of proxies) {
+                try {
+                    let url;
+                    if (proxy.includes('allorigins')) {
+                        url = `${proxy}${encodeURIComponent(`https://badges.roblox.com/v1/users/${userId}/badges?limit=20&sortOrder=Asc`)}`;
+                    } else {
+                        url = `${proxy}/v1/users/${userId}/badges?limit=20&sortOrder=Asc`;
+                    }
+                    
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    
+                    if (!data.data) return [];
+                    return data.data.map(badge => ({
+                        name: badge.name,
+                        description: badge.description || "Brak opisu, odznaka nie posiada opisu",
+                        awardedAt: badge.awardedAt
+                    }));
+                } catch (error) {
+                    logErrorDetails(error, 'getUserBadges', proxy);
+                }
+            }
+            return [];
+        }
+
+        let animationInterval = null;
+        function showSearchingAnimation() {
+            let dotCount = 1;
+            const resultsContainer = document.getElementById('results-container');
+            resultsContainer.innerHTML = `
+                <div class="searching-animation" id="searching-animation">
+                    <div class="searching-text">Wyszukiwanie informacji o koncie</div>
+                    <div class="dots" id="searching-dots">.</div>
+                    <div class="searching-sub">Ładowanie informacji o koncie z oficjalnego Api Robloxa...</div>
+                </div>
+            `;
+            animationInterval = setInterval(() => {
+                const dotsElement = document.getElementById('searching-dots');
+                if (dotsElement) {
+                    dotCount = (dotCount % 5) + 1;
+                    dotsElement.textContent = '.'.repeat(dotCount);
+                }
+            }, 400);
+        }
+        
+        function stopSearchingAnimation() {
+            if (animationInterval) {
+                clearInterval(animationInterval);
+                animationInterval = null;
+            }
+        }
+
+        async function fetchAndRender(userId) {
+            showSearchingAnimation();
+            try {
+                const [userDetails, avatarUrl, userGames, userGroups, userBadges, userPresence, userFriends, inventoryCount] = await Promise.all([
+                    getUserFullDetails(userId),
+                    getUserAvatarUrl(userId),
+                    getUserGames(userId),
+                    getUserGroupsWithRoles(userId),
+                    getUserBadges(userId),
+                    getUserPresence(userId),
+                    getUserFriends(userId),
+                    getUserInventoryCount(userId)
+                ]);
+                
+                stopSearchingAnimation();
+                renderProfile(userDetails, avatarUrl, userGames, userGroups, userBadges, userPresence, userFriends, inventoryCount);
+            } catch (err) {
+                stopSearchingAnimation();
+                logErrorDetails(err, 'fetchAndRender');
+                
+                let technicalDetails = err.message || "Nieznany błąd";
+                let possibleCauses = [];
+                
+                if (err.status === 404) {
+                    technicalDetails = `HTTP 404 - Użytkownik o ID ${userId} nie istnieje`;
+                    possibleCauses = [
+                        "Podane ID użytkownika jest nieprawidłowe lub nie istnieje w bazie Roblox",
+                        "Konto zostało usunięte lub zablokowane",
+                        "API Roblox tymczasowo nie może znaleźć tego użytkownika"
+                    ];
+                } else if (err.message && err.message.includes('Failed to fetch')) {
+                    technicalDetails = "Brak połączenia z serwerami Roblox - błąd CORS lub sieciowy";
+                    possibleCauses = [
+                        "Blokada CORS - przeglądarka uniemożliwia połączenie z API Roblox",
+                        "Proxy używane do obejścia CORS jest niedostępne lub przeciążone",
+                        "Twoje połączenie internetowe blokuje zapytania do API Roblox",
+                        "Serwery Roblox tymczasowo nie odpowiadają",
+                        "Zapora sieciowa lub rozszerzenie przeglądarki blokuje zapytania"
+                    ];
+                } else if (err.code === 429 || (err.message && err.message.includes('Too many requests'))) {
+                    technicalDetails = "Limit zapytań API został przekroczony";
+                    possibleCauses = [
+                        "Wysłałeś zbyt wiele zapytań w krótkim czasie - Roblox ma limit rate limiting",
+                        "Serwer proxy ma ograniczenia przepustowości",
+                        "Odczekaj 30-60 sekund przed kolejną próbą"
+                    ];
+                } else if (err.status === 504 || err.message.includes('Gateway Timeout')) {
+                    technicalDetails = "Przekroczono czas oczekiwania na odpowiedź serwera";
+                    possibleCauses = [
+                        "Proxy jest przeciążone i nie odpowiada w terminie",
+                        "Serwery Roblox odpowiadają zbyt wolno",
+                        "Tymczasowe przeciążenie infrastruktury - spróbuj ponownie za chwilę"
+                    ];
+                } else {
+                    possibleCauses = [
+                        "Tymczasowa niedostępność API Roblox - spróbuj ponownie za kilka minut",
+                        "Problem z proxy używanym do komunikacji z API",
+                        "Błąd po stronie serwerów Roblox (kod 500, 503)",
+                        "Nieprawidłowy format zapytania do API",
+                        "Przekroczono limit czasu połączenia"
+                    ];
+                }
+                
+                showDetailedError(
+                    "Nie udało się pobrać danych użytkownika",
+                    technicalDetails,
+                    possibleCauses
+                );
+                
+                document.getElementById('results-container').innerHTML = `
+                    <div style="background:#1e1a2f; border-radius:1.6rem; padding:2rem; text-align:center; border:1px solid #ff4d6d30;">
+                        <strong>⚠️ Błąd pobierania danych</strong><br>
+                        <span style="font-size:0.85rem;">${err.message || "Nieznany błąd"}</span><br><br>
+                        <span style="font-size:0.75rem; color:#8d9eff;">💡 Sprawdź szczegóły błędu powyżej - zawierają możliwe przyczyny i rozwiązania</span>
+                    </div>`;
+            }
+        }
+
+        function renderProfile(user, avatarUrl, games, groups, badges, presence, friends, inventoryCount) {
+            const createdDate = user.created ? new Date(user.created).toLocaleDateString('pl-PL') : "Nieznana";
+            const createdFullDate = user.created ? new Date(user.created).toLocaleString('pl-PL') : "Nieznana";
+            const isBannedText = user.isBanned ? "🚫 Konto zbanowane" : "✅ Konto niezbanowane";
+            const verifiedBadge = user.hasVerifiedBadge ? "✔️ Konto zweryfikowane" : "Standardowe konto";
+            
+            let statusText = "⚫ Offline";
+            let statusClass = "offline-badge";
+            if (presence === 1) { statusText = "🟢 Online"; statusClass = "online-badge"; }
+            if (presence === 2) { statusText = "🎮 W grze"; statusClass = "ingame-badge"; }
+
+            let accountAge = "Nieznany";
+            if (user.created) {
+                const created = new Date(user.created);
+                const now = new Date();
+                const diffYears = now.getFullYear() - created.getFullYear();
+                const diffMonths = now.getMonth() - created.getMonth();
+                if (diffYears > 0) {
+                    accountAge = `${diffYears} lat, ${Math.abs(diffMonths)} miesięcy`;
+                } else if (diffMonths > 0) {
+                    accountAge = `${diffMonths} miesięcy`;
+                } else {
+                    const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+                    accountAge = `${diffDays} dni`;
+                }
+            }
+
+            const totalVisits = games.reduce((sum, g) => sum + (g.visits || 0), 0);
+
+            // Duży napis = Display Name, niżej mniejszy = Nazwa konta (username)
+            let profileHtml = `
+                <div class="profile-section">
+                    <div class="profile-header">
+                        ${avatarUrl ? `<img class="avatar-img" src="${avatarUrl}" alt="avatar">` : `<div class="avatar-img" style="background:#2d334e; display:flex; align-items:center; justify-content:center;">🖼️</div>`}
+                        <div class="user-basic">
+                            <h2>${escapeHtml(user.displayName)} <span class="badge ${statusClass}">${statusText}</span> <span class="badge">${verifiedBadge}</span></h2>
+                            <p>👤 Nazwa konta: ${escapeHtml(user.name)}  •  🆔 ID użytkownika: ${user.id}</p>
+                            ${user.isBanned ? '<p style="color:#ff8a8a;">⚠️ Konto zablokowane / Banned</p>' : ''}
+                        </div>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-card"><strong>📝 Opis profilu</strong><br>${escapeHtml(user.description) || "Brak opisu"}</div>
+                        <div class="info-card"><strong>📅 Data utworzenia</strong><br>${createdDate}<br><small style="color:#6c7aa8;">${createdFullDate}</small></div>
+                        <div class="info-card"><strong>⏳ Wiek konta</strong><br>${accountAge}</div>
+                        <div class="info-card"><strong>🚦 Status zbanowania użytkownika</strong><br>${isBannedText}</div>
+                        <div class="info-card"><strong>📦 Przedmioty w ekwipunku</strong><br>~${inventoryCount} sztuk</div>
+                        <div class="info-card"><strong>🏷️ Nazwa użytkownika</strong><br>${escapeHtml(user.name)}</div>
+                        <div class="info-card"><strong>🔢 ID użytkownika</strong><br>${user.id}</div>
+                    </div>
+                </div>
+            `;
+
+            let statsHtml = `
+                <div class="profile-section">
+                    <div class="section-title">📊 Statystyki konta</div>
+                    <div class="info-grid">
+                        <div class="info-card"><strong>🎮 Liczba gier</strong><br>${games.length}</div>
+                        <div class="info-card"><strong>👥 Liczba grup</strong><br>${groups.length}</div>
+                        <div class="info-card"><strong>🏅 Liczba odznak</strong><br>${badges.length}</div>
+                        <div class="info-card"><strong>👀 Łączna liczba odwiedzin gier</strong><br>${totalVisits.toLocaleString()}</div>
+                        <div class="info-card"><strong>🤝 Liczba znajomych (wyświetlonych)</strong><br>${friends.length}</div>
+                    </div>
+                </div>
+            `;
+
+            let friendsHtml = `<div class="section-title">🤝 Znajomi użytkownika (${friends.length})</div>`;
+            if (friends.length === 0) {
+                friendsHtml += `<div style="background:#0b0e16; border-radius:1rem; padding:1rem;">Brak publicznych znajomych lub brak dostępu.</div>`;
+            } else {
+                friendsHtml += `<div class="friends-list">`;
+                for (const friend of friends.slice(0, 25)) {
+                    friendsHtml += `
+                        <div class="friend-item">
+                            <div class="friend-name">👤 ${escapeHtml(friend.name)}</div>
+                            <div class="friend-detail">✨ ${escapeHtml(friend.displayName)} | ID: ${friend.id}</div>
+                        </div>
+                    `;
+                }
+                friendsHtml += `</div>`;
+            }
+
+            let badgesHtml = `<div class="section-title">🏅 Odznaki użytkownika (${badges.length})</div>`;
+            if (badges.length === 0) {
+                badgesHtml += `<div style="background:#0b0e16; border-radius:1rem; padding:1rem;">Brak publicznych odznak.</div>`;
+            } else {
+                badgesHtml += `<div class="badges-list">`;
+                for (const badge of badges.slice(0, 15)) {
+                    badgesHtml += `
+                        <div class="badge-item">
+                            <div class="badge-name">🏅 ${escapeHtml(badge.name)}</div>
+                            <div class="badge-detail">📖 ${escapeHtml(badge.description?.substring(0, 80) || "Brak opisu")}</div>
+                            <div class="badge-detail">📅 Przyznano: ${badge.awardedAt ? new Date(badge.awardedAt).toLocaleDateString('pl-PL') : "nieznana"}</div>
+                        </div>
+                    `;
+                }
+                badgesHtml += `</div>`;
+            }
+
+            let gamesHtml = `<div class="section-title">🎮 Gry stworzone przez użytkownika (${games.length})</div>`;
+            if (games.length === 0) {
+                gamesHtml += `<div style="background:#0b0e16; border-radius:1rem; padding:1rem;">Brak publicznych gier przypisanych do tego twórcy.</div>`;
+            } else {
+                gamesHtml += `<div class="games-list">`;
+                for (const game of games.slice(0, 20)) {
+                    gamesHtml += `
+                        <div class="game-item">
+                            <div class="game-name">🎲 ${escapeHtml(game.name)}</div>
+                            <div class="game-detail">📖 ${escapeHtml(game.description?.substring(0, 100) || "Brak opisu")}</div>
+                            <div class="game-detail">👀 Odsłony: ${game.visits?.toLocaleString() || 0}  |  🟢 Gracze: ${game.playing || 0}</div>
+                            <div class="game-detail">📅 Data: ${game.created ? new Date(game.created).toLocaleDateString('pl-PL') : "nieznana"}</div>
+                        </div>
+                    `;
+                }
+                gamesHtml += `</div>`;
+            }
+
+            let groupsHtml = `<div class="section-title">👥 Członkostwo w grupach (${groups.length})</div>`;
+            if (groups.length === 0) {
+                groupsHtml += `<div style="background:#0b0e16; border-radius:1rem; padding:1rem;">Użytkownik nie należy do żadnych publicznych grup.</div>`;
+            } else {
+                groupsHtml += `<div class="groups-list">`;
+                for (const grp of groups.slice(0, 20)) {
+                    groupsHtml += `
+                        <div class="group-item">
+                            <div class="group-name">🏛️ ${escapeHtml(grp.groupName)} (ID: ${grp.groupId})</div>
+                            <div class="group-detail">⭐ Rola: ${escapeHtml(grp.roleName)} | Ranga: ${grp.roleRank} ${grp.isOwner ? '👑 WŁAŚCICIEL' : ''}</div>
+                            <div class="group-detail">👥 Członków: ${grp.groupMemberCount?.toLocaleString() || "?"}</div>
+                            <div class="group-detail">📄 ${escapeHtml(grp.description?.substring(0, 80) || "Brak opisu grupy")}</div>
+                        </div>
+                    `;
+                }
+                groupsHtml += `</div>`;
+            }
+
+            document.getElementById('results-container').innerHTML = profileHtml + statsHtml + friendsHtml + badgesHtml + gamesHtml + groupsHtml;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function clearError() {
+            const errorDiv = document.getElementById('search-error');
+            errorDiv.style.display = 'none';
+            errorDiv.innerHTML = '';
+        }
+
+        document.getElementById('search-by-username-btn').addEventListener('click', async () => {
+            const username = document.getElementById('username-input').value.trim();
+            if (!username) {
+                showDetailedError(
+                    "Nie podano nazwy użytkownika",
+                    "Pole wyszukiwania jest puste",
+                    ["Wprowadź nazwę użytkownika Roblox w polu tekstowym", "Sprawdź czy nazwa nie zawiera błędów ortograficznych"]
+                );
+                return;
+            }
+            clearError();
+            try {
+                const userLookup = await getUserIdByUsername(username);
+                if (!userLookup.id) throw new Error("Nie udało się pobrać ID");
+                await fetchAndRender(userLookup.id);
+            } catch (err) {
+                stopSearchingAnimation();
+                let technicalDetails = err.message || "Nieznany błąd";
+                let possibleCauses = [
+                    "Użytkownik o podanej nazwie nie istnieje w bazie Roblox",
+                    "Nazwa została błędnie wpisana",
+                    "Konto zostało usunięte lub zablokowane",
+                    "Tymczasowy problem z API Roblox - spróbuj ponownie za chwilę"
+                ];
+                
+                if (err.message && err.message.includes('Failed to fetch')) {
+                    technicalDetails = "Błąd połączenia z API - problem CORS lub sieciowy";
+                    possibleCauses = [
+                        "Blokada CORS - przeglądarka nie może połączyć się z API Roblox",
+                        "Proxy używane do komunikacji jest niedostępne",
+                        "Sprawdź swoje połączenie internetowe",
+                        "Wyłącz rozszerzenia przeglądarki blokujące zapytania"
+                    ];
+                }
+                
+                showDetailedError(
+                    `Nie znaleziono użytkownika "${username}"`,
+                    technicalDetails,
+                    possibleCauses
+                );
+                document.getElementById('results-container').innerHTML = `<div style="background:#1e1a2f; border-radius:1.6rem; padding:2rem; text-align:center;">⚠️ ${err.message}</div>`;
+            }
+        });
+
+        document.getElementById('search-by-id-btn').addEventListener('click', async () => {
+            const userIdRaw = document.getElementById('id-input').value.trim();
+            if (!userIdRaw || isNaN(parseInt(userIdRaw))) {
+                showDetailedError(
+                    "Nieprawidłowe ID użytkownika",
+                    `Wprowadzono: "${userIdRaw}" - oczekiwano liczby całkowitej`,
+                    ["ID użytkownika Roblox musi być liczbą (np. 1, 123456789)", "Sprawdź czy nie wpisujesz liter lub znaków specjalnych"]
+                );
+                return;
+            }
+            const userId = parseInt(userIdRaw);
+            clearError();
+            try {
+                await fetchAndRender(userId);
+            } catch (err) {
+                stopSearchingAnimation();
+                showDetailedError(
+                    `Nie udało się pobrać danych dla ID ${userId}`,
+                    err.message || "Nieznany błąd",
+                    [
+                        "Użytkownik o podanym ID może nie istnieć w bazie Roblox",
+                        "API Roblox tymczasowo nie odpowiada - spróbuj ponownie za minutę",
+                        "Problem z proxy używanym do komunikacji z API"
+                    ]
+                );
+            }
+        });
+
+        document.querySelectorAll('.quick-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const quickId = btn.getAttribute('data-quick-id');
+                const quickName = btn.getAttribute('data-quick-name');
+                clearError();
+                if (quickId) {
+                    await fetchAndRender(parseInt(quickId));
+                } else if (quickName) {
+                    try {
+                        const { id } = await getUserIdByUsername(quickName);
+                        await fetchAndRender(id);
+                    } catch(e) {
+                        showDetailedError(`Nie znaleziono "${quickName}"`, e.message, ["Spróbuj użyć ID zamiast nazwy"]);
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const tab = btn.getAttribute('data-tab');
+                if (tab === 'username') {
+                    document.getElementById('username-search').style.display = 'block';
+                    document.getElementById('id-search').style.display = 'none';
+                } else {
+                    document.getElementById('username-search').style.display = 'none';
+                    document.getElementById('id-search').style.display = 'block';
+                }
+                clearError();
+            });
+        });
+
+        for(let i = 0; i < 60; i++) {
+            let p = document.createElement('div');
+            p.classList.add('particle');
+            p.style.width = Math.random() * 8 + 2 + 'px';
+            p.style.height = p.style.width;
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = Math.random() * 20 + 8 + 's';
+            p.style.animationDelay = Math.random() * 15 + 's';
+            p.style.opacity = Math.random() * 0.4;
+            document.getElementById('particles').appendChild(p);
+        }
+    </script>
+</body>
+</html>
