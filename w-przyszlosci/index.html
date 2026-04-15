@@ -159,7 +159,7 @@
 <body>
     <div class="container">
         <div class="icon">🚧✨</div>
-        <h1>Podstrona <span class="highlight">w przygotowaniu</span></h1>
+        <h1>Podstrona <span class="highlight">strona aktualnie w przygotowywaniu </span></h1>
         <div class="message">
             Ta podstrona zostanie wykonana w przyszłości.<br>
             Już wkrótce pojawi się tutaj coś wyjątkowego.
@@ -170,7 +170,7 @@
 
         <div class="countdown">
             <div class="countdown-title">
-                ⏳ Oczekiwane uruchomienie - obstawiana data zrobienia ⏳
+                ⏳ Oczekiwane uruchomienie - obstawiany czas oczekiwania ⏳
             </div>
             <div class="timer">
                 <div class="time-box">
@@ -247,7 +247,7 @@
         // Wyświetlenie daty docelowej w ładnym formacie
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         const formattedDate = targetDate.toLocaleDateString('pl-PL', options);
-        document.getElementById('targetDateInfo').innerHTML = `📅 Planowana data: <strong>${formattedDate}</strong>`;
+        document.getElementById('targetDateInfo').innerHTML = `📅 Dokładna planowana data: <strong>${formattedDate}</strong>`;
         
         // Uruchom odliczanie
         updateCountdown();
