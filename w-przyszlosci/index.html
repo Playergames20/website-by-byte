@@ -1,1 +1,257 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podstrona w przygotowaniu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 30px;
+            padding: 50px 40px;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .message {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .submessage {
+            background: #f0f0f0;
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: #764ba2;
+            font-weight: 500;
+            margin-bottom: 40px;
+        }
+
+        .countdown {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .countdown-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #764ba2;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            background: white;
+            border-radius: 15px;
+            padding: 15px 20px;
+            min-width: 90px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .time-number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #333;
+            line-height: 1;
+        }
+
+        .time-label {
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        .target-date {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #764ba2;
+            font-weight: 500;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .time-box {
+                min-width: 65px;
+                padding: 10px 12px;
+            }
+            .time-number {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🚧✨</div>
+        <h1>Podstrona <span class="highlight">w przygotowaniu</span></h1>
+        <div class="message">
+            Ta podstrona zostanie wykonana w przyszłości.<br>
+            Już wkrótce pojawi się tutaj coś wyjątkowego.
+        </div>
+        <div class="submessage">
+            ⭐ Dziękujemy za cierpliwość i wyczekiwanie! ⭐
+        </div>
+
+        <div class="countdown">
+            <div class="countdown-title">
+                ⏳ Oczekiwane uruchomienie - obstawiana data zrobienia ⏳
+            </div>
+            <div class="timer">
+                <div class="time-box">
+                    <div class="time-number" id="days">--</div>
+                    <div class="time-label">Dni</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-number" id="hours">--</div>
+                    <div class="time-label">Godzin</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-number" id="minutes">--</div>
+                    <div class="time-label">Minut</div>
+                </div>
+                <div class="time-box">
+                    <div class="time-number" id="seconds">--</div>
+                    <div class="time-label">Sekund</div>
+                </div>
+            </div>
+            <div class="target-date" id="targetDateInfo"></div>
+        </div>
+
+        <div class="footer">
+            🔔 Bądź na bieżąco — warto czekać!
+        </div>
+    </div>
+
+    <script>
+        // =====================================================
+        // TUTAJ USTAW DATĘ DOCELOWĄ (MOŻESZ ZMIENIĆ)
+        // Format: new Date(rok, miesiąc-1, dzień, godzina, minuta, sekunda)
+        // =====================================================
+        
+        // Przykład: 15 grudnia 2026, godzina 12:00:00
+        const targetDate = new Date(2026, 04, 25, 16, 0, 0);
+        
+        // LUB odkomentuj poniższą linię i skomentuj powyższą, żeby ustawić własną datę:
+        // const targetDate = new Date(2026, 5, 20, 10, 0, 0); // 20 czerwca 2026, 10:00
+        
+        // =====================================================
+        // RESZTA KODU DZIAŁA AUTOMATYCZNIE - NIE MUSISZ TEGO EDYTOWAĆ
+        // =====================================================
+        
+        function updateCountdown() {
+            const now = new Date();
+            const difference = targetDate - now;
+            
+            // Jeśli data już minęła
+            if (difference <= 0) {
+                document.getElementById('days').innerText = '00';
+                document.getElementById('hours').innerText = '00';
+                document.getElementById('minutes').innerText = '00';
+                document.getElementById('seconds').innerText = '00';
+                
+                const countdownDiv = document.querySelector('.countdown-title');
+                if (countdownDiv && !countdownDiv.hasAttribute('data-finished')) {
+                    countdownDiv.innerHTML = '🎉 Trwają ostatnie prace! 🎉';
+                    countdownDiv.setAttribute('data-finished', 'true');
+                }
+                return;
+            }
+            
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+            document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+        }
+        
+        // Wyświetlenie daty docelowej w ładnym formacie
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        const formattedDate = targetDate.toLocaleDateString('pl-PL', options);
+        document.getElementById('targetDateInfo').innerHTML = `📅 Planowana data: <strong>${formattedDate}</strong>`;
+        
+        // Uruchom odliczanie
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
