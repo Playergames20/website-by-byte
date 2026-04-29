@@ -2,8 +2,9 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Info Hub - Strona Główna</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>QR Spot • Strefa odkrywcy | Byte&Code</title>
+    <meta name="description" content="Zeskanowałeś kod QR – witaj w wyjątkowym miejscu.">
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -12,6 +13,10 @@
             background: linear-gradient(135deg, #0a0c12, #1a1f2e);
             color: white;
             min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .container {
             max-width: 800px;
@@ -19,110 +24,336 @@
             background: rgba(255,255,255,0.1);
             padding: 40px;
             border-radius: 20px;
+            backdrop-filter: blur(5px);
         }
         h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 20px;
         }
-        .links {
-            margin-top: 30px;
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
+        .qr-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.5rem 1.4rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #c6deff;
+            border: 0.6px solid rgba(45,104,255,0.6);
+            margin-bottom: 2rem;
         }
-        a {
+        .qr-chip span:first-child {
+            font-size: 1.35rem;
+        }
+        .highlight-text {
+            font-size: 1.2rem;
+            color: #e2edff;
+            margin: 1rem 0 0.6rem 0;
+            font-weight: 500;
+            border-left: 3px solid #2d68ff;
+            padding-left: 1.1rem;
+            text-align: left;
+            background: rgba(45,104,255,0.1);
+            border-radius: 0 12px 12px 0;
+        }
+        .main-message {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #cfdfff;
+            margin: 1.4rem 0 0.5rem 0;
+            text-align: left;
+        }
+        .qr-location-hint {
+            background: rgba(45, 104, 255, 0.12);
+            padding: 1rem 1.2rem;
+            border-radius: 1.8rem;
+            margin: 1.8rem 0 2rem 0;
+            font-size: 0.95rem;
+            color: #b9d5ff;
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 0.5px solid rgba(45, 104, 255, 0.4);
+            text-align: left;
+        }
+        .qr-location-hint .emoji-big {
+            font-size: 1.7rem;
+        }
+        .btn-continue {
+            display: inline-block;
+            margin-top: 20px;
+            background: rgba(45,104,255,0.2);
             color: #2d68ff;
             text-decoration: none;
             font-size: 1.2rem;
-            background: rgba(45,104,255,0.2);
-            padding: 10px 20px;
+            padding: 12px 28px;
             border-radius: 10px;
             transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
         }
-        a:hover {
+        .btn-continue:hover {
             background: #2d68ff;
             color: white;
-            text-decoration: none;
+            transform: scale(1.02);
         }
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🏠 Strona główna</h1>
-        <p>Naciśnij na któryś z przycisków niżej by przejść na inną stronę w przyszłości linki do mediów społecznościowych zostaną dodane na tej strone internetowej propozycje do tej strony pisz na serwerze discord https://discord.gg/qEAvMm59NG kanał propozycje na dodanie czegoś do strony internetowej każda propozycja jest mile widziana</p>
-        <p> </p>
-        <p> </p>
-        <p> </p>
-        <p> </p>
-        <p>Aktualnie znajdujesz się na stronie głównej a także oficjalnej stronie internetowej stworzonej przez Byte official</p>
-        <p> </p>
-        <p> </p>
-        <p> </p>
-        <p> </p>
-        <p> </p>
-        <small>właściciel tej strony internetowej dziękuje za odwiedzenie jej a także życzy miłego dnia/wieczoru</small>
-        <div class="links">
-            <a href="https://playergames20.github.io/website-by-byte/wyszukiwarka-kont-roblox/">🔍 wyszukiwanie</a>
-            <a href="https://playergames20.github.io/website-by-byte/w-przyszlosci/">❓ w przyszłości</a>
-        </div>
-    </div>
-</body>
-
-                font-family: 'Segoe UI', Arial, sans-serif;
+        .footer-note {
             text-align: center;
-            padding: 100px;
-            background: linear-gradient(135deg, #0a0c12, #1a1f2e);
-            color: white;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: rgba(255,255,255,0.1);
-            padding: 40px;
-            border-radius: 20px;
-        }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-        .links {
-            margin-top: 30px;
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #8a9bcc;
+            border-top: 1px dashed rgba(45, 104, 255, 0.3);
+            padding-top: 1.5rem;
             display: flex;
-            gap: 20px;
             justify-content: center;
+            gap: 1rem;
             flex-wrap: wrap;
         }
-        a {
+        .stats-box {
+            display: flex;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+        .stat-card {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.8rem 2rem;
+            border-radius: 1.5rem;
+            text-align: center;
+            min-width: 180px;
+            border: 1px solid rgba(45, 104, 255, 0.4);
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
             color: #2d68ff;
-            text-decoration: none;
-            font-size: 1.2rem;
-            background: rgba(45,104,255,0.2);
-            padding: 10px 20px;
-            border-radius: 10px;
-            transition: 0.3s;
+            display: block;
         }
-        a:hover {
-            background: #2d68ff;
+        .stat-label {
+            font-size: 0.75rem;
+            color: #9bb5e0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .share-section {
+            background: rgba(45, 104, 255, 0.08);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .share-buttons {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .share-btn {
+            background: rgba(45, 104, 255, 0.2);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
             color: white;
-            text-decoration: none;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
+        .share-btn:hover {
+            background: #2d68ff;
+            transform: scale(1.05);
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            animation: fadeOut 2s ease forwards;
+            border: 1px solid #2d68ff;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); visibility: hidden; }
+        }
+        @media (max-width: 550px) {
+            body { padding: 20px; }
+            .container { padding: 25px; }
+            h1 { font-size: 1.8rem; }
+            .highlight-text { font-size: 1rem; }
+            .main-message { font-size: 0.95rem; }
+            .stat-card { min-width: 140px; padding: 0.5rem 1rem; }
+            .stat-number { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>test</h1>
-        <p>test</p>
+        <div class="qr-chip">
+            <span>📲 █▄▀█▄▀</span>
+            <span>SKANOWANY KOD QR</span>
+        </div>
+
+        <h1>Witaj, poszukiwaczu<br>ukrytych ścieżek.</h1>
+
+        <div class="highlight-text">
+            ✦ Prawdopodobnie trafiłeś/aś na tę stronę skanując kod QR który znalazłeś/aś w jednym z miejsc w którym on był ✦
+        </div>
+
+        <div class="main-message">
+            skanując kod QR, który spotkałeś/aś w jednym z miejsc, w których <strong>został umieszczony</strong>.
+        </div>
+
+        <div class="qr-location-hint">
+            <div class="emoji-big">📍🔲</div>
+            <div>Kod QR został celowo umieszczony w fizycznej przestrzeni – na naklejce, plakacie, karcie lub w strategicznym punkcie. <br>Dzięki niemu otwierasz przed sobą cyfrową bramę.</div>
+        </div>
+
+        <div class="stats-box">
+            <div class="stat-card">
+                <span class="stat-number" id="scanCounter">---</span>
+                <span class="stat-label">unikalne skany QR</span>
+            </div>
+        </div>
+
+        <div class="share-section">
+            <div style="font-weight: 500; margin-bottom: 10px;">🔗 Podziel się tą stroną</div>
+            <div class="share-buttons">
+                <button class="share-btn" id="shareTwitter">🐦 Twitter</button>
+                <button class="share-btn" id="shareCopy">📋 Kopiuj link (tej strony)</button>
+                <button class="share-btn" id="shareNative">📱 Udostępnij w aplikacjach</button>
+            </div>
+            <div style="font-size: 0.7rem; margin-top: 12px; opacity: 0.7;">ta strona internetowa została stworzona przez <strong>byte official</strong> ✨</div>
+        </div>
+
+        <div class="main-message" style="margin-top: 0.8rem; font-size: 0.95rem; text-align: center;">
+            Jeśli już jesteś na tej stronie, możesz wrócić na stronę główną by sprawdzić listę stron internetowych.<br>
+            Jako właściciel strony dziękuję za zeskanowanie tego kodu QR — możesz też podzielić się tą stroną z innymi osobami.
+        </div>
+
+        <button class="btn-continue" id="enterButton">
+            🌐 PRZEJDŹ DO STRONY GŁÓWNEJ 🌐
+        </button>
+
+        <div class="footer-note">
+            <span>🔷 by Byte&nbsp;Code</span>
+            <span>◈ wersja interaktywna</span>
+            <span>⚡ skan potwierdzony</span>
         </div>
     </div>
+
+    <script>
+        (function() {
+            // LINK DO STRONY GŁÓWNEJ (przycisk główny)
+            const TARGET_URL = "https://playergames20.github.io/website-by-byte/strona-glowna/";
+            // LINK DO TEJ STRONY QR (do kopiowania i udostępniania)
+            const CURRENT_PAGE_URL = window.location.href;
+            
+            // --- LICZNIK UNIKALNYCH SKANÓW ---
+            let totalUniqueScans = localStorage.getItem('qrTotalUniqueScans');
+            if (totalUniqueScans === null) {
+                totalUniqueScans = 128;
+                localStorage.setItem('qrTotalUniqueScans', totalUniqueScans);
+            } else {
+                totalUniqueScans = parseInt(totalUniqueScans);
+            }
+            
+            const sessionFlag = sessionStorage.getItem('qrScanAddedInSession');
+            if (!sessionFlag) {
+                totalUniqueScans++;
+                localStorage.setItem('qrTotalUniqueScans', totalUniqueScans);
+                sessionStorage.setItem('qrScanAddedInSession', 'true');
+            }
+            
+            const scanCounterSpan = document.getElementById('scanCounter');
+            if (scanCounterSpan) {
+                scanCounterSpan.innerText = totalUniqueScans;
+            }
+            
+            // --- PRZYCISK GŁÓWNY - PRZEKIEROWANIE DO STRONY GŁÓWNEJ ---
+            const button = document.getElementById('enterButton');
+            if (button) {
+                button.addEventListener('click', function() {
+                    window.location.href = TARGET_URL;
+                });
+            }
+            
+            // --- FUNKCJA TOAST (powiadomienie) ---
+            function showToast(message) {
+                const existingToast = document.querySelector('.toast-msg');
+                if (existingToast) existingToast.remove();
+                const toast = document.createElement('div');
+                toast.className = 'toast-msg';
+                toast.innerText = message;
+                document.body.appendChild(toast);
+                setTimeout(() => {
+                    if (toast && toast.remove) toast.remove();
+                }, 2000);
+            }
+            
+            // --- PRZYCISK KOPIUJ LINK (tej strony QR) ---
+            function copyCurrentPageLink() {
+                navigator.clipboard.writeText(CURRENT_PAGE_URL).then(() => {
+                    showToast('✅ Skopiowano link do tej strony!');
+                }).catch(() => {
+                    prompt('Skopiuj ręcznie link:', CURRENT_PAGE_URL);
+                    showToast('📋 Link skopiowany ręcznie');
+                });
+            }
+            
+            const copyBtn = document.getElementById('shareCopy');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    copyCurrentPageLink();
+                });
+            }
+            
+            // --- PRZYCISK TWITTER (udostępnia TE stronę QR) ---
+            const twitterBtn = document.getElementById('shareTwitter');
+            if (twitterBtn) {
+                twitterBtn.addEventListener('click', () => {
+                    const tweetText = encodeURIComponent('Zeskanowałem kod QR i trafiłem na tę stronę! 🔍✨ Sprawdźcie:');
+                    const url = encodeURIComponent(CURRENT_PAGE_URL);
+                    window.open(`https://twitter.com/intent/tweet?text=${tweetText}&url=${url}`, '_blank', 'width=600,height=400');
+                });
+            }
+            
+            // --- PRZYCISK UDOSTĘPNIJ W APLIKACJACH (Web Share API) ---
+            const shareNativeBtn = document.getElementById('shareNative');
+            if (shareNativeBtn) {
+                shareNativeBtn.addEventListener('click', () => {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'QR Spot • Strefa odkrywcy',
+                            text: 'Zeskanowałem kod QR i trafiłem na tę tajemniczą stronę!',
+                            url: CURRENT_PAGE_URL,
+                        }).catch(err => {
+                            if (err.name !== 'AbortError') {
+                                console.log('Udostępnianie anulowane lub błąd');
+                            }
+                        });
+                    } else {
+                        // Fallback dla przeglądarek bez Web Share API
+                        copyCurrentPageLink();
+                        showToast('📲 Twoja przeglądarka nie obsługuje udostępniania – link skopiowany');
+                    }
+                });
+            }
+        })();
+    </script>
 </body>
 </html>
