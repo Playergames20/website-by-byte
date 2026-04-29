@@ -208,20 +208,19 @@
 
         .stats-box {
             display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 1rem;
+            justify-content: center;
+            gap: 1.5rem;
             margin: 1.5rem 0;
+            flex-wrap: wrap;
         }
 
         .stat-card {
             background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(4px);
-            padding: 0.8rem 1.2rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 1.5rem;
             text-align: center;
-            flex: 1;
-            min-width: 100px;
+            min-width: 160px;
             border: 1px solid rgba(72, 160, 255, 0.3);
             transition: all 0.3s;
         }
@@ -390,6 +389,10 @@
                 padding: 0.9rem 0;
                 font-size: 1.1rem;
             }
+            .stat-card {
+                min-width: 130px;
+                padding: 0.6rem 1rem;
+            }
         }
 
         /* Animacja ładowania przycisku */
@@ -458,12 +461,8 @@
                 <span class="stat-label">unikalne skany QR</span>
             </div>
             <div class="stat-card">
-                <span class="stat-number">24/7</span>
+                <span class="stat-number">⚡ 24/7</span>
                 <span class="stat-label">aktywna brama</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number" id="timeOnline">---</span>
-                <span class="stat-label">online od</span>
             </div>
         </div>
         
@@ -502,7 +501,6 @@
     (function() {
         // STAŁE
         const TARGET_URL = "https://playergames20.github.io/website-by-byte/strona-glowna/";  // STRONA GŁÓWNA (przycisk + kopiowanie)
-        const CURRENT_PAGE_URL = window.location.href; // aktualna strona QR (nie używana do kopiowania już)
         
         // ---- LICZNIK SKANÓW (UNIKALNY NA PODSTAWIE SESSION STORAGE + FLAGI) ----
         // Używamy sessionStorage + dodatkowej flagi w localStorage (firstScanInSession)
@@ -526,7 +524,6 @@
             totalUniqueScans++;
             localStorage.setItem('qrTotalUniqueScans', totalUniqueScans);
             sessionStorage.setItem('qrScanAddedInSession', 'true');
-            // Opcjonalnie: można dodać też ciasteczko/dłuższy tracking, ale session styknie
             console.log("Nowa unikalna wizyta (sesja) - licznik zwiększony");
         } else {
             console.log("Ta sama sesja – bez dodawania licznika");
@@ -536,15 +533,6 @@
         const scanCounterSpan = document.getElementById('scanCounter');
         if (scanCounterSpan) {
             scanCounterSpan.innerText = totalUniqueScans;
-        }
-        
-        // Czas online od (data uruchomienia strony)
-        const startTime = new Date();
-        const timeSpan = document.getElementById('timeOnline');
-        if (timeSpan) {
-            const hours = startTime.getHours().toString().padStart(2,'0');
-            const minutes = startTime.getMinutes().toString().padStart(2,'0');
-            timeSpan.innerText = `${hours}:${minutes}`;
         }
         
         // ---- PRZYCISK GŁÓWNY - PRZEKIEROWANIE ----
@@ -596,8 +584,7 @@
             });
         }
         
-        // Przycisk Twitter (share aktualnej strony QR? ale i tak można podać link do strony głównej dla zachowania spójności? 
-        // Lepiej udostępniać stronę główną (strona docelowa), ale żeby nie mieszać: udostępnijmy TARGET_URL.
+        // Przycisk Twitter (udostępniamy TARGET_URL)
         const twitterBtn = document.getElementById('shareTwitter');
         if (twitterBtn) {
             twitterBtn.addEventListener('click', () => {
@@ -683,7 +670,7 @@
             document.head.appendChild(styleSheet);
         }
         
-        console.log("Strona gotowa – licznik unikalnych sesji + kopiowanie linku do strony głównej");
+        console.log("Strona gotowa – licznik unikalnych sesji | Usunięto godzinę online");
     })();
 </script>
 </body>
