@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>QR Spot • Strefa odkrywcy | Byte&Code</title>
-    <!-- Meta dla karty / tytuł w przeglądarce -->
     <meta name="description" content="Zeskanowałeś kod QR – witaj w wyjątkowym miejscu. Kliknij i odkryj dalszą ścieżkę.">
     <style>
         * {
@@ -26,7 +25,6 @@
             overflow-x: hidden;
         }
 
-        /* Tło z animowanymi cząstkami (gwiazdki/QR dots) */
         .bg-particles {
             position: fixed;
             top: 0;
@@ -53,7 +51,6 @@
             100% { transform: translateY(-100px) rotate(180deg); opacity: 0; }
         }
 
-        /* dekoracja matrix/qr */
         body::before {
             content: "⬛⬜⬛⬜⬛⬜⬛⬜⬛⬜";
             font-size: 9vw;
@@ -199,7 +196,6 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
-        /* Nowe dodatkowe sekcje dla wydłużenia strony */
         .extra-section {
             margin-top: 2rem;
             padding-top: 1rem;
@@ -209,18 +205,16 @@
         .stats-box {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
             margin: 1.5rem 0;
-            flex-wrap: wrap;
         }
 
         .stat-card {
             background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(4px);
-            padding: 0.8rem 1.5rem;
+            padding: 0.8rem 2rem;
             border-radius: 1.5rem;
             text-align: center;
-            min-width: 160px;
+            min-width: 200px;
             border: 1px solid rgba(72, 160, 255, 0.3);
             transition: all 0.3s;
         }
@@ -232,14 +226,14 @@
         }
 
         .stat-number {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
             color: #60a5fa;
             display: block;
         }
 
         .stat-label {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #9bb5e0;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -390,18 +384,14 @@
                 font-size: 1.1rem;
             }
             .stat-card {
-                min-width: 130px;
+                min-width: 160px;
                 padding: 0.6rem 1rem;
+            }
+            .stat-number {
+                font-size: 1.6rem;
             }
         }
 
-        /* Animacja ładowania przycisku */
-        .ripple {
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Komunikat toast */
         .toast-msg {
             position: fixed;
             bottom: 30px;
@@ -429,7 +419,6 @@
 </head>
 <body>
 
-<!-- Tło z animowanymi cząstkami -->
 <div class="bg-particles" id="particles"></div>
 
 <div class="glass-panel">
@@ -453,16 +442,11 @@
         <div>Kod QR został celowo umieszczony w fizycznej przestrzeni – na naklejce, plakacie, karcie lub w strategicznym punkcie. <br>Dzięki niemu otwierasz przed sobą cyfrową bramę.</div>
     </div>
     
-    <!-- NOWA SEKCJA: dodatkowa treść dla wydłużenia strony -->
     <div class="extra-section">
         <div class="stats-box">
             <div class="stat-card">
                 <span class="stat-number" id="scanCounter">---</span>
-                <span class="stat-label">unikalne skany QR</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-number">⚡ 24/7</span>
-                <span class="stat-label">aktywna brama</span>
+                <span class="stat-label">liczba zeskanowanych kodów QR do strony</span>
             </div>
         </div>
         
@@ -470,8 +454,8 @@
             <div style="font-weight: 500; margin-bottom: 10px;">🔗 Podziel się tym odkryciem</div>
             <div class="share-buttons">
                 <button class="share-btn" id="shareTwitter">🐦 Twitter</button>
-                <button class="share-btn" id="shareCopy">📋 Kopiuj link (strona główna)</button>
-                <button class="share-btn" id="shareMsg">💬 Wyślij do znajomego</button>
+                <button class="share-btn" id="shareCopy">📋 Kopiuj link do strony internetowej</button>
+                <button class="share-btn" id="shareMsg">💬 udostępnij stronę</button>
             </div>
             <div class="qrcode-mini">
                 <div class="mini-qr" title="Skanuj ponownie">📱 ⬛◻️⬛</div>
@@ -485,7 +469,6 @@
         </div>
     </div>
 
-    <!-- Przycisk kierujący do strony głównej -->
     <button class="btn-continue" id="enterButton">
         🌐 PRZEJDŹ DO STRONY GŁÓWNEJ 🌐
     </button>
@@ -499,28 +482,20 @@
 
 <script>
     (function() {
-        // STAŁE
-        const TARGET_URL = "https://playergames20.github.io/website-by-byte/strona-glowna/";  // STRONA GŁÓWNA (przycisk + kopiowanie)
+        const TARGET_URL = "https://playergames20.github.io/website-by-byte/strona-glowna/";
         
-        // ---- LICZNIK SKANÓW (UNIKALNY NA PODSTAWIE SESSION STORAGE + FLAGI) ----
-        // Używamy sessionStorage + dodatkowej flagi w localStorage (firstScanInSession)
-        // Aby uniknąć dodawania przy odświeżeniu tej samej karty.
-        // Całkowity licznik unikalnych skanów (różnych sesji / urządzeń) oparty o localStorage,
-        // ale inkrementujemy TYLKO raz na faktyczne wejście (nowa sesja lub pierwsze wejście z danego urządzenia).
-        
+        // ---- LICZNIK SKANÓW (UNIKALNY NA PODSTAWIE SESSION STORAGE) ----
         let totalUniqueScans = localStorage.getItem('qrTotalUniqueScans');
         if (totalUniqueScans === null) {
-            totalUniqueScans = 128; // baza startowa
+            totalUniqueScans = 128;
             localStorage.setItem('qrTotalUniqueScans', totalUniqueScans);
         } else {
             totalUniqueScans = parseInt(totalUniqueScans);
         }
         
-        // Sprawdzamy czy to nowa sesja (czy w tej sesji już dodaliśmy +1)
         const sessionFlag = sessionStorage.getItem('qrScanAddedInSession');
         
         if (!sessionFlag) {
-            // Nowa sesja → dodajemy +1 do licznika unikalnych skanów
             totalUniqueScans++;
             localStorage.setItem('qrTotalUniqueScans', totalUniqueScans);
             sessionStorage.setItem('qrScanAddedInSession', 'true');
@@ -529,7 +504,6 @@
             console.log("Ta sama sesja – bez dodawania licznika");
         }
         
-        // Wyświetlamy aktualną liczbę unikalnych skanów
         const scanCounterSpan = document.getElementById('scanCounter');
         if (scanCounterSpan) {
             scanCounterSpan.innerText = totalUniqueScans;
@@ -550,7 +524,7 @@
             button.setAttribute('aria-label', 'Przejdź do strony głównej projektu');
         }
         
-        // ---- FUNKCJA TOAST (powiadomienie) ----
+        // ---- FUNKCJA TOAST ----
         function showToast(message) {
             const existingToast = document.querySelector('.toast-msg');
             if (existingToast) existingToast.remove();
@@ -563,19 +537,16 @@
             }, 2000);
         }
         
-        // ---- KOPIOWANIE LINKU DO STRONY GŁÓWNEJ (TARGET_URL) ----
+        // ---- KOPIOWANIE LINKU DO STRONY GŁÓWNEJ ----
         function copyMainPageLink() {
             navigator.clipboard.writeText(TARGET_URL).then(() => {
                 showToast('✅ Skopiowano link do strony głównej!');
             }).catch(() => {
-                // Fallback: pokaż prompt z ręcznym kopiowaniem
-                const fallbackMsg = `Skopiuj ręcznie: ${TARGET_URL}`;
-                prompt(fallbackMsg, TARGET_URL);
+                prompt(`Skopiuj ręcznie: ${TARGET_URL}`, TARGET_URL);
                 showToast('📋 Link skopiowany ręcznie');
             });
         }
         
-        // Przycisk kopiuj link (strona główna)
         const copyBtn = document.getElementById('shareCopy');
         if (copyBtn) {
             copyBtn.addEventListener('click', (e) => {
@@ -584,7 +555,6 @@
             });
         }
         
-        // Przycisk Twitter (udostępniamy TARGET_URL)
         const twitterBtn = document.getElementById('shareTwitter');
         if (twitterBtn) {
             twitterBtn.addEventListener('click', () => {
@@ -594,7 +564,6 @@
             });
         }
         
-        // Przycisk "Wyślij do znajomego" - udostępniamy TARGET_URL (strona główna)
         const shareMsgBtn = document.getElementById('shareMsg');
         if (shareMsgBtn) {
             shareMsgBtn.addEventListener('click', () => {
@@ -657,7 +626,6 @@
             });
         });
         
-        // Dodajemy styl dla animacji ripples
         if (!document.querySelector('#rippleStyle')) {
             const styleSheet = document.createElement("style");
             styleSheet.id = 'rippleStyle';
@@ -670,7 +638,7 @@
             document.head.appendChild(styleSheet);
         }
         
-        console.log("Strona gotowa – licznik unikalnych sesji | Usunięto godzinę online");
+        console.log("Strona gotowa – wyświetlany tylko licznik unikalnych skanów");
     })();
 </script>
 </body>
