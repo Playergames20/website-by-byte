@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>QR Spot • Strefa odkrywcy | Byte&Code</title>
     <!-- Meta dla karty / tytuł w przeglądarce -->
-    <meta name="description" content="Zeskanowałeś kod QR">
+    <meta name="description" content="Zeskanowałeś kod QR – witaj w wyjątkowym miejscu. Kliknij i odkryj dalszą ścieżkę.">
     <style>
         * {
             margin: 0;
@@ -18,11 +18,39 @@
             background: radial-gradient(circle at 10% 20%, #0B1120, #030617);
             font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Poppins', sans-serif;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 1.8rem;
+            padding: 2rem 1.8rem;
             position: relative;
             overflow-x: hidden;
+        }
+
+        /* Tło z animowanymi cząstkami (gwiazdki/QR dots) */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(72, 160, 255, 0.3);
+            border-radius: 50%;
+            animation: floatParticle 12s infinite ease-in-out;
+            box-shadow: 0 0 6px rgba(72, 160, 255, 0.5);
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-100px) rotate(180deg); opacity: 0; }
         }
 
         /* dekoracja matrix/qr */
@@ -39,6 +67,7 @@
             pointer-events: none;
             font-family: monospace;
             transform: rotate(-3deg);
+            z-index: 0;
         }
 
         body::after {
@@ -47,10 +76,11 @@
             inset: 0;
             background: repeating-linear-gradient(45deg, rgba(0, 255, 255, 0.01) 0px, rgba(0, 255, 255, 0.01) 2px, transparent 2px, transparent 8px);
             pointer-events: none;
+            z-index: 0;
         }
 
         .glass-panel {
-            max-width: 700px;
+            max-width: 800px;
             width: 100%;
             background: rgba(12, 20, 35, 0.7);
             backdrop-filter: blur(16px);
@@ -60,6 +90,19 @@
             padding: 2rem 2rem 2.6rem;
             transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             z-index: 10;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .glass-panel:hover {
@@ -82,10 +125,23 @@
             border: 0.6px solid rgba(70, 150, 250, 0.6);
             margin-bottom: 2rem;
             letter-spacing: 0.2px;
+            transition: all 0.3s;
+        }
+
+        .qr-chip:hover {
+            border-color: #3b82f6;
+            background: rgba(0, 0, 0, 0.6);
+            transform: translateX(5px);
         }
 
         .qr-chip span:first-child {
             font-size: 1.35rem;
+            animation: pulseIcon 1.5s infinite;
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
         }
 
         h1 {
@@ -107,6 +163,8 @@
             font-weight: 500;
             border-left: 3px solid #3b82f6;
             padding-left: 1.1rem;
+            background: linear-gradient(90deg, rgba(59,130,246,0.1), transparent);
+            border-radius: 0 12px 12px 0;
         }
 
         .main-message {
@@ -128,11 +186,122 @@
             align-items: center;
             flex-wrap: wrap;
             border: 0.5px solid rgba(59, 130, 246, 0.4);
+            transition: all 0.3s;
+        }
+
+        .qr-location-hint:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
         }
 
         .qr-location-hint .emoji-big {
             font-size: 1.7rem;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        /* Nowe dodatkowe sekcje dla wydłużenia strony */
+        .extra-section {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px dashed rgba(100, 150, 200, 0.3);
+        }
+
+        .stats-box {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+            padding: 0.8rem 1.2rem;
+            border-radius: 1.5rem;
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+            border: 1px solid rgba(72, 160, 255, 0.3);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #3b82f6;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #60a5fa;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #9bb5e0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .share-section {
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(0,0,0,0.2));
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            background: rgba(30, 40, 70, 0.8);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            color: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(4px);
+        }
+
+        .share-btn:hover {
+            background: #3b82f6;
+            transform: scale(1.05);
+        }
+
+        .qrcode-mini {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .mini-qr {
+            background: white;
+            padding: 8px;
+            border-radius: 16px;
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            text-align: center;
+            line-height: 70px;
+            font-family: monospace;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0B1120;
+            box-shadow: 0 0 0 2px #3b82f6;
         }
 
         .btn-continue {
@@ -154,6 +323,23 @@
             box-shadow: 0 8px 20px -8px #00000040;
             border: 1px solid rgba(80, 160, 255, 0.5);
             letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-continue::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-continue:hover::before {
+            left: 100%;
         }
 
         .btn-continue:hover {
@@ -205,9 +391,18 @@
                 font-size: 1.1rem;
             }
         }
+
+        /* Animacja ładowania przycisku */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
+
+<!-- Tło z animowanymi cząstkami -->
+<div class="bg-particles" id="particles"></div>
 
 <div class="glass-panel">
     <div class="qr-chip">
@@ -228,8 +423,42 @@
     <div class="qr-location-hint">
         <div class="emoji-big">📍🔲</div>
         <div>Kod QR został celowo umieszczony w fizycznej przestrzeni – na naklejce, plakacie, karcie lub w strategicznym punkcie. <br>Dzięki niemu otwierasz przed sobą cyfrową bramę.</div>
-        <div>Jeśli już jesteś na tej stronie, możesz wrócić na stronę glówną by sprawdzić listę stron internetowych jako właściciel strony dziękuję za zeskanowanie tego kodu QR możesz też podzielić się tą stroną internetową z innymi osobami<div>
-        <div>ta strona internetowa została stworzona przez byte official<div>
+    </div>
+    
+    <!-- NOWA SEKCJA: dodatkowa treść dla wydłużenia strony -->
+    <div class="extra-section">
+        <div class="stats-box">
+            <div class="stat-card">
+                <span class="stat-number" id="scanCounter">128</span>
+                <span class="stat-label">skanów QR</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">24/7</span>
+                <span class="stat-label">aktywna brama</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="timeOnline">---</span>
+                <span class="stat-label">online od</span>
+            </div>
+        </div>
+        
+        <div class="share-section">
+            <div style="font-weight: 500; margin-bottom: 10px;">🔗 Podziel się tym odkryciem</div>
+            <div class="share-buttons">
+                <button class="share-btn" id="shareTwitter">🐦 Twitter</button>
+                <button class="share-btn" id="shareCopy">📋 Kopiuj link</button>
+                <button class="share-btn" id="shareMsg">💬 Wyślij do znajomego</button>
+            </div>
+            <div class="qrcode-mini">
+                <div class="mini-qr" title="Skanuj ponownie">📱 ⬛◻️⬛</div>
+            </div>
+            <div style="font-size: 0.7rem; margin-top: 8px; opacity: 0.7;">ta strona internetowa została stworzona przez <strong>byte official</strong> ✨</div>
+        </div>
+        
+        <div class="main-message" style="margin-top: 0.8rem; font-size: 0.95rem; text-align: center;">
+            Jeśli już jesteś na tej stronie, możesz wrócić na stronę główną by sprawdzić listę stron internetowych.<br>
+            Jako właściciel strony dziękuję za zeskanowanie tego kodu QR — możesz też podzielić się tą stroną z innymi osobami.
+        </div>
     </div>
 
     <!-- Przycisk kierujący do strony głównej -->
@@ -240,6 +469,7 @@
     <div class="footer-note">
         <span>🔷 by Byte&nbsp;Code</span>
         <span>◈ wersja interaktywna</span>
+        <span>⚡ skan potwierdzony</span>
     </div>
 </div>
 
@@ -247,29 +477,150 @@
     (function() {
         // docelowy adres URL (zgodnie z wymaganiem)
         const TARGET_URL = "https://playergames20.github.io/website-by-byte/strona-glowna/";
+        const CURRENT_PAGE_URL = window.location.href;
 
+        // Przycisk główny
         const button = document.getElementById('enterButton');
         if (button) {
-            // Obsługa kliknięcia - przekierowanie do wskazanej strony
             button.addEventListener('click', function(event) {
-                // mała animacja lub opcjonalnie dźwięk? tylko czyste przekierowanie
-                // ale dodajmy subtelną informację w konsoli (dla ewentualnego dev)
                 console.log("Przekierowanie do strony głównej: " + TARGET_URL);
                 window.location.href = TARGET_URL;
             });
-
-            // Dodatkowo: opcjonalne wsparcie dla klawiatury (Enter)
             button.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     window.location.href = TARGET_URL;
                 }
             });
-            // ustawiamy atrybuty dostępności
             button.setAttribute('aria-label', 'Przejdź do strony głównej projektu');
-        } else {
-            console.warn("Nie znaleziono przycisku!");
         }
+
+        // Animacja cząstek w tle
+        function createParticles() {
+            const container = document.getElementById('particles');
+            if (!container) return;
+            for (let i = 0; i < 45; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.bottom = '-' + Math.random() * 20 + 'px';
+                particle.style.animationDuration = Math.random() * 8 + 6 + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.opacity = Math.random() * 0.5 + 0.2;
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Licznik skanów (symulacja + localStorage żeby pokazać wzrost)
+        let scanCount = localStorage.getItem('qrScanCount');
+        if (!scanCount) {
+            scanCount = 128;
+            localStorage.setItem('qrScanCount', scanCount);
+        } else {
+            scanCount = parseInt(scanCount) + 1;
+            localStorage.setItem('qrScanCount', scanCount);
+        }
+        const counterSpan = document.getElementById('scanCounter');
+        if (counterSpan) counterSpan.innerText = scanCount;
+
+        // Czas online od (data uruchomienia strony)
+        const startTime = new Date();
+        const timeSpan = document.getElementById('timeOnline');
+        if (timeSpan) {
+            const hours = startTime.getHours().toString().padStart(2,'0');
+            const minutes = startTime.getMinutes().toString().padStart(2,'0');
+            timeSpan.innerText = `${hours}:${minutes}`;
+        }
+
+        // Funkcja kopiowania linku
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Link skopiowany: ' + text);
+            }).catch(() => {
+                prompt('Skopiuj ręcznie:', text);
+            });
+        }
+
+        // Przycisk kopiuj link
+        const copyBtn = document.getElementById('shareCopy');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                copyToClipboard(CURRENT_PAGE_URL);
+            });
+        }
+
+        // Przycisk Twitter (share)
+        const twitterBtn = document.getElementById('shareTwitter');
+        if (twitterBtn) {
+            twitterBtn.addEventListener('click', () => {
+                const tweetText = encodeURIComponent('Zeskanowałem kod QR i trafiłem tutaj! 🔍✨ Sprawdźcie:');
+                const url = encodeURIComponent(CURRENT_PAGE_URL);
+                window.open(`https://twitter.com/intent/tweet?text=${tweetText}&url=${url}`, '_blank', 'width=600,height=400');
+            });
+        }
+
+        // Przycisk "Wyślij do znajomego" - otwiera domyślną aplikację do udostępniania (Web Share API)
+        const shareMsgBtn = document.getElementById('shareMsg');
+        if (shareMsgBtn) {
+            shareMsgBtn.addEventListener('click', () => {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'QR Spot • Strefa odkrywcy',
+                        text: 'Zeskanowałem kod QR i znalazłem tę tajemniczą stronę!',
+                        url: CURRENT_PAGE_URL,
+                    }).catch(err => console.log('Udostępnianie anulowane'));
+                } else {
+                    copyToClipboard(CURRENT_PAGE_URL);
+                    alert('📲 Skopiowano link – możesz go wysłać znajomemu');
+                }
+            });
+        }
+
+        // Mały efekt przycisku "ripple" (opcjonalny)
+        const btns = document.querySelectorAll('.btn-continue, .share-btn');
+        btns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                let ripple = document.createElement('span');
+                ripple.classList.add('ripple-effect');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.backgroundColor = 'rgba(255,255,255,0.4)';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'rippleAnim 0.4s linear';
+                ripple.style.pointerEvents = 'none';
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                btn.style.position = 'relative';
+                btn.style.overflow = 'hidden';
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 400);
+            });
+        });
+        
+        // Dodajemy styl dla animacji ripples (jeśli nie istnieje)
+        if (!document.querySelector('#rippleStyle')) {
+            const styleSheet = document.createElement("style");
+            styleSheet.id = 'rippleStyle';
+            styleSheet.textContent = `
+                @keyframes rippleAnim {
+                    to { transform: scale(20); opacity: 0; }
+                }
+                .share-btn, .btn-continue { position: relative; overflow: hidden; }
+            `;
+            document.head.appendChild(styleSheet);
+        }
+
+        // Dodatkowy efekt: zmiana tła przycisku po najechaniu
+        console.log("Strona gotowa – wydłużona wersja z efektami UI");
     })();
 </script>
 </body>
