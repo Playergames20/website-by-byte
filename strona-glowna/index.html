@@ -2,9 +2,8 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>QR Spot • Strefa odkrywcy | Byte&Code</title>
-    <meta name="description" content="Zeskanowałeś kod QR – witaj w wyjątkowym miejscu.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Info Hub - Strona Główna</title>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -13,10 +12,6 @@
             background: linear-gradient(135deg, #0a0c12, #1a1f2e);
             color: white;
             min-height: 100vh;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         .container {
             max-width: 800px;
@@ -24,150 +19,58 @@
             background: rgba(255,255,255,0.1);
             padding: 40px;
             border-radius: 20px;
-            backdrop-filter: blur(5px);
         }
         h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 20px;
         }
-        .qr-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 0.5rem 1.4rem;
-            border-radius: 60px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #c6deff;
-            border: 0.6px solid rgba(45,104,255,0.6);
-            margin-bottom: 2rem;
-        }
-        .qr-chip span:first-child {
-            font-size: 1.35rem;
-        }
-        .highlight-text {
-            font-size: 1.2rem;
-            color: #e2edff;
-            margin: 1rem 0 0.6rem 0;
-            font-weight: 500;
-            border-left: 3px solid #2d68ff;
-            padding-left: 1.1rem;
-            text-align: left;
-            background: rgba(45,104,255,0.1);
-            border-radius: 0 12px 12px 0;
-        }
-        .main-message {
-            font-size: 1.1rem;
-            line-height: 1.5;
-            color: #cfdfff;
-            margin: 1.4rem 0 0.5rem 0;
-            text-align: left;
-        }
-        .qr-location-hint {
-            background: rgba(45, 104, 255, 0.12);
-            padding: 1rem 1.2rem;
-            border-radius: 1.8rem;
-            margin: 1.8rem 0 2rem 0;
-            font-size: 0.95rem;
-            color: #b9d5ff;
+        .links {
+            margin-top: 30px;
             display: flex;
-            gap: 0.8rem;
-            align-items: center;
+            gap: 20px;
+            justify-content: center;
             flex-wrap: wrap;
-            border: 0.5px solid rgba(45, 104, 255, 0.4);
-            text-align: left;
         }
-        .qr-location-hint .emoji-big {
-            font-size: 1.7rem;
-        }
-        .btn-continue {
-            display: inline-block;
-            margin-top: 20px;
-            background: rgba(45,104,255,0.2);
+        a {
             color: #2d68ff;
             text-decoration: none;
             font-size: 1.2rem;
-            padding: 12px 28px;
+            background: rgba(45,104,255,0.2);
+            padding: 10px 20px;
             border-radius: 10px;
             transition: 0.3s;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: 600;
         }
-        .btn-continue:hover {
+        a:hover {
             background: #2d68ff;
             color: white;
-            transform: scale(1.02);
+            text-decoration: none;
         }
-        .footer-note {
-            text-align: center;
-            margin-top: 2rem;
-            font-size: 0.75rem;
-            color: #8a9bcc;
-            border-top: 1px dashed rgba(45, 104, 255, 0.3);
-            padding-top: 1.5rem;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
         }
-        .stats-box {
-            display: flex;
-            justify-content: center;
-            margin: 1.5rem 0;
-        }
-        .stat-card {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 0.8rem 2rem;
-            border-radius: 1.5rem;
-            text-align: center;
-            min-width: 180px;
-            border: 1px solid rgba(45, 104, 255, 0.4);
-        }
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #2d68ff;
-            display: block;
-        }
-        .stat-label {
-            font-size: 0.75rem;
-            color: #9bb5e0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .share-section {
-            background: rgba(45, 104, 255, 0.08);
-            border-radius: 1.5rem;
-            padding: 1.2rem;
-            margin: 1.5rem 0;
-            text-align: center;
-        }
+        /* Dodane style dla przycisków udostępniania */
         .share-buttons {
+            margin-top: 30px;
             display: flex;
-            gap: 0.8rem;
+            gap: 15px;
             justify-content: center;
-            margin-top: 0.8rem;
             flex-wrap: wrap;
         }
         .share-btn {
-            background: rgba(45, 104, 255, 0.2);
+            background: rgba(45,104,255,0.2);
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 40px;
+            padding: 10px 20px;
+            border-radius: 10px;
             color: white;
-            font-size: 0.8rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            font-family: inherit;
         }
         .share-btn:hover {
             background: #2d68ff;
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
         .toast-msg {
             position: fixed;
@@ -189,109 +92,42 @@
             85% { opacity: 1; transform: translateX(-50%) translateY(0); }
             100% { opacity: 0; transform: translateX(-50%) translateY(-20px); visibility: hidden; }
         }
-        @media (max-width: 550px) {
-            body { padding: 20px; }
-            .container { padding: 25px; }
-            h1 { font-size: 1.8rem; }
-            .highlight-text { font-size: 1rem; }
-            .main-message { font-size: 0.95rem; }
-            .stat-card { min-width: 140px; padding: 0.5rem 1rem; }
-            .stat-number { font-size: 1.5rem; }
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="qr-chip">
-            <span>📲 █▄▀█▄▀</span>
-            <span>SKANOWANY KOD QR</span>
+        <h1>🏠 Strona główna</h1>
+        <p>Naciśnij na któryś z przycisków niżej by przejść na inną stronę w przyszłości linki do mediów społecznościowych zostaną dodane na tej strone internetowej propozycje do tej strony pisz na serwerze discord https://discord.gg/qEAvMm59NG kanał propozycje na dodanie czegoś do strony internetowej każda propozycja jest mile widziana</p>
+        <p> </p>
+        <p> </p>
+        <p> </p>
+        <p> </p>
+        <p>Aktualnie znajdujesz się na stronie głównej a także oficjalnej stronie internetowej stworzonej przez Byte official</p>
+        <p> </p>
+        <p> </p>
+        <p> </p>
+        <p> </p>
+        <p> </p>
+        <small>właściciel tej strony internetowej dziękuje za odwiedzenie jej a także życzy miłego dnia/wieczoru</small>
+        
+        <div class="links">
+            <a href="https://playergames20.github.io/website-by-byte/wyszukiwarka-kont-roblox/">🔍 wyszukiwanie</a>
+            <a href="https://playergames20.github.io/website-by-byte/w-przyszlosci/">❓ w przyszłości</a>
         </div>
 
-        <h1>Witaj, poszukiwaczu<br>ukrytych ścieżek.</h1>
-
-        <div class="highlight-text">
-            ✦ Prawdopodobnie trafiłeś/aś na tę stronę skanując kod QR który znalazłeś/aś w jednym z miejsc w którym on był ✦
-        </div>
-
-        <div class="main-message">
-            skanując kod QR, który spotkałeś/aś w jednym z miejsc, w których <strong>został umieszczony</strong>.
-        </div>
-
-        <div class="qr-location-hint">
-            <div class="emoji-big">📍🔲</div>
-            <div>Kod QR został celowo umieszczony w fizycznej przestrzeni – na naklejce, plakacie, karcie lub w strategicznym punkcie. <br>Dzięki niemu otwierasz przed sobą cyfrową bramę.</div>
-        </div>
-
-        <div class="stats-box">
-            <div class="stat-card">
-                <span class="stat-number" id="scanCounter">---</span>
-                <span class="stat-label">unikalne skany QR</span>
-            </div>
-        </div>
-
-        <div class="share-section">
-            <div style="font-weight: 500; margin-bottom: 10px;">🔗 Podziel się tą stroną</div>
-            <div class="share-buttons">
-                <button class="share-btn" id="shareTwitter">🐦 Twitter</button>
-                <button class="share-btn" id="shareCopy">📋 Kopiuj link (tej strony)</button>
-                <button class="share-btn" id="shareNative">📱 Udostępnij w aplikacjach</button>
-            </div>
-            <div style="font-size: 0.7rem; margin-top: 12px; opacity: 0.7;">ta strona internetowa została stworzona przez <strong>byte official</strong> ✨</div>
-        </div>
-
-        <div class="main-message" style="margin-top: 0.8rem; font-size: 0.95rem; text-align: center;">
-            Jeśli już jesteś na tej stronie, możesz wrócić na stronę główną by sprawdzić listę stron internetowych.<br>
-            Jako właściciel strony dziękuję za zeskanowanie tego kodu QR — możesz też podzielić się tą stroną z innymi osobami.
-        </div>
-
-        <button class="btn-continue" id="enterButton">
-            🌐 PRZEJDŹ DO STRONY GŁÓWNEJ 🌐
-        </button>
-
-        <div class="footer-note">
-            <span>🔷 by Byte&nbsp;Code</span>
-            <span>◈ wersja interaktywna</span>
-            <span>⚡ skan potwierdzony</span>
+        <!-- Dodane przyciski udostępniania -->
+        <div class="share-buttons">
+            <button class="share-btn" id="shareCopy">📋 Kopiuj link (tej strony)</button>
+            <button class="share-btn" id="shareNative">📱 Udostępnij w aplikacjach</button>
         </div>
     </div>
 
     <script>
         (function() {
-            // LINK DO STRONY GŁÓWNEJ (przycisk główny)
-            const TARGET_URL = "https://playergames20.github.io/website-by-byte/strona-glowna/";
-            // LINK DO TEJ STRONY QR (do kopiowania i udostępniania)
+            // LINK DO TEJ STRONY (aktualna strona główna)
             const CURRENT_PAGE_URL = window.location.href;
             
-            // --- LICZNIK UNIKALNYCH SKANÓW ---
-            let totalUniqueScans = localStorage.getItem('qrTotalUniqueScans');
-            if (totalUniqueScans === null) {
-                totalUniqueScans = 128;
-                localStorage.setItem('qrTotalUniqueScans', totalUniqueScans);
-            } else {
-                totalUniqueScans = parseInt(totalUniqueScans);
-            }
-            
-            const sessionFlag = sessionStorage.getItem('qrScanAddedInSession');
-            if (!sessionFlag) {
-                totalUniqueScans++;
-                localStorage.setItem('qrTotalUniqueScans', totalUniqueScans);
-                sessionStorage.setItem('qrScanAddedInSession', 'true');
-            }
-            
-            const scanCounterSpan = document.getElementById('scanCounter');
-            if (scanCounterSpan) {
-                scanCounterSpan.innerText = totalUniqueScans;
-            }
-            
-            // --- PRZYCISK GŁÓWNY - PRZEKIEROWANIE DO STRONY GŁÓWNEJ ---
-            const button = document.getElementById('enterButton');
-            if (button) {
-                button.addEventListener('click', function() {
-                    window.location.href = TARGET_URL;
-                });
-            }
-            
-            // --- FUNKCJA TOAST (powiadomienie) ---
+            // Funkcja toast
             function showToast(message) {
                 const existingToast = document.querySelector('.toast-msg');
                 if (existingToast) existingToast.remove();
@@ -304,8 +140,8 @@
                 }, 2000);
             }
             
-            // --- PRZYCISK KOPIUJ LINK (tej strony QR) ---
-            function copyCurrentPageLink() {
+            // Przycisk kopiowania linku (tej strony)
+            function copyPageLink() {
                 navigator.clipboard.writeText(CURRENT_PAGE_URL).then(() => {
                     showToast('✅ Skopiowano link do tej strony!');
                 }).catch(() => {
@@ -318,37 +154,26 @@
             if (copyBtn) {
                 copyBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    copyCurrentPageLink();
+                    copyPageLink();
                 });
             }
             
-            // --- PRZYCISK TWITTER (udostępnia TE stronę QR) ---
-            const twitterBtn = document.getElementById('shareTwitter');
-            if (twitterBtn) {
-                twitterBtn.addEventListener('click', () => {
-                    const tweetText = encodeURIComponent('Zeskanowałem kod QR i trafiłem na tę stronę! 🔍✨ Sprawdźcie:');
-                    const url = encodeURIComponent(CURRENT_PAGE_URL);
-                    window.open(`https://twitter.com/intent/tweet?text=${tweetText}&url=${url}`, '_blank', 'width=600,height=400');
-                });
-            }
-            
-            // --- PRZYCISK UDOSTĘPNIJ W APLIKACJACH (Web Share API) ---
+            // Przycisk udostępniania w aplikacjach (Web Share API)
             const shareNativeBtn = document.getElementById('shareNative');
             if (shareNativeBtn) {
                 shareNativeBtn.addEventListener('click', () => {
                     if (navigator.share) {
                         navigator.share({
-                            title: 'QR Spot • Strefa odkrywcy',
-                            text: 'Zeskanowałem kod QR i trafiłem na tę tajemniczą stronę!',
+                            title: 'Roblox Info Hub - Strona Główna',
+                            text: 'Sprawdź tę stronę!',
                             url: CURRENT_PAGE_URL,
                         }).catch(err => {
                             if (err.name !== 'AbortError') {
-                                console.log('Udostępnianie anulowane lub błąd');
+                                console.log('Udostępnianie anulowane');
                             }
                         });
                     } else {
-                        // Fallback dla przeglądarek bez Web Share API
-                        copyCurrentPageLink();
+                        copyPageLink();
                         showToast('📲 Twoja przeglądarka nie obsługuje udostępniania – link skopiowany');
                     }
                 });
