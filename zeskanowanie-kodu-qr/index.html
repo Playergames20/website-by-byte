@@ -397,6 +397,31 @@
             position: relative;
             overflow: hidden;
         }
+
+        /* Komunikat toast */
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            animation: fadeOut 2s ease forwards;
+            pointer-events: none;
+            border: 1px solid #3b82f6;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); visibility: hidden; }
+        }
     </style>
 </head>
 <body>
@@ -429,8 +454,8 @@
     <div class="extra-section">
         <div class="stats-box">
             <div class="stat-card">
-                <span class="stat-number" id="scanCounter">128</span>
-                <span class="stat-label">skanów QR</span>
+                <span class="stat-number" id="scanCounter">---</span>
+                <span class="stat-label">unikalne skany QR</span>
             </div>
             <div class="stat-card">
                 <span class="stat-number">24/7</span>
@@ -446,7 +471,7 @@
             <div style="font-weight: 500; margin-bottom: 10px;">🔗 Podziel się tym odkryciem</div>
             <div class="share-buttons">
                 <button class="share-btn" id="shareTwitter">🐦 Twitter</button>
-                <button class="share-btn" id="shareCopy">📋 Kopiuj link</button>
+                <button class="share-btn" id="shareCopy">📋 Kopiuj link (strona główna)</button>
                 <button class="share-btn" id="shareMsg">💬 Wyślij do znajomego</button>
             </div>
             <div class="qrcode-mini">
@@ -475,15 +500,57 @@
 
 <script>
     (function() {
-        // docelowy adres URL (zgodnie z wymaganiem)
-        const TARGET_URL = "https://playergames20.github.io/website-by-byte/strona-glowna/";
-        const CURRENT_PAGE_URL = window.location.href;
-
-        // Przycisk główny
+        // STAŁE
+        const TARGET_URL = "https://playergames20.github.io/website-by-byte/strona-glowna/";  // STRONA GŁÓWNA (przycisk + kopiowanie)
+        const CURRENT_PAGE_URL = window.location.href; // aktualna strona QR (nie używana do kopiowania już)
+        
+        // ---- LICZNIK SKANÓW (UNIKALNY NA PODSTAWIE SESSION STORAGE + FLAGI) ----
+        // Używamy sessionStorage + dodatkowej flagi w localStorage (firstScanInSession)
+        // Aby uniknąć dodawania przy odświeżeniu tej samej karty.
+        // Całkowity licznik unikalnych skanów (różnych sesji / urządzeń) oparty o localStorage,
+        // ale inkrementujemy TYLKO raz na faktyczne wejście (nowa sesja lub pierwsze wejście z danego urządzenia).
+        
+        let totalUniqueScans = localStorage.getItem('qrTotalUniqueScans');
+        if (totalUniqueScans === null) {
+            totalUniqueScans = 128; // baza startowa
+            localStorage.setItem('qrTotalUniqueScans', totalUniqueScans);
+        } else {
+            totalUniqueScans = parseInt(totalUniqueScans);
+        }
+        
+        // Sprawdzamy czy to nowa sesja (czy w tej sesji już dodaliśmy +1)
+        const sessionFlag = sessionStorage.getItem('qrScanAddedInSession');
+        
+        if (!sessionFlag) {
+            // Nowa sesja → dodajemy +1 do licznika unikalnych skanów
+            totalUniqueScans++;
+            localStorage.setItem('qrTotalUniqueScans', totalUniqueScans);
+            sessionStorage.setItem('qrScanAddedInSession', 'true');
+            // Opcjonalnie: można dodać też ciasteczko/dłuższy tracking, ale session styknie
+            console.log("Nowa unikalna wizyta (sesja) - licznik zwiększony");
+        } else {
+            console.log("Ta sama sesja – bez dodawania licznika");
+        }
+        
+        // Wyświetlamy aktualną liczbę unikalnych skanów
+        const scanCounterSpan = document.getElementById('scanCounter');
+        if (scanCounterSpan) {
+            scanCounterSpan.innerText = totalUniqueScans;
+        }
+        
+        // Czas online od (data uruchomienia strony)
+        const startTime = new Date();
+        const timeSpan = document.getElementById('timeOnline');
+        if (timeSpan) {
+            const hours = startTime.getHours().toString().padStart(2,'0');
+            const minutes = startTime.getMinutes().toString().padStart(2,'0');
+            timeSpan.innerText = `${hours}:${minutes}`;
+        }
+        
+        // ---- PRZYCISK GŁÓWNY - PRZEKIEROWANIE ----
         const button = document.getElementById('enterButton');
         if (button) {
             button.addEventListener('click', function(event) {
-                console.log("Przekierowanie do strony głównej: " + TARGET_URL);
                 window.location.href = TARGET_URL;
             });
             button.addEventListener('keydown', function(e) {
@@ -494,8 +561,70 @@
             });
             button.setAttribute('aria-label', 'Przejdź do strony głównej projektu');
         }
-
-        // Animacja cząstek w tle
+        
+        // ---- FUNKCJA TOAST (powiadomienie) ----
+        function showToast(message) {
+            const existingToast = document.querySelector('.toast-msg');
+            if (existingToast) existingToast.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-msg';
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                if (toast && toast.remove) toast.remove();
+            }, 2000);
+        }
+        
+        // ---- KOPIOWANIE LINKU DO STRONY GŁÓWNEJ (TARGET_URL) ----
+        function copyMainPageLink() {
+            navigator.clipboard.writeText(TARGET_URL).then(() => {
+                showToast('✅ Skopiowano link do strony głównej!');
+            }).catch(() => {
+                // Fallback: pokaż prompt z ręcznym kopiowaniem
+                const fallbackMsg = `Skopiuj ręcznie: ${TARGET_URL}`;
+                prompt(fallbackMsg, TARGET_URL);
+                showToast('📋 Link skopiowany ręcznie');
+            });
+        }
+        
+        // Przycisk kopiuj link (strona główna)
+        const copyBtn = document.getElementById('shareCopy');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                copyMainPageLink();
+            });
+        }
+        
+        // Przycisk Twitter (share aktualnej strony QR? ale i tak można podać link do strony głównej dla zachowania spójności? 
+        // Lepiej udostępniać stronę główną (strona docelowa), ale żeby nie mieszać: udostępnijmy TARGET_URL.
+        const twitterBtn = document.getElementById('shareTwitter');
+        if (twitterBtn) {
+            twitterBtn.addEventListener('click', () => {
+                const tweetText = encodeURIComponent('Zeskanowałem kod QR i trafiłem do bramy! 🔍✨ Sprawdźcie stronę główną:');
+                const url = encodeURIComponent(TARGET_URL);
+                window.open(`https://twitter.com/intent/tweet?text=${tweetText}&url=${url}`, '_blank', 'width=600,height=400');
+            });
+        }
+        
+        // Przycisk "Wyślij do znajomego" - udostępniamy TARGET_URL (strona główna)
+        const shareMsgBtn = document.getElementById('shareMsg');
+        if (shareMsgBtn) {
+            shareMsgBtn.addEventListener('click', () => {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Strona główna projektu | QR Spot',
+                        text: 'Zeskanowałem kod QR i trafiłem na tajemniczą stronę! Oto strona główna projektu:',
+                        url: TARGET_URL,
+                    }).catch(err => console.log('Udostępnianie anulowane'));
+                } else {
+                    copyMainPageLink();
+                    showToast('📲 Skopiowano link do strony głównej – możesz go wysłać znajomemu');
+                }
+            });
+        }
+        
+        // ---- CZĄSTKI W TLE ----
         function createParticles() {
             const container = document.getElementById('particles');
             if (!container) return;
@@ -514,73 +643,8 @@
             }
         }
         createParticles();
-
-        // Licznik skanów (symulacja + localStorage żeby pokazać wzrost)
-        let scanCount = localStorage.getItem('qrScanCount');
-        if (!scanCount) {
-            scanCount = 128;
-            localStorage.setItem('qrScanCount', scanCount);
-        } else {
-            scanCount = parseInt(scanCount) + 1;
-            localStorage.setItem('qrScanCount', scanCount);
-        }
-        const counterSpan = document.getElementById('scanCounter');
-        if (counterSpan) counterSpan.innerText = scanCount;
-
-        // Czas online od (data uruchomienia strony)
-        const startTime = new Date();
-        const timeSpan = document.getElementById('timeOnline');
-        if (timeSpan) {
-            const hours = startTime.getHours().toString().padStart(2,'0');
-            const minutes = startTime.getMinutes().toString().padStart(2,'0');
-            timeSpan.innerText = `${hours}:${minutes}`;
-        }
-
-        // Funkcja kopiowania linku
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('✅ Link skopiowany: ' + text);
-            }).catch(() => {
-                prompt('Skopiuj ręcznie:', text);
-            });
-        }
-
-        // Przycisk kopiuj link
-        const copyBtn = document.getElementById('shareCopy');
-        if (copyBtn) {
-            copyBtn.addEventListener('click', () => {
-                copyToClipboard(CURRENT_PAGE_URL);
-            });
-        }
-
-        // Przycisk Twitter (share)
-        const twitterBtn = document.getElementById('shareTwitter');
-        if (twitterBtn) {
-            twitterBtn.addEventListener('click', () => {
-                const tweetText = encodeURIComponent('Zeskanowałem kod QR i trafiłem tutaj! 🔍✨ Sprawdźcie:');
-                const url = encodeURIComponent(CURRENT_PAGE_URL);
-                window.open(`https://twitter.com/intent/tweet?text=${tweetText}&url=${url}`, '_blank', 'width=600,height=400');
-            });
-        }
-
-        // Przycisk "Wyślij do znajomego" - otwiera domyślną aplikację do udostępniania (Web Share API)
-        const shareMsgBtn = document.getElementById('shareMsg');
-        if (shareMsgBtn) {
-            shareMsgBtn.addEventListener('click', () => {
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'QR Spot • Strefa odkrywcy',
-                        text: 'Zeskanowałem kod QR i znalazłem tę tajemniczą stronę!',
-                        url: CURRENT_PAGE_URL,
-                    }).catch(err => console.log('Udostępnianie anulowane'));
-                } else {
-                    copyToClipboard(CURRENT_PAGE_URL);
-                    alert('📲 Skopiowano link – możesz go wysłać znajomemu');
-                }
-            });
-        }
-
-        // Mały efekt przycisku "ripple" (opcjonalny)
+        
+        // Efekt ripple dla przycisków
         const btns = document.querySelectorAll('.btn-continue, .share-btn');
         btns.forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -606,7 +670,7 @@
             });
         });
         
-        // Dodajemy styl dla animacji ripples (jeśli nie istnieje)
+        // Dodajemy styl dla animacji ripples
         if (!document.querySelector('#rippleStyle')) {
             const styleSheet = document.createElement("style");
             styleSheet.id = 'rippleStyle';
@@ -618,9 +682,8 @@
             `;
             document.head.appendChild(styleSheet);
         }
-
-        // Dodatkowy efekt: zmiana tła przycisku po najechaniu
-        console.log("Strona gotowa – wydłużona wersja z efektami UI");
+        
+        console.log("Strona gotowa – licznik unikalnych sesji + kopiowanie linku do strony głównej");
     })();
 </script>
 </body>
