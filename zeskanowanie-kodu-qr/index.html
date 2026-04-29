@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>QR Spot • Strefa odkrywcy | Byte&Code</title>
+    <!-- Meta dla karty / tytuł w przeglądarce -->
+    <meta name="description" content="Zeskanowałeś kod QR">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 10% 20%, #0B1120, #030617);
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.8rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* dekoracja matrix/qr */
+        body::before {
+            content: "⬛⬜⬛⬜⬛⬜⬛⬜⬛⬜";
+            font-size: 9vw;
+            position: absolute;
+            bottom: -2%;
+            right: -3%;
+            opacity: 0.025;
+            font-weight: 900;
+            letter-spacing: 8px;
+            white-space: nowrap;
+            pointer-events: none;
+            font-family: monospace;
+            transform: rotate(-3deg);
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(45deg, rgba(0, 255, 255, 0.01) 0px, rgba(0, 255, 255, 0.01) 2px, transparent 2px, transparent 8px);
+            pointer-events: none;
+        }
+
+        .glass-panel {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(12, 20, 35, 0.7);
+            backdrop-filter: blur(16px);
+            border-radius: 3rem;
+            border: 1px solid rgba(72, 160, 255, 0.35);
+            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+            padding: 2rem 2rem 2.6rem;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 10;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(90, 180, 255, 0.7);
+            box-shadow: 0 35px 55px -18px #00000080;
+            transform: scale(1.01);
+        }
+
+        .qr-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(4px);
+            padding: 0.5rem 1.4rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #c6deff;
+            border: 0.6px solid rgba(70, 150, 250, 0.6);
+            margin-bottom: 2rem;
+            letter-spacing: 0.2px;
+        }
+
+        .qr-chip span:first-child {
+            font-size: 1.35rem;
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #FFFFFF 20%, #B2D9FF 70%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .highlight-text {
+            font-size: 1.2rem;
+            color: #e2edff;
+            margin: 1rem 0 0.6rem 0;
+            font-weight: 500;
+            border-left: 3px solid #3b82f6;
+            padding-left: 1.1rem;
+        }
+
+        .main-message {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #cfdfff;
+            margin: 1.4rem 0 0.5rem 0;
+        }
+
+        .qr-location-hint {
+            background: rgba(59, 130, 246, 0.12);
+            padding: 1rem 1.2rem;
+            border-radius: 1.8rem;
+            margin: 1.8rem 0 2rem 0;
+            font-size: 0.95rem;
+            color: #b9d5ff;
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 0.5px solid rgba(59, 130, 246, 0.4);
+        }
+
+        .qr-location-hint .emoji-big {
+            font-size: 1.7rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .btn-continue {
+            display: block;
+            width: 100%;
+            background: linear-gradient(105deg, #1e2a5e, #0f172f);
+            border: none;
+            padding: 1.1rem 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            font-family: inherit;
+            color: white;
+            border-radius: 100px;
+            margin-top: 0.8rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 8px 20px -8px #00000040;
+            border: 1px solid rgba(80, 160, 255, 0.5);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-continue:hover {
+            background: linear-gradient(105deg, #2a3a72, #16204a);
+            transform: translateY(-3px);
+            box-shadow: 0 18px 28px -12px #00000070;
+            border-color: #3b82f6;
+        }
+
+        .btn-continue:active {
+            transform: translateY(2px);
+            transition: 0.05s;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #6b82a5;
+            border-top: 1px dashed rgba(100, 150, 200, 0.3);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-note span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @media (max-width: 550px) {
+            .glass-panel {
+                padding: 1.6rem 1.4rem 2rem;
+            }
+            h1 {
+                font-size: 1.9rem;
+            }
+            .main-message {
+                font-size: 1rem;
+            }
+            .highlight-text {
+                font-size: 1.05rem;
+            }
+            .btn-continue {
+                padding: 0.9rem 0;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="glass-panel">
+    <div class="qr-chip">
+        <span>📲 █▄▀█▄▀</span>
+        <span>SKANOWANY KOD QR</span>
+    </div>
+
+    <h1>Witaj, poszukiwaczu<br>ukrytych ścieżek.</h1>
+
+    <div class="highlight-text">
+        ✦ Prawdopodobnie trafiłeś na tę stronę ✦
+    </div>
+
+    <div class="main-message">
+        skanując kod QR, który spotkałeś/aś w jednym z miejsc, w których <strong>został umieszczony</strong>.
+    </div>
+
+    <div class="qr-location-hint">
+        <div class="emoji-big">📍🔲</div>
+        <div>Kod QR został celowo umieszczony w fizycznej przestrzeni – na naklejce, plakacie, karcie lub w strategicznym punkcie. <br>Dzięki niemu otwierasz przed sobą cyfrową bramę.</div>
+    </div>
+
+    <!-- Przycisk kierujący do strony głównej -->
+    <button class="btn-continue" id="enterButton">
+        🌐 PRZEJDŹ DO STRONY GŁÓWNEJ 🌐
+    </button>
+
+    <div class="footer-note">
+        <span>🔷 by Byte&nbsp;Code</span>
+        <span>◈ wersja interaktywna</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // docelowy adres URL (zgodnie z wymaganiem)
+        const TARGET_URL = "https://playergames20.github.io/website-by-byte/strona-glowna/";
+
+        const button = document.getElementById('enterButton');
+        if (button) {
+            // Obsługa kliknięcia - przekierowanie do wskazanej strony
+            button.addEventListener('click', function(event) {
+                // mała animacja lub opcjonalnie dźwięk? tylko czyste przekierowanie
+                // ale dodajmy subtelną informację w konsoli (dla ewentualnego dev)
+                console.log("Przekierowanie do strony głównej: " + TARGET_URL);
+                window.location.href = TARGET_URL;
+            });
+
+            // Dodatkowo: opcjonalne wsparcie dla klawiatury (Enter)
+            button.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    window.location.href = TARGET_URL;
+                }
+            });
+            // ustawiamy atrybuty dostępności
+            button.setAttribute('aria-label', 'Przejdź do strony głównej projektu');
+        } else {
+            console.warn("Nie znaleziono przycisku!");
+        }
+    })();
+</script>
+</body>
+</html>
