@@ -104,6 +104,33 @@
             border-bottom: 1px solid #e2edf2;
         }
 
+        /* styl dla listy mediów */
+        .media-list {
+            list-style: none;
+            padding: 0;
+        }
+        .media-list li {
+            margin-bottom: 0.8rem;
+            padding: 0.3rem 0;
+            border-bottom: 1px dashed #cde1ef;
+        }
+        .media-label {
+            font-weight: 700;
+            color: #1f4e6e;
+            display: inline-block;
+            min-width: 110px;
+        }
+        .media-value {
+            color: #2c5a7a;
+            word-break: break-all;
+        }
+        .small-note {
+            font-size: 0.75rem;
+            color: #6c8e9e;
+            margin-top: 0.8rem;
+            display: inline-block;
+        }
+
         .home-button {
             display: inline-block;
             background: #eef3fc;
@@ -141,6 +168,10 @@
             .contact-card {
                 padding: 1.5rem;
             }
+            .media-label {
+                display: block;
+                margin-bottom: 0.2rem;
+            }
         }
     </style>
 </head>
@@ -168,45 +199,17 @@
             </form>
         </div>
 
-        <!-- TWOJE DANE KONTAKTOWE - tutaj wpisz swoje rzeczy -->
+        <!-- TWOJE DANE KONTAKTOWE - KONTA W MEDIACH WŁAŚCICIELA STRONY -->
         <div class="info-box">
             <div class="info-item">
-                <strong>✉️ Email:</strong><br>
-                <span style="color:#2c5a7a;">[tu wpisz swój adres email]</span>
-            </div>
-            <div class="info-item">
-                <strong>📞 Telefon:</strong><br>
-                <span style="color:#2c5a7a;">[tu wpisz swój numer telefonu]</span>
-            </div>
-            <div class="info-item">
-                <strong>📍 Lokalizacja:</strong><br>
-                <span style="color:#2c5a7a;">[tu wpisz swoje miasto/kraj]</span>
-            </div>
-            <div class="info-item">
-                <strong>🌐 Konta w mediach właściciela strony:</strong><br>
-                <span style="color:#2c5a7a;">↓ nazwa discord ↓</span>
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;">super_player_supbyte</span>
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;">↓ kanał youtube ↓</span>
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;">https://www.youtube.com/@Byte_oficjalny</span>
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;">↓ serwer discord ↓</span>
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;">https://discord.gg/ERa9wFgjaG</span>
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;">↓ adres email ↓</span>
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;">polecaneobrazki@gmail.com</span> 
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;"> </span>
-                <span style="color:#2c5a7a;"> </span>
-               <small style="color:#2c5a7a;">to na razie wszystkie media właściciela strony w przyszłości zostanie dodanych więcej mediów</small>
-              
+                <strong>🌐 Konta w mediach właściciela strony:</strong>
+                <ul class="media-list" style="margin-top: 0.8rem;">
+                    <li><span class="media-label">🎮 Discord (nazwa):</span> <span class="media-value">super_player_supbyte</span></li>
+                    <li><span class="media-label">📺 Kanał YouTube:</span> <span class="media-value"><a href="https://www.youtube.com/@Byte_oficjalny" target="_blank" style="color:#2c7da0; text-decoration:none;">https://www.youtube.com/@Byte_oficjalny</a></span></li>
+                    <li><span class="media-label">💬 Serwer Discord:</span> <span class="media-value"><a href="https://discord.gg/ERa9wFgjaG" target="_blank" style="color:#2c7da0; text-decoration:none;">https://discord.gg/ERa9wFgjaG</a></span></li>
+                    <li><span class="media-label">✉️ Adres email:</span> <span class="media-value">polecaneobrazki@gmail.com</span></li>
+                </ul>
+                <small class="small-note">🔜 to na razie wszystkie media właściciela strony – w przyszłości zostanie dodanych więcej.</small>
             </div>
         </div>
     </div>
@@ -221,5 +224,22 @@
         2026-2026 strona została stworzona przez byte official
     </div>
 </div>
+
+<!-- bardzo prosty skrypt tylko do wyświetlenia komunikatu (bez zapisu) – możesz go usunąć, jeśli nie chcesz -->
+<script>
+    const form = document.getElementById('contactForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('nameInput').value.trim();
+            if (name === "") {
+                alert("Proszę wpisać swoje imię.");
+                return;
+            }
+            alert("Dziękuję " + name + "! Wiadomość została wysłana (to tylko symulacja – strona nie wysyła prawdziwych maili).");
+            form.reset();
+        });
+    }
+</script>
 </body>
 </html>
