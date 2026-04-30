@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt | Byte Official</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f4f8;
+            font-family: system-ui, 'Segoe UI', 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .contact-card {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1e2f3e;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid #2c7da0;
+            padding-left: 1rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            color: #1e2f3e;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #cbdde6;
+            border-radius: 1rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: #fefefe;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #2c7da0;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background: #2c7da0;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #1f5f7c;
+        }
+
+        .info-box {
+            background: #f5f9fe;
+            border-radius: 1.2rem;
+            padding: 1.5rem;
+        }
+
+        .info-item {
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2edf2;
+        }
+
+        .home-button {
+            display: inline-block;
+            background: #eef3fc;
+            color: #1f5f7c;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            transition: 0.2s;
+        }
+
+        .home-button:hover {
+            background: #e2ebf3;
+        }
+
+        hr {
+            margin: 1.5rem 0 0.5rem;
+            border: 0;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .footer-note {
+            font-size: 0.7rem;
+            color: #6c8e9e;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 650px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="contact-card">
+    <h1>📬 Kontakt</h1>
+
+    <div class="contact-grid">
+        <!-- FORMULARZ KONTAKTOWY -->
+        <div>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label>Imię / nazwa</label>
+                    <input type="text" id="nameInput" placeholder="Twoje imię">
+                </div>
+                <div class="form-group">
+                    <label>Adres e-mail</label>
+                    <input type="email" id="emailInput" placeholder="twoj@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Wiadomość</label>
+                    <textarea id="msgInput" placeholder="Treść wiadomości..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">📨 Wyślij wiadomość</button>
+            </form>
+        </div>
+
+        <!-- TWOJE DANE KONTAKTOWE - tutaj wpisz swoje rzeczy -->
+        <div class="info-box">
+            <div class="info-item">
+                <strong>✉️ Email:</strong><br>
+                <span style="color:#2c5a7a;">[tu wpisz swój adres email]</span>
+            </div>
+            <div class="info-item">
+                <strong>📞 Telefon:</strong><br>
+                <span style="color:#2c5a7a;">[tu wpisz swój numer telefonu]</span>
+            </div>
+            <div class="info-item">
+                <strong>📍 Lokalizacja:</strong><br>
+                <span style="color:#2c5a7a;">[tu wpisz swoje miasto/kraj]</span>
+            </div>
+            <div class="info-item">
+                <strong>🌐 Konta w mediach właściciela strony:</strong><br>
+                <span style="color:#2c5a7a;">↓ nazwa discord ↓</span>
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;">super_player_supbyte</span>
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;">↓ kanał youtube ↓</span>
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;">https://www.youtube.com/@Byte_oficjalny</span>
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;">↓ serwer discord ↓</span>
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;">https://discord.gg/ERa9wFgjaG</span>
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;">↓ adres email ↓</span>
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;">polecaneobrazki@gmail.com</span> 
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;"> </span>
+                <span style="color:#2c5a7a;"> </span>
+               <small style="color:#2c5a7a;">to na razie wszystkie media właściciela strony w przyszłości zostanie dodanych więcej mediów</small>
+              
+            </div>
+        </div>
+    </div>
+
+    <!-- PRZYCISK POWROTU DO STRONY GŁÓWNEJ -->
+    <div style="text-align: center;">
+        <a href="https://playergames20.github.io/website-by-byte/strona-glowna/" class="home-button">🏠 Powrót do strony głównej</a>
+    </div>
+
+    <hr>
+    <div class="footer-note">
+        2026-2026 strona została stworzona przez byte official
+    </div>
+</div>
+</body>
+</html>
