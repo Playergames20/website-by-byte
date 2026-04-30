@@ -40,13 +40,46 @@
             padding-left: 1rem;
         }
 
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #2c5a7a;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
         .info-content {
             font-size: 1.05rem;
             line-height: 1.5;
             color: #2c3e44;
         }
 
-        /* bardzo minimalistyczne */
+        /* przycisk */
+        .home-button {
+            display: inline-block;
+            background: #2c7da0;
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 1.5rem 0 0.5rem;
+            transition: background 0.2s, transform 0.1s;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .home-button:hover {
+            background: #1f5e7a;
+            transform: scale(1.02);
+        }
+
+        .home-button:active {
+            transform: scale(0.98);
+        }
+
         hr {
             margin: 1.5rem 0 1rem;
             border: 0;
@@ -57,7 +90,7 @@
         .footer-note {
             font-size: 0.75rem;
             color: #6c8e9e;
-            margin-top: 1.8rem;
+            margin-top: 1rem;
             text-align: center;
         }
     </style>
@@ -65,19 +98,24 @@
 <body>
 <div class="page-card">
     <!-- Główny nagłówek z treścią "Informacje o stronie internetowej" -->
-    <h3>📄 Informacje o stronie internetowej</h3>
-    <h1>📄 Tutaj znajdziesz informacje o stronie internetowej które mogą ci się przydać</h1>
+    <h1>📄 Informacje o stronie internetowej</h1>
+    <h3>📄 Tutaj znajdziesz informacje o stronie internetowej które mogą ci się przydać jako właściciel strony internetowej dziękuję za wejście na stronę internetową i mam nadzieję że informacje które są tutaj przydadzą się</h3>
     
     <!-- Tutaj wstawisz własne informacje – edytuj poniższy akapit lub dodaj własne elementy -->
     <div class="info-content">
         <!-- To jest przykładowy tekst startowy, który możesz zastąpić swoją treścią -->
-        <p></p>
+        <p>ta strona internetowa została stworzona w celu pomocy np w wyszukiwaniu informacji o kontach roblox tak jak jest to na stronie https://playergames20.github.io/website-by-byte/wyszukiwarka-kont-roblox/ ta strona internetowa jest też tworzona z pasji i po to by pomagała w czymś tak jak w wyszuiwaniu informacji o kontach roblox tak jak na stronie https://playergames20.github.io/website-by-byte/wyszukiwarka-kont-roblox/ strona będzie też rozwijana w przyszłości tak jak jest rozwijana teraz swoje propozycje możesz pisać na serwerze discord lub na maila przechodząc na stronę główną a następnie klikając w przycisk _________ a tam znajdziesz dane kontaktowe do właściciela strony każda propozycja jest miła jeśli znajdzie się wiele osób które mają propozycję to jako właściciel strony dziękuję za propozycje każda propozycja jest mile widziana strona internetowa jest tworzona na razie w celach edukacyjnych przez właściciela by w przyszłości stworzyć stronę która może przydać się każdemu to na razie wszystkie informacje o stronie w przyszłości może zostanie dodanych więcej informacji a to na razie wszystkie informacje</p>
     </div>
 
-    <!-- Minimalna stopka (opcjonalna, możesz usunąć) -->
+    <!-- PRZYCISK KIERUJĄCY NA STRONĘ GŁÓWNĄ -->
+    <div style="text-align: center;">
+        <a href="https://playergames20.github.io/website-by-byte/strona-glowna/" class="home-button">🏠 Przejdź do strony głównej</a>
+    </div>
+
+    <!-- Minimalna stopka -->
     <hr>
     <div class="footer-note">
-        edytuj swobodnie — to tylko szkic
+        2026-2026 strona stworzona przez byte official
     </div>
 </div>
 </body>
